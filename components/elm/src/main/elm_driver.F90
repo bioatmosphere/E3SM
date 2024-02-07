@@ -241,7 +241,6 @@ contains
        call shr_sys_flush(iulog)
     endif
     ! Determine processor bounds and clumps for this processor
-
     call get_proc_bounds(bounds_proc)
     nclumps = get_proc_clumps()
     nstep_mod = get_nstep()
@@ -262,7 +261,6 @@ contains
     ! ============================================================================
     ! Specified phenology
     ! ============================================================================
-
     if (.not.use_fates) then
        if (use_cn) then
           ! For dry-deposition need to call CLMSP so that mlaidiff is obtained
@@ -666,7 +664,7 @@ contains
             filter(nc)%num_nolakec, filter(nc)%nolakec, &
             filter(nc)%num_nolakep, filter(nc)%nolakep, &
             atm2lnd_vars, canopystate_vars, &
-            aerosol_vars )
+            soilhydrology_vars, aerosol_vars )
        call t_stopf('canhydro')
 
        ! ============================================================================
@@ -748,7 +746,7 @@ contains
             filter(nc)%num_nolakeurbanp, filter(nc)%nolakeurbanp,                        &
             atm2lnd_vars, canopystate_vars, cnstate_vars, energyflux_vars,               &
             frictionvel_vars, soilstate_vars, solarabs_vars, surfalb_vars,               &
-            ch4_vars, photosyns_vars )
+            ch4_vars, photosyns_vars, soilhydrology_vars )
        call t_stopf('canflux')
 
        ! Fluxes for all urban landunits

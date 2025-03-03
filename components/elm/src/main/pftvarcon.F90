@@ -115,7 +115,12 @@ module pftvarcon
   real(r8), allocatable :: flnr(:)        !fraction of leaf N in Rubisco [no units]
   real(r8), allocatable :: woody(:)       !woody lifeform flag (0 or 1 or 2-shrub)
   real(r8), allocatable :: lflitcn(:)     !leaf litter C:N (gC/gN)
+  !TAM
   real(r8), allocatable :: frootcn(:)     !fine root C:N (gC/gN)
+  real(r8), allocatable :: froottcn(:)    !fine root C:N (gC/gN)
+  real(r8), allocatable :: frootacn(:)    !fine root C:N (gC/gN)
+  real(r8), allocatable :: frootmcn(:)    !fine root C:N (gC/gN)
+
   real(r8), allocatable :: livewdcn(:)    !live wood (phloem and ray parenchyma) C:N (gC/gN)
   real(r8), allocatable :: deadwdcn(:)    !dead wood (xylem and heartwood) C:N (gC/gN)
   real(r8), allocatable :: grperc(:)      !growth respiration parameter
@@ -125,7 +130,12 @@ module pftvarcon
   ! add pft dependent parameters for phosphorus -X.YANG
   real(r8), allocatable :: leafcp(:)      !leaf C:P [gC/gP]
   real(r8), allocatable :: lflitcp(:)     !leaf litter C:P (gC/gP)
+  !TAM
   real(r8), allocatable :: frootcp(:)     !fine root C:P (gC/gP)
+  real(r8), allocatable :: froottcp(:)    !fine root C:P (gC/gP)
+  real(r8), allocatable :: frootacp(:)    !fine root C:P (gC/gP)
+  real(r8), allocatable :: frootmcp(:)    !fine root C:P (gC/gP)
+
   real(r8), allocatable :: livewdcp(:)    !live wood (phloem and ray parenchyma) C:P (gC/gP)
   real(r8), allocatable :: deadwdcp(:)    !dead wood (xylem and heartwood) C:P (gC/gP)
 
@@ -172,7 +182,12 @@ module pftvarcon
   real(r8), allocatable :: minplanttemp(:) !mininum planting temperature used in Phenology (K)
   real(r8), allocatable :: senestemp(:)    !senescence temperature for perennial crops used in Phenology (K)
   real(r8), allocatable :: min_days_senes(:)   !minimum leaf age to allow for leaf senescence
+  !TAM
   real(r8), allocatable :: froot_leaf(:)   !allocation parameter: new fine root C per new leaf C (gC/gC) 
+  real(r8), allocatable :: froott_leaf(:)  !allocation parameter: new fine root C per new leaf C (gC/gC) 
+  real(r8), allocatable :: froota_leaf(:)  !allocation parameter: new fine root C per new leaf C (gC/gC) 
+  real(r8), allocatable :: frootm_leaf(:)  !allocation parameter: new fine root C per new leaf C (gC/gC) 
+
   real(r8), allocatable :: stem_leaf(:)    !allocation parameter: new stem c per new leaf C (gC/gC)
   real(r8), allocatable :: croot_stem(:)   !allocation parameter: new coarse root C per new stem C (gC/gC)
   real(r8), allocatable :: flivewd(:)      !allocation parameter: fraction of new wood that is live (phloem and ray parenchyma) (no units)
@@ -180,11 +195,27 @@ module pftvarcon
   real(r8), allocatable :: lf_flab(:)      !leaf litter labile fraction
   real(r8), allocatable :: lf_fcel(:)      !leaf litter cellulose fraction
   real(r8), allocatable :: lf_flig(:)      !leaf litter lignin fraction
+  !TAM
   real(r8), allocatable :: fr_flab(:)      !fine root litter labile fraction
   real(r8), allocatable :: fr_fcel(:)      !fine root litter cellulose fraction
   real(r8), allocatable :: fr_flig(:)      !fine root litter lignin fraction
+  real(r8), allocatable :: frt_flab(:)      !fine root litter labile fraction
+  real(r8), allocatable :: frt_fcel(:)      !fine root litter cellulose fraction
+  real(r8), allocatable :: frt_flig(:)      !fine root litter lignin fraction
+  real(r8), allocatable :: fra_flab(:)      !fine root litter labile fraction
+  real(r8), allocatable :: fra_fcel(:)      !fine root litter cellulose fraction
+  real(r8), allocatable :: fra_flig(:)      !fine root litter lignin fraction
+  real(r8), allocatable :: frm_flab(:)      !fine root litter labile fraction
+  real(r8), allocatable :: frm_fcel(:)      !fine root litter cellulose fraction
+  real(r8), allocatable :: frm_flig(:)      !fine root litter lignin fraction
+
   real(r8), allocatable :: leaf_long(:)    !leaf longevity (yrs)
+  !TAM
   real(r8), allocatable :: froot_long(:)   !fine root longevity(yrs)
+  real(r8), allocatable :: froott_long(:)  !fine root longevity(yrs)
+  real(r8), allocatable :: froota_long(:)  !fine root longevity(yrs)
+  real(r8), allocatable :: frootm_long(:)  !fine root longevity(yrs)
+  
   real(r8), allocatable :: rhizome_long(:) !nonwoody rhizome longevity(yrs)
   real(r8), allocatable :: evergreen(:)    !binary flag for evergreen leaf habit (0 or 1)
   real(r8), allocatable :: stress_decid(:) !binary flag for stress-deciduous leaf habit (0 or 1)
@@ -320,19 +351,19 @@ module pftvarcon
   real(r8), allocatable :: gcbr_q(:)           !effectiveness of roots in reducing runoff-driven erosion
   real(r8), allocatable :: gcpsi(:)            !bare ground LAI-decay parameter
   real(r8), allocatable :: pftcc(:)            !plant cover reduction factor for transport capacity
-!if (defined HUM_HOL)
+  !if (defined HUM_HOL)
   real(r8)              :: qflx_h2osfc_surfrate
   real(r8)              :: humhol_ht
   real(r8)              :: hum_frac
   real(r8)              :: humhol_dist
-! Tidal cycle controls
+  ! Tidal cycle controls
   integer               :: num_tide_comps      ! Number of tidal cycle components
   real(r8)              :: tide_baseline            ! Base tide level (mean of cycle) (mm)
   real(r8),allocatable  :: tide_coeff_amp(:)            ! Amplitude of tide component (mm)
   real(r8),allocatable  :: tide_coeff_period(:)        ! Period of tide component (s)
   real(r8),allocatable  :: tide_coeff_phase(:)         ! Phase shift of tide component (s)
   real(r8)              :: sfcflow_ratescale         ! Rate scale for surface water flow across columns (s-1)
- ! parameters for salinity response function
+  ! parameters for salinity response function
   real(r8), allocatable :: sal_threshold(:) !threshold for salinity effects (ppt)
   real(r8), allocatable :: KM_salinity(:)    !half saturation constant for omotic inhibition function (ppt)
   real(r8), allocatable :: osm_inhib(:)      !osmotic inhibition factor
@@ -342,7 +373,7 @@ module pftvarcon
 
   !endif
   !phenology
-  real(r8)              :: phen_a
+  real(r8)              :: phen_a !not used
   real(r8)              :: phen_b
   real(r8)              :: phen_c
   real(r8)              :: phen_topt
@@ -358,7 +389,7 @@ module pftvarcon
   real(r8)              :: phen_tbase
   real(r8)              :: phen_tc
   real(r8)              :: phen_crit_dayl
-!endif
+  !endif
 
 
   !----------------------F.-M. Yuan (2018-03-23): user-defined parameter file ---------------------------------------------------------------------
@@ -397,7 +428,7 @@ contains
                             ncd_inqdid, ncd_inqdlen
     use elm_varctl,  only : paramfile, use_fates
     use elm_varctl,  only : use_crop, use_dynroot
-    use elm_varcon,  only : tfrz
+    use elm_varcon,  only : tfrz !not used
     use spmdMod   ,  only : masterproc
 
     !
@@ -427,7 +458,7 @@ contains
     ! DO NOT CHANGE THE ORDER -- WITHOUT MODIFYING OTHER PARTS OF THE CODE WHERE THE ORDER MATTERS!
     !
     character(len=pftname_len) :: expected_pftnames(0:mxpft) 
-!-----------------------------------------------------------------------
+    !-----------------------------------------------------------------------
 
     expected_pftnames( 0) = 'not_vegetated                      '
     expected_pftnames( 1) = 'needleleaf_evergreen_temperate_tree'
@@ -503,15 +534,25 @@ contains
     allocate( leafcn        (0:mxpft) )
     allocate( flnr          (0:mxpft) )        
     allocate( woody         (0:mxpft) )       
-    allocate( lflitcn       (0:mxpft) )      
-    allocate( frootcn       (0:mxpft) )      
+    allocate( lflitcn       (0:mxpft) )
+    !TAM      
+    allocate( frootcn       (0:mxpft) )
+    allocate( froottcn      (0:mxpft) )
+    allocate( frootacn      (0:mxpft) )
+    allocate( frootmcn      (0:mxpft) )
+
     allocate( livewdcn      (0:mxpft) )     
     allocate( deadwdcn      (0:mxpft) )     
 
     ! add phosphorus 
     allocate( leafcp        (0:mxpft) )      
-    allocate( lflitcp       (0:mxpft) )      
-    allocate( frootcp       (0:mxpft) )      
+    allocate( lflitcp       (0:mxpft) )
+    ! TAM      
+    allocate( frootcp       (0:mxpft) )
+    allocate( froottcp      (0:mxpft) )
+    allocate( frootacp      (0:mxpft) )
+    allocate( frootmcp      (0:mxpft) )
+
     allocate( livewdcp      (0:mxpft) )     
     allocate( deadwdcp      (0:mxpft) )     
 
@@ -553,19 +594,40 @@ contains
     allocate( minplanttemp  (0:mxpft) ) 
     allocate( senestemp     (0:mxpft) )
     allocate( min_days_senes (0:mxpft) )
-    allocate( froot_leaf    (0:mxpft) )   
+    !TAM
+    allocate( froot_leaf    (0:mxpft) ) 
+    allocate( froott_leaf   (0:mxpft) )
+    allocate( froota_leaf   (0:mxpft) )
+    allocate( frootm_leaf   (0:mxpft) )
+
     allocate( stem_leaf     (0:mxpft) )    
     allocate( croot_stem    (0:mxpft) )   
     allocate( flivewd       (0:mxpft) )      
     allocate( fcur          (0:mxpft) )         
     allocate( lf_flab       (0:mxpft) )      
     allocate( lf_fcel       (0:mxpft) )      
-    allocate( lf_flig       (0:mxpft) )      
+    allocate( lf_flig       (0:mxpft) )
+    !TAM      
     allocate( fr_flab       (0:mxpft) )      
     allocate( fr_fcel       (0:mxpft) )      
-    allocate( fr_flig       (0:mxpft) )      
-    allocate( leaf_long     (0:mxpft) )   
+    allocate( fr_flig       (0:mxpft) )
+    allocate( frt_flab      (0:mxpft) )      
+    allocate( frt_fcel      (0:mxpft) )      
+    allocate( frt_flig      (0:mxpft) )
+    allocate( fra_flab      (0:mxpft) )      
+    allocate( fra_fcel      (0:mxpft) )      
+    allocate( fra_flig      (0:mxpft) )
+    allocate( frm_flab      (0:mxpft) )      
+    allocate( frm_fcel      (0:mxpft) )      
+    allocate( frm_flig      (0:mxpft) )
+
+    allocate( leaf_long     (0:mxpft) ) 
+    ! TAM  
     allocate( froot_long    (0:mxpft) )
+    allocate( froott_long   (0:mxpft) )
+    allocate( froota_long   (0:mxpft) )
+    allocate( frootm_long   (0:mxpft) )
+
     allocate( rhizome_long  (0:mxpft) )
     allocate( evergreen     (0:mxpft) )    
     allocate( stress_decid  (0:mxpft) ) 
@@ -688,7 +750,7 @@ contains
     tide_coeff_phase(:)  = 0.0
     tide_coeff_period(:) = 1.0 ! Making period 0 would cause divide by 0 error in sinusoid calculation
 
-  !----------------------F.-M. Yuan (2018-03-23): user-defined parameter file ---------------------------------------------------------------------
+    !----------------------F.-M. Yuan (2018-03-23): user-defined parameter file ---------------------------------------------------------------------
     allocate( needleleaf         (0:mxpft) )
     allocate( nonvascular        (0:mxpft) )
     allocate( nfixer             (0:mxpft) )
@@ -720,13 +782,13 @@ contains
     call ncd_pio_openfile (ncid, trim(locfn), 0)
     call ncd_inqdid(ncid,'pft',dimid)
     call ncd_inqdlen(ncid,dimid,npft)
-  !----------------------F.-M. Yuan (2018-03-23): user-defined parameter file ---------------------------------------------------------------------
+    !----------------------F.-M. Yuan (2018-03-23): user-defined parameter file ---------------------------------------------------------------------
     ! In parameter file, 'npft' can be greater than 'maxpatch_pft' by user-defined (namelist setting),
     ! but cannot less (i.e. pft numbers in 'surfdata'<= that in 'parameters') if non-crop version of model.
     ! NOTE: 'mxpft' is the max. index for prameter variable array (0:mxpft), which must be not less than 'npft-1'
     if (npft<maxpatch_pft .and. .not.use_crop) call endrun(msg=' ERROR: pft number less than maxpatch_pft: '//errMsg(__FILE__, __LINE__))
     if (npft>mxpft+1) call endrun(msg=' ERROR: pft number greater than mxpft+1: '//errMsg(__FILE__, __LINE__))
-  !----------------------F.-M. Yuan (2018-03-23): user-defined parameter file ---------------------------------------------------------------------
+    !----------------------F.-M. Yuan (2018-03-23): user-defined parameter file ---------------------------------------------------------------------
 
     call ncd_io('pftname',pftname(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
     if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
@@ -848,6 +910,7 @@ contains
     if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
     call ncd_io('fstemcn',fstemcn(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
     if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+
     if (use_crop) then
        call ncd_io('presharv',presharv(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
        if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
@@ -871,6 +934,59 @@ contains
        call ncd_io('rootprof_beta',rootprof_beta(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
        if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
     end if
+
+#if (defined TAM)
+    ! TAM parameters for each PFT; 21 in total
+    call ncd_io('froottcn',froottcn(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('frootacn',frootacn(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('frootmcn',frootmcn(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+
+    call ncd_io('froottcp',froottcp(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('frootacp',frootacp(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('frootmcp',frootmcp(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+
+    call ncd_io('froott_leaf',froott_leaf(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('froota_leaf',froota_leaf(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('frootm_leaf',frootm_leaf(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+
+    call ncd_io('froott_long',froott_long(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('froota_long',froota_long(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('frootm_long',frootm_long(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+
+    call ncd_io('frt_flab',frt_flab(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('frt_fcel',frt_fcel(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('frt_flig',frt_flig(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+
+    call ncd_io('fra_flab',fra_flab(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('fra_fcel',fra_fcel(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('fra_flig',fra_flig(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+
+    call ncd_io('frm_flab',frm_flab(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('frm_fcel',frm_fcel(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    call ncd_io('frm_flig',frm_flig(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+#endif
+
     call ncd_io('pconv',pconv(0:npft-1), 'read', ncid, readvar=readv)
     if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
     call ncd_io('pprod10',pprod10(0:npft-1), 'read', ncid, readvar=readv)
@@ -1086,7 +1202,7 @@ contains
 
     !if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft
     !data'//errMsg(__FILE__,__LINE__))
-!if (defined HUM_HOL)
+    !if (defined HUM_HOL)
     call ncd_io('humhol_ht', humhol_ht, 'read', ncid, readvar=readv, posNOTonfile=.true.)
     if ( .not. readv) humhol_ht = 0.15_r8
     call ncd_io('humhol_dist', humhol_dist, 'read', ncid, readvar=readv, posNOTonfile=.true.)
@@ -1097,7 +1213,7 @@ contains
     if ( .not. readv) qflx_h2osfc_surfrate = 1.0e-7_r8
 
 #ifdef MARSH
-! Tidal cycle parameters
+    ! Tidal cycle parameters
     ! Defaults from Teri's hard coded numbers
     ! Multiple parameters specified in params file like tide_coeff_amp_1, tide_coeff_amp_2, ...
     call ncd_io('tide_baseline',tide_baseline, 'read', ncid, readvar=readv, posNOTonfile=.true.)
@@ -1144,40 +1260,40 @@ contains
    if ( .not. readv ) floodf(:) = 1.0_r8 
 #endif
 
-!    call ncd_io('phen_a', phen_a, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
-!    call ncd_io('phen_b', phen_b, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
-!    call ncd_io('phen_c', phen_c, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
-!    call ncd_io('phen_topt', phen_topt, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
-!    call ncd_io('phen_fstar', phen_fstar, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
-!    call ncd_io('phen_cstar', phen_cstar, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
-!    call ncd_io('phen_tforce', phen_tforce, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
-!    call ncd_io('phen_tchil', phen_tchil, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
-!    call ncd_io('phen_pstart', phen_pstart, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
-!    call ncd_io('phen_tb', phen_tb, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
-!    call ncd_io('phen_ycrit', phen_ycrit, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
-!    call ncd_io('phen_spring', phen_spring, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) phen_spring = 0._r8
-!    call ncd_io('phen_autumn', phen_autumn, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) phen_autumn = 0._r8
-!    call ncd_io('phen_tbase', phen_tbase, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
-!    call ncd_io('phen_tc', phen_tc, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
-!    call ncd_io('crit_dayl', phen_crit_dayl, 'read', ncid, readvar=readv, posNOTonfile=.true.)
-!    if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft ! data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('phen_a', phen_a, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('phen_b', phen_b, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('phen_c', phen_c, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('phen_topt', phen_topt, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('phen_fstar', phen_fstar, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('phen_cstar', phen_cstar, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('phen_tforce', phen_tforce, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('phen_tchil', phen_tchil, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('phen_pstart', phen_pstart, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('phen_tb', phen_tb, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('phen_ycrit', phen_ycrit, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('phen_spring', phen_spring, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) phen_spring = 0._r8
+      ! call ncd_io('phen_autumn', phen_autumn, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) phen_autumn = 0._r8
+      ! call ncd_io('phen_tbase', phen_tbase, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('phen_tc', phen_tc, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
+      ! call ncd_io('crit_dayl', phen_crit_dayl, 'read', ncid, readvar=readv, posNOTonfile=.true.)
+      ! if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft ! data'//errMsg(__FILE__,__LINE__))
 
-!endif
+    !endif
     !if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
     call ncd_io('fnr', fnr(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
     if ( .not. readv) call endrun(msg='ERROR:  error in reading in pft data'//errMsg(__FILE__,__LINE__))
@@ -1247,108 +1363,108 @@ contains
 
     call ncd_io('mergetoelmpft', mergetoelmpft(0:npft-1), 'read', ncid, readvar=readv)
     if ( .not. readv ) then
-       do i = 0, mxpft
-          mergetoelmpft(i) = i
-       end do
-    !----------------------F.-M. Yuan: 2018-03-23---------------------------------------------------------------------
-    ! 'mergetoclmpft' in the 'paramfile' is used as an indicator to user-defined parameter file
-    !end if
+      do i = 0, mxpft
+         mergetoelmpft(i) = i
+      end do
+      !----------------------F.-M. Yuan: 2018-03-23---------------------------------------------------------------------
+      ! 'mergetoclmpft' in the 'paramfile' is used as an indicator to user-defined parameter file
+      !end if
 
-    !call ncd_pio_closefile(ncid)
-    !----------------------F.-M. Yuan: 2018-03-23---------------------------------------------------------------------
+      !call ncd_pio_closefile(ncid)
+      !----------------------F.-M. Yuan: 2018-03-23---------------------------------------------------------------------
 
-    do i = 0, mxpft
+      do i = 0, mxpft
 
-       if(.not. use_crop .and. i > mxpft_nc) EXIT ! exit the do loop
-       
-       ! (FATES-INTERF) Later, depending on how the team plans to structure the crop model
-       ! or other modules that co-exist while FATES is on, we may want to preserve these pft definitions
-       ! on non-fates columns.  For now, they are incompatible, and this check is warranted (rgk 04-2017)
+         if(.not. use_crop .and. i > mxpft_nc) EXIT ! exit the do loop
+         
+         ! (FATES-INTERF) Later, depending on how the team plans to structure the crop model
+         ! or other modules that co-exist while FATES is on, we may want to preserve these pft definitions
+         ! on non-fates columns.  For now, they are incompatible, and this check is warranted (rgk 04-2017)
 
-       ! avd - this should be independent of FATES because it fails for non-crop config otherwise
+         ! avd - this should be independent of FATES because it fails for non-crop config otherwise
 
-          if(.not. use_crop .and. i > mxpft_nc) EXIT ! exit the do loop
-          if ( trim(adjustl(pftname(i))) /= trim(expected_pftnames(i)) )then
-             write(iulog,*)'pftconrd: pftname is NOT what is expected, name = ', &
-                  trim(pftname(i)), ', expected name = ', trim(expected_pftnames(i))
-             call endrun(msg='pftconrd: bad name for pft on paramfile dataset'//errMsg(__FILE__, __LINE__))
-          end if
+            if(.not. use_crop .and. i > mxpft_nc) EXIT ! exit the do loop
+            if ( trim(adjustl(pftname(i))) /= trim(expected_pftnames(i)) )then
+               write(iulog,*)'pftconrd: pftname is NOT what is expected, name = ', &
+                     trim(pftname(i)), ', expected name = ', trim(expected_pftnames(i))
+               call endrun(msg='pftconrd: bad name for pft on paramfile dataset'//errMsg(__FILE__, __LINE__))
+            end if
 
-       if ( trim(pftname(i)) == 'not_vegetated'                       ) noveg                = i
-       if ( trim(pftname(i)) == 'needleleaf_evergreen_temperate_tree' ) ndllf_evr_tmp_tree   = i
-       if ( trim(pftname(i)) == 'needleleaf_evergreen_boreal_tree'    ) ndllf_evr_brl_tree   = i
-       if ( trim(pftname(i)) == 'needleleaf_deciduous_boreal_tree'    ) ndllf_dcd_brl_tree   = i
-       if ( trim(pftname(i)) == 'broadleaf_evergreen_tropical_tree'   ) nbrdlf_evr_trp_tree  = i
-       if ( trim(pftname(i)) == 'broadleaf_evergreen_temperate_tree'  ) nbrdlf_evr_tmp_tree  = i
-       if ( trim(pftname(i)) == 'broadleaf_deciduous_tropical_tree'   ) nbrdlf_dcd_trp_tree  = i
-       if ( trim(pftname(i)) == 'broadleaf_deciduous_temperate_tree'  ) nbrdlf_dcd_tmp_tree  = i
-       if ( trim(pftname(i)) == 'broadleaf_deciduous_boreal_tree'     ) nbrdlf_dcd_brl_tree  = i
-       if ( trim(pftname(i)) == 'broadleaf_evergreen_shrub'           ) nbrdlf_evr_shrub     = i
-       if ( trim(pftname(i)) == 'broadleaf_deciduous_temperate_shrub' ) nbrdlf_dcd_tmp_shrub = i
-       if ( trim(pftname(i)) == 'broadleaf_deciduous_boreal_shrub'    ) nbrdlf_dcd_brl_shrub = i
-       if ( trim(pftname(i)) == 'c3_arctic_grass'                     ) nc3_arctic_grass     = i
-       if ( trim(pftname(i)) == 'c3_non-arctic_grass'                 ) nc3_nonarctic_grass  = i
-       if ( trim(pftname(i)) == 'c4_grass'                            ) nc4_grass            = i
-       if ( trim(pftname(i)) == 'c3_crop'                             ) nc3crop              = i
-       if ( trim(pftname(i)) == 'c3_irrigated'                        ) nc3irrig             = i
-       if ( trim(pftname(i)) == 'corn'                                ) ncorn                = i
-       if ( trim(pftname(i)) == 'irrigated_corn'                      ) ncornirrig           = i
-       if ( trim(pftname(i)) == 'spring_temperate_cereal'             ) nscereal             = i
-       if ( trim(pftname(i)) == 'irrigated_spring_temperate_cereal'   ) nscerealirrig        = i
-       if ( trim(pftname(i)) == 'winter_temperate_cereal'             ) nwcereal             = i
-       if ( trim(pftname(i)) == 'irrigated_winter_temperate_cereal'   ) nwcerealirrig        = i
-       if ( trim(pftname(i)) == 'soybean'                             ) nsoybean             = i
-       if ( trim(pftname(i)) == 'irrigated_soybean'                   ) nsoybeanirrig        = i
-       if ( trim(pftname(i)) == 'cassava'                             ) ncassava             = i
-       if ( trim(pftname(i)) == 'irrigated_cassava'                   ) ncassavairrig        = i
-       if ( trim(pftname(i)) == 'cotton'                              ) ncotton              = i
-       if ( trim(pftname(i)) == 'irrigated_cotton'                    ) ncottonirrig         = i
-       if ( trim(pftname(i)) == 'foddergrass'                         ) nfoddergrass         = i
-       if ( trim(pftname(i)) == 'irrigated_foddergrass'               ) nfoddergrassirrig    = i
-       if ( trim(pftname(i)) == 'oilpalm'                             ) noilpalm             = i
-       if ( trim(pftname(i)) == 'irrigated_oilpalm'                   ) noilpalmirrig        = i
-       if ( trim(pftname(i)) == 'other_grains'                        ) nograins             = i
-       if ( trim(pftname(i)) == 'irrigated_other_grains'              ) nograinsirrig        = i
-       if ( trim(pftname(i)) == 'rapeseed'                            ) nrapeseed            = i
-       if ( trim(pftname(i)) == 'irrigated_rapeseed'                  ) nrapeseedirrig       = i
-       if ( trim(pftname(i)) == 'rice'                                ) nrice                = i
-       if ( trim(pftname(i)) == 'irrigated_rice'                      ) nriceirrig           = i
-       if ( trim(pftname(i)) == 'root_tubers'                         ) nrtubers             = i
-       if ( trim(pftname(i)) == 'irrigated_root_tubers'               ) nrtubersirrig        = i
-       if ( trim(pftname(i)) == 'sugarcane'                           ) nsugarcane           = i
-       if ( trim(pftname(i)) == 'irrigated_sugarcane'                 ) nsugarcaneirrig      = i
-       if ( trim(pftname(i)) == 'miscanthus'                          ) nmiscanthus          = i
-       if ( trim(pftname(i)) == 'irrigated_miscanthus'                ) nmiscanthusirrig     = i
-       if ( trim(pftname(i)) == 'switchgrass'                         ) nswitchgrass         = i
-       if ( trim(pftname(i)) == 'irrigated_switchgrass'               ) nswitchgrassirrig    = i
-       if ( trim(pftname(i)) == 'poplar'                              ) npoplar              = i
-       if ( trim(pftname(i)) == 'irrigated_poplar'                    ) npoplarirrig         = i
-       if ( trim(pftname(i)) == 'willow'                              ) nwillow              = i
-       if ( trim(pftname(i)) == 'irrigated_willow'                    ) nwillowirrig         = i
-    end do
+         if ( trim(pftname(i)) == 'not_vegetated'                       ) noveg                = i
+         if ( trim(pftname(i)) == 'needleleaf_evergreen_temperate_tree' ) ndllf_evr_tmp_tree   = i
+         if ( trim(pftname(i)) == 'needleleaf_evergreen_boreal_tree'    ) ndllf_evr_brl_tree   = i
+         if ( trim(pftname(i)) == 'needleleaf_deciduous_boreal_tree'    ) ndllf_dcd_brl_tree   = i
+         if ( trim(pftname(i)) == 'broadleaf_evergreen_tropical_tree'   ) nbrdlf_evr_trp_tree  = i
+         if ( trim(pftname(i)) == 'broadleaf_evergreen_temperate_tree'  ) nbrdlf_evr_tmp_tree  = i
+         if ( trim(pftname(i)) == 'broadleaf_deciduous_tropical_tree'   ) nbrdlf_dcd_trp_tree  = i
+         if ( trim(pftname(i)) == 'broadleaf_deciduous_temperate_tree'  ) nbrdlf_dcd_tmp_tree  = i
+         if ( trim(pftname(i)) == 'broadleaf_deciduous_boreal_tree'     ) nbrdlf_dcd_brl_tree  = i
+         if ( trim(pftname(i)) == 'broadleaf_evergreen_shrub'           ) nbrdlf_evr_shrub     = i
+         if ( trim(pftname(i)) == 'broadleaf_deciduous_temperate_shrub' ) nbrdlf_dcd_tmp_shrub = i
+         if ( trim(pftname(i)) == 'broadleaf_deciduous_boreal_shrub'    ) nbrdlf_dcd_brl_shrub = i
+         if ( trim(pftname(i)) == 'c3_arctic_grass'                     ) nc3_arctic_grass     = i
+         if ( trim(pftname(i)) == 'c3_non-arctic_grass'                 ) nc3_nonarctic_grass  = i
+         if ( trim(pftname(i)) == 'c4_grass'                            ) nc4_grass            = i
+         if ( trim(pftname(i)) == 'c3_crop'                             ) nc3crop              = i
+         if ( trim(pftname(i)) == 'c3_irrigated'                        ) nc3irrig             = i
+         if ( trim(pftname(i)) == 'corn'                                ) ncorn                = i
+         if ( trim(pftname(i)) == 'irrigated_corn'                      ) ncornirrig           = i
+         if ( trim(pftname(i)) == 'spring_temperate_cereal'             ) nscereal             = i
+         if ( trim(pftname(i)) == 'irrigated_spring_temperate_cereal'   ) nscerealirrig        = i
+         if ( trim(pftname(i)) == 'winter_temperate_cereal'             ) nwcereal             = i
+         if ( trim(pftname(i)) == 'irrigated_winter_temperate_cereal'   ) nwcerealirrig        = i
+         if ( trim(pftname(i)) == 'soybean'                             ) nsoybean             = i
+         if ( trim(pftname(i)) == 'irrigated_soybean'                   ) nsoybeanirrig        = i
+         if ( trim(pftname(i)) == 'cassava'                             ) ncassava             = i
+         if ( trim(pftname(i)) == 'irrigated_cassava'                   ) ncassavairrig        = i
+         if ( trim(pftname(i)) == 'cotton'                              ) ncotton              = i
+         if ( trim(pftname(i)) == 'irrigated_cotton'                    ) ncottonirrig         = i
+         if ( trim(pftname(i)) == 'foddergrass'                         ) nfoddergrass         = i
+         if ( trim(pftname(i)) == 'irrigated_foddergrass'               ) nfoddergrassirrig    = i
+         if ( trim(pftname(i)) == 'oilpalm'                             ) noilpalm             = i
+         if ( trim(pftname(i)) == 'irrigated_oilpalm'                   ) noilpalmirrig        = i
+         if ( trim(pftname(i)) == 'other_grains'                        ) nograins             = i
+         if ( trim(pftname(i)) == 'irrigated_other_grains'              ) nograinsirrig        = i
+         if ( trim(pftname(i)) == 'rapeseed'                            ) nrapeseed            = i
+         if ( trim(pftname(i)) == 'irrigated_rapeseed'                  ) nrapeseedirrig       = i
+         if ( trim(pftname(i)) == 'rice'                                ) nrice                = i
+         if ( trim(pftname(i)) == 'irrigated_rice'                      ) nriceirrig           = i
+         if ( trim(pftname(i)) == 'root_tubers'                         ) nrtubers             = i
+         if ( trim(pftname(i)) == 'irrigated_root_tubers'               ) nrtubersirrig        = i
+         if ( trim(pftname(i)) == 'sugarcane'                           ) nsugarcane           = i
+         if ( trim(pftname(i)) == 'irrigated_sugarcane'                 ) nsugarcaneirrig      = i
+         if ( trim(pftname(i)) == 'miscanthus'                          ) nmiscanthus          = i
+         if ( trim(pftname(i)) == 'irrigated_miscanthus'                ) nmiscanthusirrig     = i
+         if ( trim(pftname(i)) == 'switchgrass'                         ) nswitchgrass         = i
+         if ( trim(pftname(i)) == 'irrigated_switchgrass'               ) nswitchgrassirrig    = i
+         if ( trim(pftname(i)) == 'poplar'                              ) npoplar              = i
+         if ( trim(pftname(i)) == 'irrigated_poplar'                    ) npoplarirrig         = i
+         if ( trim(pftname(i)) == 'willow'                              ) nwillow              = i
+         if ( trim(pftname(i)) == 'irrigated_willow'                    ) nwillowirrig         = i
+      end do
 
-    ntree                = nbrdlf_dcd_brl_tree  ! value for last type of tree
-    npcropmin            = ncorn                ! first prognostic crop
-    if( .not. use_crop) then
-       npcropmax            = nsoybeanirrig        ! last prognostic crop in list
-    else
-       npcropmax            = nsugarcaneirrig      ! last prognostic crop in list
-       nppercropmin         = nmiscanthus          ! first prognostic perennial crop
-       nppercropmax         = nwillowirrig         ! last prognostic perennial crop in list
-    end if
+      ntree                = nbrdlf_dcd_brl_tree  ! value for last type of tree
+      npcropmin            = ncorn                ! first prognostic crop
+      if( .not. use_crop) then
+         npcropmax            = nsoybeanirrig        ! last prognostic crop in list
+      else
+         npcropmax            = nsugarcaneirrig      ! last prognostic crop in list
+         nppercropmin         = nmiscanthus          ! first prognostic perennial crop
+         nppercropmax         = nwillowirrig         ! last prognostic perennial crop in list
+      end if
 
-    !----------------------F.-M. Yuan: 2018-03-23---------------------------------------------------------------------
-    nndllf_tree          = ndllf_dcd_brl_tree   ! value for last type of needle-leaf tree
-    nshrub               = nbrdlf_dcd_brl_shrub ! value for last type of shrub
-    ngraminoid           = nc4_grass            ! value for last type of grass
+      !----------------------F.-M. Yuan: 2018-03-23---------------------------------------------------------------------
+      nndllf_tree          = ndllf_dcd_brl_tree   ! value for last type of needle-leaf tree
+      nshrub               = nbrdlf_dcd_brl_shrub ! value for last type of shrub
+      ngraminoid           = nc4_grass            ! value for last type of grass
 
-    ! the following not available, but just in case called somewhere later
-    nnonvascular         = 0
-    nonvascular(0:mxpft) = 0
-    nfixer(0:mxpft)      = 0
-    needleleaf(0:mxpft)  = 0
-    needleleaf(noveg+1:nndllf_tree) = 1
-    woody(ntree+1:nshrub)= 2
+      ! the following not available, but just in case called somewhere later
+      nnonvascular         = 0
+      nonvascular(0:mxpft) = 0
+      nfixer(0:mxpft)      = 0
+      needleleaf(0:mxpft)  = 0
+      needleleaf(noveg+1:nndllf_tree) = 1
+      woody(ntree+1:nshrub)= 2
 
     ! 'mergetoclmpft' in the 'paramfile' is used as an indicator to user-defined parameter file
     else

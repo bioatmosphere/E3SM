@@ -122,7 +122,12 @@ module VegetationDataType
     real(r8), pointer :: leafc              (:) => null() ! (gC/m2) leaf C
     real(r8), pointer :: leafc_storage      (:) => null() ! (gC/m2) leaf C storage
     real(r8), pointer :: leafc_xfer         (:) => null() ! (gC/m2) leaf C transfer
+    !TAM
     real(r8), pointer :: frootc             (:) => null() ! (gC/m2) fine root C
+    real(r8), pointer :: froottc            (:) => null() ! (gC/m2) fine root C
+    real(r8), pointer :: frootac            (:) => null() ! (gC/m2) fine root C
+    real(r8), pointer :: frootmc            (:) => null() ! (gC/m2) fine root C
+
     real(r8), pointer :: frootc_storage     (:) => null() ! (gC/m2) fine root C storage
     real(r8), pointer :: frootc_xfer        (:) => null() ! (gC/m2) fine root C transfer
     real(r8), pointer :: livestemc          (:) => null() ! (gC/m2) live stem C
@@ -173,7 +178,12 @@ module VegetationDataType
     real(r8), pointer :: leafn                  (:)   => null()  ! (gN/m2) leaf N
     real(r8), pointer :: leafn_storage          (:)   => null()  ! (gN/m2) leaf N storage
     real(r8), pointer :: leafn_xfer             (:)   => null()  ! (gN/m2) leaf N transfer
+    !TAM
     real(r8), pointer :: frootn                 (:)   => null()  ! (gN/m2) fine root N
+    real(r8), pointer :: froottn                (:)   => null()  ! (gN/m2) fine root N
+    real(r8), pointer :: frootan                (:)   => null()  ! (gN/m2) fine root N
+    real(r8), pointer :: frootmn                (:)   => null()  ! (gN/m2) fine root N
+
     real(r8), pointer :: frootn_storage         (:)   => null()  ! (gN/m2) fine root N storage
     real(r8), pointer :: frootn_xfer            (:)   => null()  ! (gN/m2) fine root N transfer
     real(r8), pointer :: livestemn              (:)   => null()  ! (gN/m2) live stem N
@@ -261,7 +271,12 @@ module VegetationDataType
     real(r8), pointer :: leafp                  (:)     ! (gP/m2) leaf P
     real(r8), pointer :: leafp_storage          (:)     ! (gP/m2) leaf P storage
     real(r8), pointer :: leafp_xfer             (:)     ! (gP/m2) leaf P transfer
+    !TAM
     real(r8), pointer :: frootp                 (:)     ! (gP/m2) fine root P
+    real(r8), pointer :: froottp                (:)     ! (gP/m2) fine root P
+    real(r8), pointer :: frootap                (:)     ! (gP/m2) fine root P
+    real(r8), pointer :: frootmp                (:)     ! (gP/m2) fine root P
+
     real(r8), pointer :: frootp_storage         (:)     ! (gP/m2) fine root P storage
     real(r8), pointer :: frootp_xfer            (:)     ! (gP/m2) fine root P transfer
     real(r8), pointer :: livestemp              (:)     ! (gP/m2) live stem P
@@ -403,7 +418,12 @@ module VegetationDataType
     real(r8), pointer :: m_leafc_to_litter                   (:) => null()    ! leaf C mortality (gC/m2/s)
     real(r8), pointer :: m_leafc_storage_to_litter           (:) => null()    ! leaf C storage mortality (gC/m2/s)
     real(r8), pointer :: m_leafc_xfer_to_litter              (:) => null()    ! leaf C transfer mortality (gC/m2/s)
+    !TAM
     real(r8), pointer :: m_frootc_to_litter                  (:) => null()    ! fine root C mortality (gC/m2/s)
+    real(r8), pointer :: m_froottc_to_litter                 (:) => null()    ! fine root C mortality (gC/m2/s)
+    real(r8), pointer :: m_frootac_to_litter                 (:) => null()    ! fine root C mortality (gC/m2/s)
+    real(r8), pointer :: m_frootmc_to_litter                 (:) => null()    ! fine root C mortality (gC/m2/s)
+
     real(r8), pointer :: m_frootc_storage_to_litter          (:) => null()    ! fine root C storage mortality (gC/m2/s)
     real(r8), pointer :: m_frootc_xfer_to_litter             (:) => null()    ! fine root C transfer mortality (gC/m2/s)
     real(r8), pointer :: m_livestemc_to_litter               (:) => null()    ! live stem C mortality (gC/m2/s)
@@ -426,7 +446,12 @@ module VegetationDataType
     real(r8), pointer :: hrv_leafc_to_litter                 (:) => null()    ! leaf C harvest mortality (gC/m2/s)
     real(r8), pointer :: hrv_leafc_storage_to_litter         (:) => null()    ! leaf C storage harvest mortality (gC/m2/s)
     real(r8), pointer :: hrv_leafc_xfer_to_litter            (:) => null()    ! leaf C transfer harvest mortality (gC/m2/s)
+    !TAM
     real(r8), pointer :: hrv_frootc_to_litter                (:) => null()    ! fine root C harvest mortality (gC/m2/s)
+    real(r8), pointer :: hrv_froottc_to_litter               (:) => null()    ! fine root C harvest mortality (gC/m2/s)
+    real(r8), pointer :: hrv_frootac_to_litter               (:) => null()    ! fine root C harvest mortality (gC/m2/s)
+    real(r8), pointer :: hrv_frootmc_to_litter               (:) => null()    ! fine root C harvest mortality (gC/m2/s)
+
     real(r8), pointer :: hrv_frootc_storage_to_litter        (:) => null()    ! fine root C storage harvest mortality (gC/m2/s)
     real(r8), pointer :: hrv_frootc_xfer_to_litter           (:) => null()    ! fine root C transfer harvest mortality (gC/m2/s)
     real(r8), pointer :: hrv_livestemc_to_litter             (:) => null()    ! live stem C harvest mortality (gC/m2/s)
@@ -462,7 +487,12 @@ module VegetationDataType
     real(r8), pointer :: m_deadstemc_to_fire                 (:) => null()    ! (gC/m2/s) fire C emissions from deadstemc_xfer
     real(r8), pointer :: m_deadstemc_storage_to_fire         (:) => null()    ! (gC/m2/s) fire C emissions from deadstemc_storage
     real(r8), pointer :: m_deadstemc_xfer_to_fire            (:) => null()    ! (gC/m2/s) fire C emissions from deadstemc_xfer
+    !TAM
     real(r8), pointer :: m_frootc_to_fire                    (:) => null()    ! (gC/m2/s) fire C emissions from frootc
+    real(r8), pointer :: m_froottc_to_fire                    (:) => null()    ! (gC/m2/s) fire C emissions from frootc
+    real(r8), pointer :: m_frootac_to_fire                    (:) => null()    ! (gC/m2/s) fire C emissions from frootc
+    real(r8), pointer :: m_frootmc_to_fire                    (:) => null()    ! (gC/m2/s) fire C emissions from frootc
+
     real(r8), pointer :: m_frootc_storage_to_fire            (:) => null()    ! (gC/m2/s) fire C emissions from frootc_storage
     real(r8), pointer :: m_frootc_xfer_to_fire               (:) => null()    ! (gC/m2/s) fire C emissions from frootc_xfer
     real(r8), pointer :: m_livecrootc_to_fire                (:) => null()    ! (gC/m2/s) fire C emissions from livecrootc
@@ -484,7 +514,12 @@ module VegetationDataType
     real(r8), pointer :: m_deadstemc_to_litter_fire          (:) => null()    ! (gC/m2/s) from deadstemc to litter C due to fire
     real(r8), pointer :: m_deadstemc_storage_to_litter_fire  (:) => null()    ! (gC/m2/s) from deadstemc_storage to litter C due to fire
     real(r8), pointer :: m_deadstemc_xfer_to_litter_fire     (:) => null()    ! (gC/m2/s) from deadstemc_xfer to litter C due to fire
+    !TAM
     real(r8), pointer :: m_frootc_to_litter_fire             (:) => null()    ! (gC/m2/s) from frootc to litter C due to fire
+    real(r8), pointer :: m_froottc_to_litter_fire             (:) => null()    ! (gC/m2/s) from frootc to litter C due to fire
+    real(r8), pointer :: m_frootac_to_litter_fire             (:) => null()    ! (gC/m2/s) from frootc to litter C due to fire
+    real(r8), pointer :: m_frootmc_to_litter_fire             (:) => null()    ! (gC/m2/s) from frootc to litter C due to fire
+
     real(r8), pointer :: m_frootc_storage_to_litter_fire     (:) => null()    ! (gC/m2/s) from frootc_storage to litter C due to fire
     real(r8), pointer :: m_frootc_xfer_to_litter_fire        (:) => null()    ! (gC/m2/s) from frootc_xfer to litter C due to fire
     real(r8), pointer :: m_livecrootc_to_litter_fire         (:) => null()    ! (gC/m2/s) from livecrootc to litter C due to fire
@@ -501,7 +536,12 @@ module VegetationDataType
     ! phenology fluxes from transfer pools
     real(r8), pointer :: grainc_xfer_to_grainc               (:) => null()    ! grain C growth from storage for prognostic crop(gC/m2/s)
     real(r8), pointer :: leafc_xfer_to_leafc                 (:) => null()    ! leaf C growth from storage (gC/m2/s)
+    !TAM
     real(r8), pointer :: frootc_xfer_to_frootc               (:) => null()    ! fine root C growth from storage (gC/m2/s)
+    real(r8), pointer :: frootc_xfer_to_froottc               (:) => null()    ! fine root C growth from storage (gC/m2/s)
+    real(r8), pointer :: frootc_xfer_to_frootac               (:) => null()    ! fine root C growth from storage (gC/m2/s)
+    real(r8), pointer :: frootc_xfer_to_frootmc               (:) => null()    ! fine root C growth from storage (gC/m2/s)
+
     real(r8), pointer :: livestemc_xfer_to_livestemc         (:) => null()    ! live stem C growth from storage (gC/m2/s)
     real(r8), pointer :: deadstemc_xfer_to_deadstemc         (:) => null()    ! dead stem C growth from storage (gC/m2/s)
     real(r8), pointer :: livecrootc_xfer_to_livecrootc       (:) => null()    ! live coarse root C growth from storage (gC/m2/s)
@@ -509,24 +549,44 @@ module VegetationDataType
 
     ! leaf and fine root litterfall fluxes
     real(r8), pointer :: leafc_to_litter                     (:) => null()    ! leaf C litterfall (gC/m2/s)
+    !TAM
     real(r8), pointer :: frootc_to_litter                    (:) => null()    ! fine root C litterfall (gC/m2/s)
+    real(r8), pointer :: froottc_to_litter                   (:) => null()    ! fine root C litterfall (gC/m2/s)
+    real(r8), pointer :: frootac_to_litter                   (:) => null()    ! fine root C litterfall (gC/m2/s)
+    real(r8), pointer :: frootmc_to_litter                   (:) => null()    ! fine root C litterfall (gC/m2/s)
+
     real(r8), pointer :: livestemc_to_litter                 (:) => null()    ! live stem C litterfall (gC/m2/s)
     real(r8), pointer :: grainc_to_food                      (:) => null()    ! grain C to food for prognostic crop(gC/m2/s)
     real(r8), pointer :: livecrootc_to_litter                (:) => null()    ! live coarse root C litterfall (gC/m2/s)
 
     ! maintenance respiration fluxes
     real(r8), pointer :: leaf_mr                             (:) => null()    ! leaf maintenance respiration (gC/m2/s)
+    !TAM
     real(r8), pointer :: froot_mr                            (:) => null()    ! fine root maintenance respiration (gC/m2/s)
+    real(r8), pointer :: froott_mr                           (:) => null()    ! fine root maintenance respiration (gC/m2/s)
+    real(r8), pointer :: froota_mr                           (:) => null()    ! fine root maintenance respiration (gC/m2/s)
+    real(r8), pointer :: frootm_mr                           (:) => null()    ! fine root maintenance respiration (gC/m2/s)
+
     real(r8), pointer :: livestem_mr                         (:) => null()    ! live stem maintenance respiration (gC/m2/s)
     real(r8), pointer :: livecroot_mr                        (:) => null()    ! live coarse root maintenance respiration (gC/m2/s)
     real(r8), pointer :: grain_mr                            (:) => null()    ! crop grain or organs maint. respiration (gC/m2/s)
     real(r8), pointer :: leaf_curmr                          (:) => null()    ! leaf maintenance respiration from current GPP (gC/m2/s)
+    !TAM
     real(r8), pointer :: froot_curmr                         (:) => null()    ! fine root maintenance respiration from current GPP (gC/m2/s)
+    real(r8), pointer :: froott_curmr                        (:) => null()    ! fine root maintenance respiration from current GPP (gC/m2/s)
+    real(r8), pointer :: froota_curmr                        (:) => null()    ! fine root maintenance respiration from current GPP (gC/m2/s)
+    real(r8), pointer :: frootm_curmr                        (:) => null()    ! fine root maintenance respiration from current GPP (gC/m2/s)
+
     real(r8), pointer :: livestem_curmr                      (:) => null()    ! live stem maintenance respiration from current GPP (gC/m2/s)
     real(r8), pointer :: livecroot_curmr                     (:) => null()    ! live coarse root maintenance respiration from current GPP (gC/m2/s)
     real(r8), pointer :: grain_curmr                         (:) => null()    ! crop grain or organs maint. respiration from current GPP (gC/m2/s)
     real(r8), pointer :: leaf_xsmr                           (:) => null()    ! leaf maintenance respiration from storage (gC/m2/s)
+    !TAM
     real(r8), pointer :: froot_xsmr                          (:) => null()    ! fine root maintenance respiration from storage (gC/m2/s)
+    real(r8), pointer :: froott_xsmr                         (:) => null()    ! fine root T maintenance respiration from storage (gC/m2/s)
+    real(r8), pointer :: froota_xsmr                         (:) => null()    ! fine root A maintenance respiration from storage (gC/m2/s)
+    real(r8), pointer :: frootm_xsmr                         (:) => null()    ! fine root M maintenance respiration from storage (gC/m2/s)
+
     real(r8), pointer :: livestem_xsmr                       (:) => null()    ! live stem maintenance respiration from storage (gC/m2/s)
     real(r8), pointer :: livecroot_xsmr                      (:) => null()    ! live coarse root maintenance respiration from storage (gC/m2/s)
     real(r8), pointer :: grain_xsmr                          (:) => null()    ! crop grain or organs maint. respiration from storage (gC/m2/s)
@@ -543,7 +603,12 @@ module VegetationDataType
     real(r8), pointer :: cpool_to_grainc_storage             (:) => null()    ! allocation to grain C storage for prognostic crop(gC/m2/s)
     real(r8), pointer :: cpool_to_leafc                      (:) => null()    ! allocation to leaf C (gC/m2/s)
     real(r8), pointer :: cpool_to_leafc_storage              (:) => null()    ! allocation to leaf C storage (gC/m2/s)
+    !TAM
     real(r8), pointer :: cpool_to_frootc                     (:) => null()    ! allocation to fine root C (gC/m2/s)
+    real(r8), pointer :: cpool_to_froottc                     (:) => null()    ! allocation to fine root C (gC/m2/s)
+    real(r8), pointer :: cpool_to_frootac                     (:) => null()    ! allocation to fine root C (gC/m2/s)
+    real(r8), pointer :: cpool_to_frootmc                     (:) => null()    ! allocation to fine root C (gC/m2/s)
+
     real(r8), pointer :: cpool_to_frootc_storage             (:) => null()    ! allocation to fine root C storage (gC/m2/s)
     real(r8), pointer :: cpool_to_livestemc                  (:) => null()    ! allocation to live stem C (gC/m2/s)
     real(r8), pointer :: cpool_to_livestemc_storage          (:) => null()    ! allocation to live stem C storage (gC/m2/s)
@@ -560,9 +625,19 @@ module VegetationDataType
     real(r8), pointer :: cpool_leaf_gr                       (:) => null()    ! leaf growth respiration (gC/m2/s)
     real(r8), pointer :: cpool_leaf_storage_gr               (:) => null()    ! leaf growth respiration to storage (gC/m2/s)
     real(r8), pointer :: transfer_leaf_gr                    (:) => null()    ! leaf growth respiration from storage (gC/m2/s)
+    !TAM
     real(r8), pointer :: cpool_froot_gr                      (:) => null()    ! fine root growth respiration (gC/m2/s)
+    real(r8), pointer :: cpool_froott_gr                     (:) => null()    ! fine root growth respiration (gC/m2/s)
+    real(r8), pointer :: cpool_froota_gr                     (:) => null()    ! fine root growth respiration (gC/m2/s)
+    real(r8), pointer :: cpool_frootm_gr                     (:) => null()    ! fine root growth respiration (gC/m2/s)
+
     real(r8), pointer :: cpool_froot_storage_gr              (:) => null()    ! fine root  growth respiration to storage (gC/m2/s)
+    !TAM
     real(r8), pointer :: transfer_froot_gr                   (:) => null()    ! fine root  growth respiration from storage (gC/m2/s)
+    real(r8), pointer :: transfer_froott_gr                  (:) => null()    ! fine root  growth respiration from storage (gC/m2/s)
+    real(r8), pointer :: transfer_froota_gr                  (:) => null()    ! fine root  growth respiration from storage (gC/m2/s)
+    real(r8), pointer :: transfer_frootm_gr                  (:) => null()    ! fine root  growth respiration from storage (gC/m2/s)
+
     real(r8), pointer :: cpool_livestem_gr                   (:) => null()    ! live stem growth respiration (gC/m2/s)
     real(r8), pointer :: cpool_livestem_storage_gr           (:) => null()    ! live stem growth respiration to storage (gC/m2/s)
     real(r8), pointer :: transfer_livestem_gr                (:) => null()    ! live stem growth respiration from storage (gC/m2/s)
@@ -617,15 +692,28 @@ module VegetationDataType
     real(r8), pointer :: plant_calloc                        (:) => null()    ! total allocated C flux (gC/m2/s)
     real(r8), pointer :: excess_cflux                        (:) => null()    ! C flux not allocated due to downregulation (gC/m2/s)
     real(r8), pointer :: prev_leafc_to_litter                (:) => null()    ! previous timestep leaf C litterfall flux (gC/m2/s)
+    !TAM
     real(r8), pointer :: prev_frootc_to_litter               (:) => null()    ! previous timestep froot C litterfall flux (gC/m2/s)
+    real(r8), pointer :: prev_froottc_to_litter              (:) => null()    ! previous timestep froot C litterfall flux (gC/m2/s)
+    real(r8), pointer :: prev_frootac_to_litter              (:) => null()    ! previous timestep froot C litterfall flux (gC/m2/s)
+    real(r8), pointer :: prev_frootmc_to_litter              (:) => null()    ! previous timestep froot C litterfall flux (gC/m2/s)
+
     real(r8), pointer :: availc                              (:) => null()    ! C flux available for allocation (gC/m2/s)
     real(r8), pointer :: xsmrpool_recover                    (:) => null()    ! C flux assigned to recovery of negative cpool (gC/m2/s)
     real(r8), pointer :: xsmrpool_c13ratio                   (:) => null()    ! C13/C(12+13) ratio for xsmrpool (proportion)
     real(r8), pointer :: xsmrpool_turnover                   (:) => null()    ! xsmrpool flux to atmosphere due to turnover
 
     ! CN: CLAMP summary (diagnostic) variables, not involved in mass balance
+    !TAM
     real(r8), pointer :: frootc_alloc                        (:) => null()    ! (gC/m2/s) patch-level fine root C alloc
     real(r8), pointer :: frootc_loss                         (:) => null()    ! (gC/m2/s) patch-level fine root C loss
+    real(r8), pointer :: froottc_alloc                        (:) => null()    ! (gC/m2/s) patch-level fine root C alloc
+    real(r8), pointer :: froottc_loss                         (:) => null()    ! (gC/m2/s) patch-level fine root C loss
+    real(r8), pointer :: frootac_alloc                        (:) => null()    ! (gC/m2/s) patch-level fine root C alloc
+    real(r8), pointer :: frootac_loss                         (:) => null()    ! (gC/m2/s) patch-level fine root C loss
+    real(r8), pointer :: frootmc_alloc                        (:) => null()    ! (gC/m2/s) patch-level fine root C alloc
+    real(r8), pointer :: frootmc_loss                         (:) => null()    ! (gC/m2/s) patch-level fine root C loss
+
     real(r8), pointer :: leafc_alloc                         (:) => null()    ! (gC/m2/s) patch-level leaf C alloc
     real(r8), pointer :: leafc_loss                          (:) => null()    ! (gC/m2/s) patch-level leaf C loss
     real(r8), pointer :: woodc_alloc                         (:) => null()    ! (gC/m2/s) patch-level wood C alloc
@@ -652,9 +740,13 @@ module VegetationDataType
     real(r8), pointer :: annavg_bgnpp                        (:) => null()    ! (gC/m2/s) annual average belowground NPP
     real(r8), pointer :: tempavg_agnpp                       (:) => null()    ! (gC/m2/s) temp. average aboveground NPP
     real(r8), pointer :: tempavg_bgnpp                       (:) => null()    ! (gC/m2/s) temp. average belowground NPP
-    real(r8), pointer :: allocation_leaf 		                 (:) => null()    ! check allocation to leaf for dynamic allocation scheme
-    real(r8), pointer :: allocation_stem 		                 (:) => null()    ! check allocation to stem for dynamic allocation scheme
-    real(r8), pointer :: allocation_froot 		               (:) => null()    ! check allocation to fine root for dynamic allocation scheme
+    real(r8), pointer :: allocation_leaf 		           (:) => null()    ! check allocation to leaf for dynamic allocation scheme
+    real(r8), pointer :: allocation_stem 		           (:) => null()    ! check allocation to stem for dynamic allocation scheme
+    !TAM
+    real(r8), pointer :: allocation_froot 		           (:) => null()    ! check allocation to fine root for dynamic allocation scheme
+    real(r8), pointer :: allocation_froott 		           (:) => null()    ! check allocation to fine root for dynamic allocation scheme
+    real(r8), pointer :: allocation_froota 		           (:) => null()    ! check allocation to fine root for dynamic allocation scheme
+    real(r8), pointer :: allocation_frootm 		           (:) => null()    ! check allocation to fine root for dynamic allocation scheme
 
     ! For comparison with RAINFOR wood productivity data
     real(r8), pointer :: agwdnpp                             (:) => null()    !(gC/m2/s) aboveground NPP
@@ -675,7 +767,12 @@ module VegetationDataType
   type, public :: vegetation_nitrogen_flux
     ! gap mortality fluxes
     real(r8), pointer :: m_leafn_to_litter                   (:)   => null()  ! leaf N mortality (gN/m2/s)
+    !TAM
     real(r8), pointer :: m_frootn_to_litter                  (:)   => null()  ! fine root N mortality (gN/m2/s)
+    real(r8), pointer :: m_froottn_to_litter                  (:)   => null()  ! fine root N mortality (gN/m2/s)
+    real(r8), pointer :: m_frootan_to_litter                  (:)   => null()  ! fine root N mortality (gN/m2/s)
+    real(r8), pointer :: m_frootmn_to_litter                  (:)   => null()  ! fine root N mortality (gN/m2/s)
+
     real(r8), pointer :: m_leafn_storage_to_litter           (:)   => null()  ! leaf N storage mortality (gN/m2/s)
     real(r8), pointer :: m_frootn_storage_to_litter          (:)   => null()  ! fine root N storage mortality (gN/m2/s)
     real(r8), pointer :: m_livestemn_storage_to_litter       (:)   => null()  ! live stem N storage mortality (gN/m2/s)
@@ -696,7 +793,12 @@ module VegetationDataType
     real(r8), pointer :: m_npool_to_litter                   (:)   => null()  ! npool mortality (gN/m2/s)
     ! harvest fluxes
     real(r8), pointer :: hrv_leafn_to_litter                 (:)   => null()  ! leaf N harvest mortality (gN/m2/s)
+    !TAM
     real(r8), pointer :: hrv_frootn_to_litter                (:)   => null()  ! fine root N harvest mortality (gN/m2/s)
+    real(r8), pointer :: hrv_froottn_to_litter                (:)   => null()  ! fine root N harvest mortality (gN/m2/s)
+    real(r8), pointer :: hrv_frootan_to_litter                (:)   => null()  ! fine root N harvest mortality (gN/m2/s)
+    real(r8), pointer :: hrv_frootmn_to_litter                (:)   => null()  ! fine root N harvest mortality (gN/m2/s)
+    
     real(r8), pointer :: hrv_leafn_storage_to_litter         (:)   => null()  ! leaf N storage harvest mortality (gN/m2/s)
     real(r8), pointer :: hrv_frootn_storage_to_litter        (:)   => null()  ! fine root N storage harvest mortality (gN/m2/s)
     real(r8), pointer :: hrv_livestemn_storage_to_litter     (:)   => null()  ! live stem N storage harvest mortality (gN/m2/s)
@@ -731,7 +833,12 @@ module VegetationDataType
     real(r8), pointer :: m_deadstemn_to_fire                 (:)   => null()  ! (gN/m2/s) fire N emissions from deadstemn
     real(r8), pointer :: m_deadstemn_storage_to_fire         (:)   => null()  ! (gN/m2/s) fire N emissions from deadstemn_storage
     real(r8), pointer :: m_deadstemn_xfer_to_fire            (:)   => null()  ! (gN/m2/s) fire N emissions from deadstemn_xfer
+    !TAM
     real(r8), pointer :: m_frootn_to_fire                    (:)   => null()  ! (gN/m2/s) fire N emissions from frootn
+    real(r8), pointer :: m_froottn_to_fire                    (:)   => null()  ! (gN/m2/s) fire N emissions from frootn
+    real(r8), pointer :: m_frootan_to_fire                    (:)   => null()  ! (gN/m2/s) fire N emissions from frootn
+    real(r8), pointer :: m_frootmn_to_fire                    (:)   => null()  ! (gN/m2/s) fire N emissions from frootn
+
     real(r8), pointer :: m_frootn_storage_to_fire            (:)   => null()  ! (gN/m2/s) fire N emissions from frootn_storage
     real(r8), pointer :: m_frootn_xfer_to_fire               (:)   => null()  ! (gN/m2/s) fire N emissions from frootn_xfer
     real(r8), pointer :: m_livecrootn_to_fire                (:)   => null()  ! (gN/m2/s) fire N emissions from m_livecrootn_to_fire
@@ -752,7 +859,12 @@ module VegetationDataType
     real(r8), pointer :: m_deadstemn_to_litter_fire          (:)   => null()  ! (gN/m2/s) from deadstemn to litter N  due to fire
     real(r8), pointer :: m_deadstemn_storage_to_litter_fire  (:)   => null()  ! (gN/m2/s) from deadstemn_storage to litter N  due to fire
     real(r8), pointer :: m_deadstemn_xfer_to_litter_fire     (:)   => null()  ! (gN/m2/s) from deadstemn_xfer to litter N  due to fire
+    !TAM
     real(r8), pointer :: m_frootn_to_litter_fire             (:)   => null()  ! (gN/m2/s) from frootn to litter N  due to fire
+    real(r8), pointer :: m_froottn_to_litter_fire             (:)   => null()  ! (gN/m2/s) from frootn to litter N  due to fire
+    real(r8), pointer :: m_frootan_to_litter_fire             (:)   => null()  ! (gN/m2/s) from frootn to litter N  due to fire
+    real(r8), pointer :: m_frootmn_to_litter_fire             (:)   => null()  ! (gN/m2/s) from frootn to litter N  due to fire
+
     real(r8), pointer :: m_frootn_storage_to_litter_fire     (:)   => null()  ! (gN/m2/s) from frootn_storage to litter N  due to fire
     real(r8), pointer :: m_frootn_xfer_to_litter_fire        (:)   => null()  ! (gN/m2/s) from frootn_xfer to litter N  due to fire
     real(r8), pointer :: m_livecrootn_to_litter_fire         (:)   => null()  ! (gN/m2/s) from livecrootn to litter N  due to fire
@@ -778,8 +890,17 @@ module VegetationDataType
     real(r8), pointer :: grainn_to_food                      (:)   => null()  ! grain N to food for prognostic crop (gN/m2/s)
     real(r8), pointer :: leafn_to_litter                     (:)   => null()  ! leaf N litterfall (gN/m2/s)
     real(r8), pointer :: leafn_to_retransn                   (:)   => null()  ! leaf N to retranslocated N pool (gN/m2/s)
+    !TAM
     real(r8), pointer :: frootn_to_retransn                  (:)   => null()  ! fine root N to retranslocated N pool (gN/m2/s)
+    real(r8), pointer :: froottn_to_retransn                  (:)   => null()  ! fine root N to retranslocated N pool (gN/m2/s)
+    real(r8), pointer :: frootan_to_retransn                  (:)   => null()  ! fine root N to retranslocated N pool (gN/m2/s)
+    real(r8), pointer :: frootmn_to_retransn                  (:)   => null()  ! fine root N to retranslocated N pool (gN/m2/s)
+
     real(r8), pointer :: frootn_to_litter                    (:)   => null()  ! fine root N litterfall (gN/m2/s)
+    real(r8), pointer :: froottn_to_litter                    (:)   => null()  ! fine root N litterfall (gN/m2/s)
+    real(r8), pointer :: frootan_to_litter                    (:)   => null()  ! fine root N litterfall (gN/m2/s)
+    real(r8), pointer :: frootmn_to_litter                    (:)   => null()  ! fine root N litterfall (gN/m2/s)
+
     real(r8), pointer :: livecrootn_to_litter                (:)   => null()  ! live coarse root N litterfall (gN/m2/s)
     ! allocation fluxes
     real(r8), pointer :: retransn_to_npool                   (:)   => null()  ! deployment of retranslocated N (gN/m2/s)
@@ -790,7 +911,12 @@ module VegetationDataType
     real(r8), pointer :: npool_to_grainn_storage             (:)   => null()  ! allocation to grain N storage for prognostic crop (gN/m2/s)
     real(r8), pointer :: npool_to_leafn                      (:)   => null()  ! allocation to leaf N (gN/m2/s)
     real(r8), pointer :: npool_to_leafn_storage              (:)   => null()  ! allocation to leaf N storage (gN/m2/s)
+    !TAM
     real(r8), pointer :: npool_to_frootn                     (:)   => null()  ! allocation to fine root N (gN/m2/s)
+    real(r8), pointer :: npool_to_froottn                     (:)   => null()  ! allocation to fine root N (gN/m2/s)
+    real(r8), pointer :: npool_to_frootan                     (:)   => null()  ! allocation to fine root N (gN/m2/s)
+    real(r8), pointer :: npool_to_frootmn                     (:)   => null()  ! allocation to fine root N (gN/m2/s)
+
     real(r8), pointer :: npool_to_frootn_storage             (:)   => null()  ! allocation to fine root N storage (gN/m2/s)
     real(r8), pointer :: npool_to_livestemn                  (:)   => null()  ! allocation to live stem N (gN/m2/s)
     real(r8), pointer :: npool_to_livestemn_storage          (:)   => null()  ! allocation to live stem N storage (gN/m2/s)
@@ -843,7 +969,12 @@ module VegetationDataType
     real(r8), pointer :: plant_no3demand_vr                  (:,:) => null()  ! pft-level plant NO3 demand BGC mode
     real(r8), pointer :: plant_ndemand_vr                    (:,:) => null()  ! pft-level plant N demand CN mode
     real(r8), pointer :: prev_leafn_to_litter                (:)   => null()  ! previous timestep leaf N litterfall flux (gN/m2/s)
+    !TAM
     real(r8), pointer :: prev_frootn_to_litter               (:)   => null()  ! previous timestep froot N litterfall flux (gN/m2/s)
+    real(r8), pointer :: prev_froottn_to_litter               (:)   => null()  ! previous timestep froot N litterfall flux (gN/m2/s)
+    real(r8), pointer :: prev_frootan_to_litter               (:)   => null()  ! previous timestep froot N litterfall flux (gN/m2/s)
+    real(r8), pointer :: prev_frootmn_to_litter               (:)   => null()  ! previous timestep froot N litterfall flux (gN/m2/s)
+
     real(r8), pointer :: supplement_to_plantn                (:)   => null()  ! supplementary N flux for plant
     real(r8), pointer :: gap_nloss_litter                    (:)   => null()  ! total nloss from veg to litter pool due to gap mortality
     real(r8), pointer :: fire_nloss_litter                   (:)   => null()  ! total nloss from veg to litter pool due to fire
@@ -862,7 +993,12 @@ module VegetationDataType
   !-----------------------------------------------------------------------
   type, public :: vegetation_phosphorus_flux
     real(r8), pointer :: m_leafp_to_litter                   (:)     ! leaf P mortality (gP/m2/s)
+    !TAM
     real(r8), pointer :: m_frootp_to_litter                  (:)     ! fine root P mortality (gP/m2/s)
+    real(r8), pointer :: m_froottp_to_litter                  (:)     ! fine root P mortality (gP/m2/s)
+    real(r8), pointer :: m_frootap_to_litter                  (:)     ! fine root P mortality (gP/m2/s)
+    real(r8), pointer :: m_frootmp_to_litter                  (:)     ! fine root P mortality (gP/m2/s)
+
     real(r8), pointer :: m_leafp_storage_to_litter           (:)     ! leaf P storage mortality (gP/m2/s)
     real(r8), pointer :: m_frootp_storage_to_litter          (:)     ! fine root P storage mortality (gP/m2/s)
     real(r8), pointer :: m_livestemp_storage_to_litter       (:)     ! live stem P storage mortality (gP/m2/s)
@@ -882,7 +1018,12 @@ module VegetationDataType
     real(r8), pointer :: m_retransp_to_litter                (:)     ! retranslocated P pool mortality (gP/m2/s)
     real(r8), pointer :: m_ppool_to_litter                   (:)     ! storage P pool mortality (gP/m2/s)
     real(r8), pointer :: hrv_leafp_to_litter                 (:)     ! leaf P harvest mortality (gP/m2/s)
+    !TAM  
     real(r8), pointer :: hrv_frootp_to_litter                (:)     ! fine root P harvest mortality (gP/m2/s)
+    real(r8), pointer :: hrv_froottp_to_litter                (:)     ! fine root P harvest mortality (gP/m2/s)
+    real(r8), pointer :: hrv_frootap_to_litter                (:)     ! fine root P harvest mortality (gP/m2/s)
+    real(r8), pointer :: hrv_frootmp_to_litter                (:)     ! fine root P harvest mortality (gP/m2/s)
+
     real(r8), pointer :: hrv_leafp_storage_to_litter         (:)     ! leaf P storage harvest mortality (gP/m2/s)
     real(r8), pointer :: hrv_frootp_storage_to_litter        (:)     ! fine root P storage harvest mortality (gP/m2/s)
     real(r8), pointer :: hrv_livestemp_storage_to_litter     (:)     ! live stem P storage harvest mortality (gP/m2/s)
@@ -915,7 +1056,12 @@ module VegetationDataType
     real(r8), pointer :: m_deadstemp_to_fire                 (:)     ! (gP/m2/s) fire P emissions from deadstemp
     real(r8), pointer :: m_deadstemp_storage_to_fire         (:)     ! (gP/m2/s) fire P emissions from deadstemp_storage
     real(r8), pointer :: m_deadstemp_xfer_to_fire            (:)     ! (gP/m2/s) fire P emissions from deadstemp_xfer
+    !TAM
     real(r8), pointer :: m_frootp_to_fire                    (:)     ! (gP/m2/s) fire P emissions from frootp
+    real(r8), pointer :: m_froottp_to_fire                    (:)     ! (gP/m2/s) fire P emissions from frootp
+    real(r8), pointer :: m_frootap_to_fire                    (:)     ! (gP/m2/s) fire P emissions from frootp
+    real(r8), pointer :: m_frootmp_to_fire                    (:)     ! (gP/m2/s) fire P emissions from frootp
+
     real(r8), pointer :: m_frootp_storage_to_fire            (:)     ! (gP/m2/s) fire P emissions from frootp_storage
     real(r8), pointer :: m_frootp_xfer_to_fire               (:)     ! (gP/m2/s) fire P emissions from frootp_xfer
     real(r8), pointer :: m_livecrootp_to_fire                (:)     ! (gP/m2/s) fire P emissions from m_livecrootp_to_fire
@@ -936,7 +1082,12 @@ module VegetationDataType
     real(r8), pointer :: m_deadstemp_to_litter_fire          (:)     ! (gP/m2/s) from deadstemp to litter P  due to fire
     real(r8), pointer :: m_deadstemp_storage_to_litter_fire  (:)     ! (gP/m2/s) from deadstemp_storage to litter P  due to fire
     real(r8), pointer :: m_deadstemp_xfer_to_litter_fire     (:)     ! (gP/m2/s) from deadstemp_xfer to litter P  due to fire
+    !TAM 
     real(r8), pointer :: m_frootp_to_litter_fire             (:)     ! (gP/m2/s) from frootp to litter P  due to fire
+    real(r8), pointer :: m_froottp_to_litter_fire             (:)     ! (gP/m2/s) from frootp to litter P  due to fire
+    real(r8), pointer :: m_frootap_to_litter_fire             (:)     ! (gP/m2/s) from frootp to litter P  due to fire
+    real(r8), pointer :: m_frootmp_to_litter_fire             (:)     ! (gP/m2/s) from frootp to litter P  due to fire
+
     real(r8), pointer :: m_frootp_storage_to_litter_fire     (:)     ! (gP/m2/s) from frootp_storage to litter P  due to fire
     real(r8), pointer :: m_frootp_xfer_to_litter_fire        (:)     ! (gP/m2/s) from frootp_xfer to litter P  due to fire
     real(r8), pointer :: m_livecrootp_to_litter_fire         (:)     ! (gP/m2/s) from livecrootp to litter P  due to fire
@@ -960,8 +1111,16 @@ module VegetationDataType
     real(r8), pointer :: grainp_to_food                      (:)     ! grain P to food for prognostic crop (gP/m2/s)
     real(r8), pointer :: leafp_to_litter                     (:)     ! leaf P litterfall (gP/m2/s)
     real(r8), pointer :: leafp_to_retransp                   (:)     ! leaf P to retranslocated P pool (gP/m2/s)
+    !TAM
     real(r8), pointer :: frootp_to_retransp                  (:)     ! fine root P to retranslocated P pool (gP/m2/s)
+    real(r8), pointer :: froottp_to_retransp                  (:)     ! fine root P to retranslocated P pool (gP/m2/s)
+    real(r8), pointer :: frootap_to_retransp                  (:)     ! fine root P to retranslocated P pool (gP/m2/s)
+    real(r8), pointer :: frootmp_to_retransp                  (:)     ! fine root P to retranslocated P pool (gP/m2/s)
     real(r8), pointer :: frootp_to_litter                    (:)     ! fine root P litterfall (gP/m2/s)
+    real(r8), pointer :: froottp_to_litter                    (:)     ! fine root P litterfall (gP/m2/s)
+    real(r8), pointer :: frootap_to_litter                    (:)     ! fine root P litterfall (gP/m2/s)
+    real(r8), pointer :: frootmp_to_litter                    (:)     ! fine root P litterfall (gP/m2/s)
+
     real(r8), pointer :: livecrootp_to_litter                (:)     ! live coarse root P litterfall (gP/m2/s)
     real(r8), pointer :: retransp_to_ppool                   (:)     ! deployment of retranslocated P (gP/m2/s)
     real(r8), pointer :: sminp_to_ppool                      (:)     ! deployment of soil mineral P uptake (gP/m2/s)
@@ -969,7 +1128,12 @@ module VegetationDataType
     real(r8), pointer :: ppool_to_grainp_storage             (:)     ! allocation to grain P storage for prognostic crop (gP/m2/s)
     real(r8), pointer :: ppool_to_leafp                      (:)     ! allocation to leaf P (gP/m2/s)
     real(r8), pointer :: ppool_to_leafp_storage              (:)     ! allocation to leaf P storage (gP/m2/s)
+    !TAM
     real(r8), pointer :: ppool_to_frootp                     (:)     ! allocation to fine root P (gP/m2/s)
+    real(r8), pointer :: ppool_to_froottp                     (:)     ! allocation to fine root P (gP/m2/s)
+    real(r8), pointer :: ppool_to_frootap                     (:)     ! allocation to fine root P (gP/m2/s)
+    real(r8), pointer :: ppool_to_frootmp                     (:)     ! allocation to fine root P (gP/m2/s)
+
     real(r8), pointer :: ppool_to_frootp_storage             (:)     ! allocation to fine root P storage (gP/m2/s)
     real(r8), pointer :: ppool_to_livestemp                  (:)     ! allocation to live stem P (gP/m2/s)
     real(r8), pointer :: ppool_to_livestemp_storage          (:)     ! allocation to live stem P storage (gP/m2/s)
@@ -1010,7 +1174,12 @@ module VegetationDataType
     real(r8), pointer :: sminp_to_plant_trans                (:)     ! plant p uptake through transpiration flow
     real(r8), pointer :: plant_pdemand_vr                    (:,:)   ! plant P demand
     real(r8), pointer :: prev_leafp_to_litter                (:)     ! previous timestep leaf P litterfall flux (gP/m2/s)
+    !TAM 
     real(r8), pointer :: prev_frootp_to_litter               (:)     ! previous timestep froot P litterfall flux (gP/m2/s)
+    real(r8), pointer :: prev_froottp_to_litter              (:)     ! previous timestep froot P litterfall flux (gP/m2/s)
+    real(r8), pointer :: prev_frootap_to_litter              (:)     ! previous timestep froot P litterfall flux (gP/m2/s)
+    real(r8), pointer :: prev_frootmp_to_litter              (:)     ! previous timestep froot P litterfall flux (gP/m2/s)
+
     real(r8), pointer :: supplement_to_plantp                (:)     ! supplementary P flux for plant
     real(r8), pointer :: gap_ploss_litter                    (:)     ! total ploss from veg to litter pool due to gap mortality
     real(r8), pointer :: fire_ploss_litter                   (:)     ! total ploss from veg to litter pool due to fire
@@ -1954,7 +2123,12 @@ module VegetationDataType
        allocate(this%leafc              (begp :endp))   ;  this%leafc              (:)   = spval
        allocate(this%leafc_storage      (begp :endp))   ;  this%leafc_storage      (:)   = spval
        allocate(this%leafc_xfer         (begp :endp))   ;  this%leafc_xfer         (:)   = spval
+       !TAM
        allocate(this%frootc             (begp :endp))   ;  this%frootc             (:)   = spval
+       allocate(this%froottc            (begp :endp))   ;  this%frootc             (:)   = spval
+       allocate(this%frootac            (begp :endp))   ;  this%frootc             (:)   = spval
+       allocate(this%frootmc            (begp :endp))   ;  this%frootc             (:)   = spval
+     
        allocate(this%frootc_storage     (begp :endp))   ;  this%frootc_storage     (:)   = spval
        allocate(this%frootc_xfer        (begp :endp))   ;  this%frootc_xfer        (:)   = spval
        allocate(this%livestemc          (begp :endp))   ;  this%livestemc          (:)   = spval
@@ -1999,7 +2173,7 @@ module VegetationDataType
     if (use_fates) then
        ! no veg-level carbon state history fields defined by host model
 
-    else if (carbon_type == 'c12') then
+    else if ( carbon_type == 'c12' ) then
        this%leafc(begp:endp) = spval
        call hist_addfld1d (fname='LEAFC', units='gC/m^2', &
              avgflag='A', long_name='leaf C', &
@@ -2014,11 +2188,26 @@ module VegetationDataType
        call hist_addfld1d (fname='LEAFC_XFER', units='gC/m^2', &
              avgflag='A', long_name='leaf C transfer', &
              ptr_patch=this%leafc_xfer, default='inactive')
-
+       !TAM
        this%frootc(begp:endp) = spval
        call hist_addfld1d (fname='FROOTC', units='gC/m^2', &
              avgflag='A', long_name='fine root C', &
              ptr_patch=this%frootc)
+
+       this%froottc(begp:endp) = spval
+       call hist_addfld1d (fname='FROOTTC', units='gC/m^2', &
+             avgflag='A', long_name='fine root T C', &
+             ptr_patch=this%froottc)
+
+       this%frootac(begp:endp) = spval
+       call hist_addfld1d (fname='FROOTAC', units='gC/m^2', &
+             avgflag='A', long_name='fine root A C', &
+             ptr_patch=this%frootac)
+
+       this%frootmc(begp:endp) = spval
+       call hist_addfld1d (fname='FROOTMC', units='gC/m^2', &
+             avgflag='A', long_name='fine root M C', &
+             ptr_patch=this%frootmc)        
 
        this%frootc_storage(begp:endp) = spval
        call hist_addfld1d (fname='FROOTC_STORAGE', units='gC/m^2', &
@@ -2179,7 +2368,7 @@ module VegetationDataType
        call hist_addfld1d (fname='C13_LEAFC_XFER', units='gC13/m^2', &
              avgflag='A', long_name='C13 leaf C transfer', &
              ptr_patch=this%leafc_xfer, default='inactive')
-
+       !TAM
        this%frootc(begp:endp) = spval
        call hist_addfld1d (fname='C13_FROOTC', units='gC13/m^2', &
              avgflag='A', long_name='C13 fine root C', &
@@ -2329,7 +2518,7 @@ module VegetationDataType
        call hist_addfld1d (fname='C14_LEAFC_XFER', units='gC14/m^2', &
              avgflag='A', long_name='C14 leaf C transfer', &
              ptr_patch=this%leafc_xfer, default='inactive')
-
+       !TAM
        this%frootc(begp:endp) = spval
        call hist_addfld1d (fname='C14_FROOTC', units='gC14/m^2', &
              avgflag='A', long_name='C14 fine root C', &
@@ -2496,8 +2685,12 @@ module VegetationDataType
                 end if
              end if
              this%leafc_xfer(p) = 0._r8
-
+             !TAM
              this%frootc(p)            = 0._r8
+             this%froottc(p)           = 0._r8
+             this%frootac(p)           = 0._r8
+             this%frootmc(p)           = 0._r8
+
              this%frootc_storage(p)    = 0._r8
              this%frootc_xfer(p)       = 0._r8
 
@@ -2558,12 +2751,11 @@ module VegetationDataType
              this%cropseedc_deficit(p) = 0._r8
              ! calculate totvegc explicitly so that it is available for the isotope
              ! code on the first time step.
-
+             !TAM
              this%totvegc(p) = &
                   this%leafc(p)              + &
                   this%leafc_storage(p)      + &
                   this%leafc_xfer(p)         + &
-                  this%frootc(p)             + &
                   this%frootc_storage(p)     + &
                   this%frootc_xfer(p)        + &
                   this%livestemc(p)          + &
@@ -2581,11 +2773,21 @@ module VegetationDataType
                   this%gresp_storage(p)      + &
                   this%gresp_xfer(p)         + &
                   this%cpool(p)
-
+#if defined (TAM)
+             this%totvegc(p) = &
+                  this%totvegc(p)            + &
+                  this%froottc(p)            + &
+                  this%frootac(p)            + &
+                  this%frootmc(p)
+#else
+             this%totvegc(p) = &
+                  this%totvegc(p)            + & 
+                  this%frootc(p)
+#endif
              if ( crop_prog )then
                 this%totvegc(p) =  this%totvegc(p) + &
-                     this%grainc(p)                            + &
-                     this%grainc_storage(p)                    + &
+                     this%grainc(p)                + &
+                     this%grainc_storage(p)        + &
                      this%grainc_xfer(p)
              end if
           endif ! is soil or crop
@@ -2608,7 +2810,12 @@ module VegetationDataType
           this%leafc(p)                = value_veg
           this%leafc_storage(p)        = value_veg
           this%leafc_xfer(p)           = value_veg
+          !TAM
           this%frootc(p)               = value_veg
+          this%froottc(p)              = value_veg
+          this%frootac(p)              = value_veg
+          this%frootmc(p)              = value_veg
+
           this%frootc_storage(p)       = value_veg
           this%frootc_xfer(p)          = value_veg
           this%livestemc(p)            = value_veg
@@ -2704,10 +2911,22 @@ module VegetationDataType
           call restartvar(ncid=ncid, flag=flag, varname='leafc_xfer', xtype=ncd_double,  &
                dim1name='pft', long_name='', units='', &
                interpinic_flag='interp', readvar=readvar, data=this%leafc_xfer)
-
+          !TAM
           call restartvar(ncid=ncid, flag=flag, varname='frootc', xtype=ncd_double,  &
                dim1name='pft', long_name='', units='', &
                interpinic_flag='interp', readvar=readvar, data=this%frootc)
+
+          call restartvar(ncid=ncid, flag=flag, varname='froottc', xtype=ncd_double,  &
+               dim1name='pft', long_name='', units='', &
+               interpinic_flag='interp', readvar=readvar, data=this%froottc)
+
+          call restartvar(ncid=ncid, flag=flag, varname='frootac', xtype=ncd_double,  &
+               dim1name='pft', long_name='', units='', &
+               interpinic_flag='interp', readvar=readvar, data=this%frootac)
+
+          call restartvar(ncid=ncid, flag=flag, varname='frootmc', xtype=ncd_double,  &
+               dim1name='pft', long_name='', units='', &
+               interpinic_flag='interp', readvar=readvar, data=this%frootmc)
 
           call restartvar(ncid=ncid, flag=flag, varname='frootc_storage', xtype=ncd_double,  &
                dim1name='pft', long_name='', units='', &
@@ -2885,7 +3104,7 @@ module VegetationDataType
                 endif
              end do
           end if
-
+          !TAM
           call restartvar(ncid=ncid, flag=flag, varname='frootc_13', xtype=ncd_double,  &
                dim1name='pft', long_name='', units='', &
                interpinic_flag='interp', readvar=readvar, data=this%frootc)
@@ -3226,7 +3445,7 @@ module VegetationDataType
                 endif
              end do
           end if
-
+          !TAM
           call restartvar(ncid=ncid, flag=flag, varname='frootc_14', xtype=ncd_double,  &
                dim1name='pft', long_name='', units='', &
                interpinic_flag='interp', readvar=readvar, data=this%frootc)
@@ -3593,7 +3812,17 @@ module VegetationDataType
             this%deadstemc(p)  + &
             this%livecrootc(p) + &
             this%deadcrootc(p)
-
+#if defined (TAM)
+       this%dispvegc(p) =        &
+            this%dispvegc(p)   + &
+            this%froottc(p)    + &
+            this%frootac(p)     + &
+            this%frootmc(p)     
+#else
+        this%dispvegc(p) =        &
+             this%dispvegc(p)   + &
+             this%frootc(p)
+#endif
        ! stored vegetation carbon, excluding cpool (STORVEGC)
        this%storvegc(p) =                &
             this%cpool(p)              + &
@@ -3725,7 +3954,12 @@ module VegetationDataType
     allocate(this%leafn                  (begp:endp))           ; this%leafn               (:)   = spval
     allocate(this%leafn_storage          (begp:endp))           ; this%leafn_storage       (:)   = spval
     allocate(this%leafn_xfer             (begp:endp))           ; this%leafn_xfer          (:)   = spval
+    !TAM
     allocate(this%frootn                 (begp:endp))           ; this%frootn              (:)   = spval
+    allocate(this%froottn                (begp:endp))           ; this%froottn              (:)   = spval
+    allocate(this%frootan                (begp:endp))           ; this%frootan              (:)   = spval
+    allocate(this%frootmn                (begp:endp))           ; this%frootmn              (:)   = spval
+
     allocate(this%frootn_storage         (begp:endp))           ; this%frootn_storage      (:)   = spval
     allocate(this%frootn_xfer            (begp:endp))           ; this%frootn_xfer         (:)   = spval
     allocate(this%livestemn              (begp:endp))           ; this%livestemn           (:)   = spval
@@ -3821,11 +4055,26 @@ module VegetationDataType
     call hist_addfld1d (fname='LEAFN_XFER', units='gN/m^2', &
          avgflag='A', long_name='leaf N transfer', &
          ptr_patch=this%leafn_xfer, default='inactive')
-
+    !TAM
     this%frootn(begp:endp) = spval
     call hist_addfld1d (fname='FROOTN', units='gN/m^2', &
          avgflag='A', long_name='fine root N', &
          ptr_patch=this%frootn)
+
+    this%froottn(begp:endp) = spval
+    call hist_addfld1d (fname='FROOTTN', units='gN/m^2', &
+         avgflag='A', long_name='fine root T N', &
+         ptr_patch=this%froottn)
+
+    this%frootan(begp:endp) = spval
+    call hist_addfld1d (fname='FROOTAN', units='gN/m^2', &
+         avgflag='A', long_name='fine root A N', &
+         ptr_patch=this%frootn)
+
+    this%frootmn(begp:endp) = spval
+    call hist_addfld1d (fname='FROOTMN', units='gN/m^2', &
+         avgflag='A', long_name='fine root M N', &
+         ptr_patch=this%frootmn)
 
     this%frootn_storage(begp:endp) = spval
     call hist_addfld1d (fname='FROOTN_STORAGE', units='gN/m^2', &
@@ -3967,7 +4216,12 @@ module VegetationDataType
              this%grainn_xfer(p)       = 0._r8
           end if
           this%cropseedn_deficit(p) = 0._r8
+          !TAM
           this%frootn(p)            = 0._r8
+          this%froottn(p)            = 0._r8
+          this%frootan(p)            = 0._r8
+          this%frootmn(p)            = 0._r8
+
           this%frootn_storage(p)    = 0._r8
           this%frootn_xfer(p)       = 0._r8
           this%livestemn(p)         = 0._r8
@@ -4066,7 +4320,7 @@ module VegetationDataType
     call restartvar(ncid=ncid, flag=flag, varname='leafn_xfer', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%leafn_xfer)
-
+    !TAM
     call restartvar(ncid=ncid, flag=flag, varname='frootn', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%frootn)
@@ -4266,12 +4520,22 @@ module VegetationDataType
        ! displayed vegetation nitrogen, excluding storage (DISPVEGN)
        this%dispvegn(p) = &
             this%leafn(p)      + &
-            this%frootn(p)     + &
+            !this%frootn(p)     + &
             this%livestemn(p)  + &
             this%deadstemn(p)  + &
             this%livecrootn(p) + &
             this%deadcrootn(p)
-
+#if defined (TAM)
+       this%dispvegn(p) = &
+            this%dispvegn(p) + &
+               this%froottn(p) + &
+               this%frootan(p) + &
+               this%frootmn(p)
+#else
+       this%dispvegn(p) = &
+            this%dispvegn(p) + &
+            this%frootn(p)
+#endif
       ! stored vegetation nitrogen, including retranslocated N pool (STORVEGN)
       this%storvegn(p) = &
            this%leafn_storage(p)      + &
@@ -4353,7 +4617,12 @@ module VegetationDataType
        this%leafn(i)              = value_veg
        this%leafn_storage(i)      = value_veg
        this%leafn_xfer(i)         = value_veg
+       !TAM
        this%frootn(i)             = value_veg
+       this%froottn(i)             = value_veg
+       this%frootan(i)             = value_veg
+       this%frootmn(i)             = value_veg
+
        this%frootn_storage(i)     = value_veg
        this%frootn_xfer(i)        = value_veg
        this%livestemn(i)          = value_veg
@@ -4446,7 +4715,12 @@ module VegetationDataType
     allocate(this%leafp              (begp:endp)) ; this%leafp              (:) = spval
     allocate(this%leafp_storage      (begp:endp)) ; this%leafp_storage      (:) = spval
     allocate(this%leafp_xfer         (begp:endp)) ; this%leafp_xfer         (:) = spval
+    !TAM
     allocate(this%frootp             (begp:endp)) ; this%frootp             (:) = spval
+    allocate(this%froottp             (begp:endp)) ; this%froottp             (:) = spval
+    allocate(this%frootap             (begp:endp)) ; this%frootap             (:) = spval
+    allocate(this%frootmp             (begp:endp)) ; this%frootmp             (:) = spval
+
     allocate(this%frootp_storage     (begp:endp)) ; this%frootp_storage     (:) = spval
     allocate(this%frootp_xfer        (begp:endp)) ; this%frootp_xfer        (:) = spval
     allocate(this%livestemp          (begp:endp)) ; this%livestemp          (:) = spval
@@ -4503,11 +4777,26 @@ module VegetationDataType
     call hist_addfld1d (fname='LEAFP_XFER', units='gP/m^2', &
          avgflag='A', long_name='leaf P transfer', &
          ptr_patch=this%leafp_xfer, default='inactive')
-
+    !TAM
     this%frootp(begp:endp) = spval
     call hist_addfld1d (fname='FROOTP', units='gP/m^2', &
          avgflag='A', long_name='fine root P', &
          ptr_patch=this%frootp)
+
+     this%froottp(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTTP', units='gP/m^2', &
+          avgflag='A', long_name='fine root T P', &
+          ptr_patch=this%froottp)
+              
+     this%frootap(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTAP', units='gP/m^2', &
+         avgflag='A', long_name='fine root A P', &
+         ptr_patch=this%frootap)
+
+     this%frootmp(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTMP', units='gP/m^2', &
+         avgflag='A', long_name='fine root M P', &
+         ptr_patch=this%frootmp)
 
     this%frootp_storage(begp:endp) = spval
     call hist_addfld1d (fname='FROOTP_STORAGE', units='gP/m^2', &
@@ -4651,7 +4940,12 @@ module VegetationDataType
              this%grainp_xfer(p)       = 0._r8
           end if
           this%cropseedp_deficit(p) = 0._r8
+          !TAM
           this%frootp(p)            = 0._r8
+          this%froottp(p)            = 0._r8
+          this%frootap(p)            = 0._r8
+          this%frootmp(p)            = 0._r8
+
           this%frootp_storage(p)    = 0._r8
           this%frootp_xfer(p)       = 0._r8
           this%livestemp(p)         = 0._r8
@@ -4746,10 +5040,22 @@ module VegetationDataType
     call restartvar(ncid=ncid, flag=flag, varname='leafp_xfer', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%leafp_xfer)
-
+    !TAM
     call restartvar(ncid=ncid, flag=flag, varname='frootp', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%frootp)
+
+     call restartvar(ncid=ncid, flag=flag, varname='froottp', xtype=ncd_double,  &
+         dim1name='pft', long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%froottp)
+
+     call restartvar(ncid=ncid, flag=flag, varname='frootap', xtype=ncd_double,  &
+         dim1name='pft', long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%frootap)
+
+     call restartvar(ncid=ncid, flag=flag, varname='frootmp', xtype=ncd_double,  &
+         dim1name='pft', long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%frootmp)
 
     call restartvar(ncid=ncid, flag=flag, varname='frootp_storage', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
@@ -4925,7 +5231,12 @@ module VegetationDataType
        this%leafp(i)              = value_patch
        this%leafp_storage(i)      = value_patch
        this%leafp_xfer(i)         = value_patch
+       !TAM
        this%frootp(i)             = value_patch
+       this%froottp(i)            = value_patch
+       this%frootap(i)            = value_patch
+       this%frootmp(i)            = value_patch
+
        this%frootp_storage(i)     = value_patch
        this%frootp_xfer(i)        = value_patch
        this%livestemp(i)          = value_patch
@@ -5019,7 +5330,17 @@ module VegetationDataType
             this%deadstemp(p)  + &
             this%livecrootp(p) + &
             this%deadcrootp(p)
-
+#if defined (TAM)
+       this%dispvegp(p) = &
+            this%dispvegp(p) + &
+            this%froottp(p)     + &
+            this%frootap(p)     + &
+            this%frootmp(p)
+#else
+       this%dispvegp(p) = &
+            this%dispvegp(p) + &
+            this%frootp(p)
+#endif
       ! stored vegetation phosphorus, including retranslocated N pool (STORVEGN)
       this%storvegp(p) = &
            this%leafp_storage(p)      + &
@@ -5705,11 +6026,17 @@ module VegetationDataType
     !-----------------------------------------------------------------------
     ! allocate for each member of veg_cf
     !-----------------------------------------------------------------------
+    !TAM
     if (.not. use_fates) then
        allocate(this%m_leafc_to_litter                   (begp:endp)) ;    this%m_leafc_to_litter                    (:) = spval
        allocate(this%m_leafc_storage_to_litter           (begp:endp)) ;    this%m_leafc_storage_to_litter            (:) = spval
        allocate(this%m_leafc_xfer_to_litter              (begp:endp)) ;    this%m_leafc_xfer_to_litter               (:) = spval
+       !TAM
        allocate(this%m_frootc_to_litter                  (begp:endp)) ;    this%m_frootc_to_litter                   (:) = spval
+       allocate(this%m_froottc_to_litter                 (begp:endp)) ;    this%m_froottc_to_litter                  (:) = spval
+       allocate(this%m_frootac_to_litter                 (begp:endp)) ;    this%m_frootac_to_litter                  (:) = spval
+       allocate(this%m_frootmc_to_litter                 (begp:endp)) ;    this%m_frootmc_to_litter                  (:) = spval
+       
        allocate(this%m_frootc_storage_to_litter          (begp:endp)) ;    this%m_frootc_storage_to_litter           (:) = spval
        allocate(this%m_frootc_xfer_to_litter             (begp:endp)) ;    this%m_frootc_xfer_to_litter              (:) = spval
        allocate(this%m_livestemc_to_litter               (begp:endp)) ;    this%m_livestemc_to_litter                (:) = spval
@@ -5730,7 +6057,12 @@ module VegetationDataType
        allocate(this%hrv_leafc_to_litter                 (begp:endp)) ;    this%hrv_leafc_to_litter                  (:) = spval
        allocate(this%hrv_leafc_storage_to_litter         (begp:endp)) ;    this%hrv_leafc_storage_to_litter          (:) = spval
        allocate(this%hrv_leafc_xfer_to_litter            (begp:endp)) ;    this%hrv_leafc_xfer_to_litter             (:) = spval
+       !TAM
        allocate(this%hrv_frootc_to_litter                (begp:endp)) ;    this%hrv_frootc_to_litter                 (:) = spval
+       allocate(this%hrv_froottc_to_litter                (begp:endp)) ;    this%hrv_froottc_to_litter                 (:) = spval
+       allocate(this%hrv_frootac_to_litter                (begp:endp)) ;    this%hrv_frootac_to_litter                 (:) = spval
+       allocate(this%hrv_frootmc_to_litter                (begp:endp)) ;    this%hrv_frootmc_to_litter                 (:) = spval
+       
        allocate(this%hrv_frootc_storage_to_litter        (begp:endp)) ;    this%hrv_frootc_storage_to_litter         (:) = spval
        allocate(this%hrv_frootc_xfer_to_litter           (begp:endp)) ;    this%hrv_frootc_xfer_to_litter            (:) = spval
        allocate(this%hrv_livestemc_to_litter             (begp:endp)) ;    this%hrv_livestemc_to_litter              (:) = spval
@@ -5763,7 +6095,12 @@ module VegetationDataType
        allocate(this%m_deadstemc_to_fire                 (begp:endp)) ;    this%m_deadstemc_to_fire                  (:) = spval
        allocate(this%m_deadstemc_storage_to_fire         (begp:endp)) ;    this%m_deadstemc_storage_to_fire          (:) = spval
        allocate(this%m_deadstemc_xfer_to_fire            (begp:endp)) ;    this%m_deadstemc_xfer_to_fire             (:) = spval
+       !TAM
        allocate(this%m_frootc_to_fire                    (begp:endp)) ;    this%m_frootc_to_fire                     (:) = spval
+       allocate(this%m_froottc_to_fire                    (begp:endp)) ;    this%m_froottc_to_fire                     (:) = spval
+       allocate(this%m_frootac_to_fire                    (begp:endp)) ;    this%m_frootac_to_fire                     (:) = spval
+       allocate(this%m_frootmc_to_fire                    (begp:endp)) ;    this%m_frootmc_to_fire                     (:) = spval
+
        allocate(this%m_frootc_storage_to_fire            (begp:endp)) ;    this%m_frootc_storage_to_fire             (:) = spval
        allocate(this%m_frootc_xfer_to_fire               (begp:endp)) ;    this%m_frootc_xfer_to_fire                (:) = spval
        allocate(this%m_livecrootc_to_fire                (begp:endp)) ;    this%m_livecrootc_to_fire                 (:) = spval
@@ -5785,7 +6122,12 @@ module VegetationDataType
        allocate(this%m_deadstemc_to_litter_fire          (begp:endp)) ;    this%m_deadstemc_to_litter_fire           (:) = spval
        allocate(this%m_deadstemc_storage_to_litter_fire  (begp:endp)) ;    this%m_deadstemc_storage_to_litter_fire   (:) = spval
        allocate(this%m_deadstemc_xfer_to_litter_fire     (begp:endp)) ;    this%m_deadstemc_xfer_to_litter_fire      (:) = spval
+       !TAM
        allocate(this%m_frootc_to_litter_fire             (begp:endp)) ;    this%m_frootc_to_litter_fire              (:) = spval
+       allocate(this%m_froottc_to_litter_fire             (begp:endp)) ;    this%m_froottc_to_litter_fire              (:) = spval
+       allocate(this%m_frootac_to_litter_fire             (begp:endp)) ;    this%m_frootac_to_litter_fire              (:) = spval
+       allocate(this%m_frootmc_to_litter_fire             (begp:endp)) ;    this%m_frootmc_to_litter_fire              (:) = spval
+
        allocate(this%m_frootc_storage_to_litter_fire     (begp:endp)) ;    this%m_frootc_storage_to_litter_fire      (:) = spval
        allocate(this%m_frootc_xfer_to_litter_fire        (begp:endp)) ;    this%m_frootc_xfer_to_litter_fire         (:) = spval
        allocate(this%m_livecrootc_to_litter_fire         (begp:endp)) ;    this%m_livecrootc_to_litter_fire          (:) = spval
@@ -5800,18 +6142,33 @@ module VegetationDataType
        allocate(this%m_cpool_to_litter_fire              (begp:endp)) ;    this%m_cpool_to_litter_fire               (:) = spval
        allocate(this%grainc_xfer_to_grainc               (begp:endp)) ;    this%grainc_xfer_to_grainc                (:) = spval
        allocate(this%leafc_xfer_to_leafc                 (begp:endp)) ;    this%leafc_xfer_to_leafc                  (:) = spval
+       !TAM
        allocate(this%frootc_xfer_to_frootc               (begp:endp)) ;    this%frootc_xfer_to_frootc                (:) = spval
+       allocate(this%frootc_xfer_to_froottc               (begp:endp)) ;    this%frootc_xfer_to_froottc                (:) = spval
+       allocate(this%frootc_xfer_to_frootac               (begp:endp)) ;    this%frootc_xfer_to_frootac                (:) = spval
+       allocate(this%frootc_xfer_to_frootmc               (begp:endp)) ;    this%frootc_xfer_to_frootmc                (:) = spval
+       
        allocate(this%livestemc_xfer_to_livestemc         (begp:endp)) ;    this%livestemc_xfer_to_livestemc          (:) = spval
        allocate(this%deadstemc_xfer_to_deadstemc         (begp:endp)) ;    this%deadstemc_xfer_to_deadstemc          (:) = spval
        allocate(this%livecrootc_xfer_to_livecrootc       (begp:endp)) ;    this%livecrootc_xfer_to_livecrootc        (:) = spval
        allocate(this%deadcrootc_xfer_to_deadcrootc       (begp:endp)) ;    this%deadcrootc_xfer_to_deadcrootc        (:) = spval
        allocate(this%leafc_to_litter                     (begp:endp)) ;    this%leafc_to_litter                      (:) = spval
+       !TAM
        allocate(this%frootc_to_litter                    (begp:endp)) ;    this%frootc_to_litter                     (:) = spval
+       allocate(this%froottc_to_litter                   (begp:endp)) ;    this%froottc_to_litter                    (:) = spval
+       allocate(this%frootac_to_litter                   (begp:endp)) ;    this%frootac_to_litter                    (:) = spval
+       allocate(this%frootmc_to_litter                   (begp:endp)) ;    this%frootmc_to_litter                    (:) = spval
+
        allocate(this%livestemc_to_litter                 (begp:endp)) ;    this%livestemc_to_litter                  (:) = spval
        allocate(this%livecrootc_to_litter                (begp:endp)) ;    this%livecrootc_to_litter                 (:) = spval
        allocate(this%grainc_to_food                      (begp:endp)) ;    this%grainc_to_food                       (:) = spval
        allocate(this%leaf_mr                             (begp:endp)) ;    this%leaf_mr                              (:) = spval
+       !TAM
        allocate(this%froot_mr                            (begp:endp)) ;    this%froot_mr                             (:) = spval
+       allocate(this%froott_mr                           (begp:endp)) ;    this%froott_mr                             (:) = spval
+       allocate(this%froota_mr                           (begp:endp)) ;    this%froota_mr                             (:) = spval
+       allocate(this%frootm_mr                           (begp:endp)) ;    this%frootm_mr                             (:) = spval
+
        allocate(this%livestem_mr                         (begp:endp)) ;    this%livestem_mr                          (:) = spval
        allocate(this%livecroot_mr                        (begp:endp)) ;    this%livecroot_mr                         (:) = spval
        allocate(this%grain_mr                            (begp:endp)) ;    this%grain_mr                             (:) = spval
@@ -5926,6 +6283,7 @@ module VegetationDataType
     allocate(this%agwdnpp                             (begp:endp)) ;    this%agwdnpp                              (:) = spval
     allocate(this%allocation_leaf                     (begp:endp)) ;    this%allocation_leaf                      (:) = spval
     allocate(this%allocation_stem                     (begp:endp)) ;    this%allocation_stem                      (:) = spval
+    !TAM
     allocate(this%allocation_froot                    (begp:endp)) ;    this%allocation_froot                     (:) = spval
 
     !-----------------------------------------------------------------------
@@ -5934,7 +6292,7 @@ module VegetationDataType
     if (use_fates) then
        ! no veg-level carbon flux history fields defined by host model
 
-    else if (carbon_type == 'c12') then
+    else if ( carbon_type == 'c12' ) then
        if (crop_prog) then
           this%grainc_to_food(begp:endp) = spval
           call hist_addfld1d (fname='GRAINC_TO_FOOD', units='gC/m^2/s', &
@@ -6763,7 +7121,7 @@ module VegetationDataType
 
        ! end of C12 block
 
-    else if ( carbon_type == 'c13') then
+    else if ( carbon_type == 'c13' ) then
        this%m_leafc_to_litter(begp:endp) = spval
        call hist_addfld1d (fname='C13_M_LEAFC_TO_LITTER', units='gC13/m^2/s', &
             avgflag='A', long_name='C13 leaf C mortality', &
@@ -7978,6 +8336,7 @@ module VegetationDataType
              this%excess_cflux(p)          = spval
              this%plant_calloc(p)          = spval
              this%prev_leafc_to_litter(p)  = spval
+             !TAM
              this%prev_frootc_to_litter(p) = spval
              if ( use_c13 ) then
                 this%xsmrpool_c13ratio(p)  = spval
@@ -7990,6 +8349,7 @@ module VegetationDataType
              this%xsmrpool_recover(p)      = 0._r8
              this%excess_cflux(p)          = 0._r8
              this%prev_leafc_to_litter(p)  = 0._r8
+             !TAM
              this%prev_frootc_to_litter(p) = 0._r8
              this%plant_calloc(p)          = 0._r8
           end if
@@ -8160,7 +8520,7 @@ module VegetationDataType
     ! !USES:
     !
     ! !ARGUMENTS:
-    class(vegetation_carbon_flux)                 :: this
+    class(vegetation_carbon_flux)          :: this
     type(bounds_type)      , intent(in)    :: bounds
     integer                , intent(in)    :: num_soilp       ! number of soil patches in filter
     integer                , intent(in)    :: filter_soilp(:) ! filter for soil patches
@@ -8207,35 +8567,62 @@ module VegetationDataType
 
        ! maintenance respiration (MR)
        this%leaf_mr(p)      = this%leaf_curmr(p)      + this%leaf_xsmr(p)
-       this%froot_mr(p)     = this%froot_curmr(p)     + this%froot_xsmr(p)
        this%livestem_mr(p)  = this%livestem_curmr(p)  + this%livestem_xsmr(p)
        this%livecroot_mr(p) = this%livecroot_curmr(p) + this%livecroot_xsmr(p)
+#if (defined TAM)
+       this%froott_mr(p)     = this%froott_curmr(p)     + this%froott_xsmr(p)
+       this%froota_mr(p)     = this%froota_curmr(p)     + this%froota_xsmr(p)
+       this%frootm_mr(p)     = this%frootm_curmr(p)     + this%frootm_xsmr(p)
 
+       this%mr(p)  = &
+            this%leaf_mr(p)     + &
+            this%froott_mr(p)   + &
+            this%froota_mr(p)   + &
+            this%frootm_mr(p)   + &
+            this%livestem_mr(p) + &
+            this%livecroot_mr(p)
+#else
+       this%froot_mr(p)     = this%froot_curmr(p) + this%froot_xsmr(p)
        this%mr(p)  = &
             this%leaf_mr(p)     + &
             this%froot_mr(p)    + &
             this%livestem_mr(p) + &
             this%livecroot_mr(p)
-
+#endif
        ! growth respiration (GR)
        ! current GR is respired this time step for new growth displayed in this timestep
        this%current_gr(p) = &
             this%cpool_leaf_gr(p)      + &
-            this%cpool_froot_gr(p)     + &
+            !this%cpool_froot_gr(p)     + &
             this%cpool_livestem_gr(p)  + &
             this%cpool_deadstem_gr(p)  + &
             this%cpool_livecroot_gr(p) + &
             this%cpool_deadcroot_gr(p)
-
+#if (defined TAM)
+            this%current_gr(p) = this%current_gr(p) + &
+            this%cpool_froott_gr(p) + &
+            this%cpool_froota_gr(p) + &
+            this%cpool_frootm_gr(p)
+#else
+            this%current_gr(p) = this%current_gr(p) + &
+            this%cpool_froot_gr(p)
+#endif
        ! transfer GR is respired this time step for transfer growth displayed in this timestep
        this%transfer_gr(p) = &
             this%transfer_leaf_gr(p)      + &
-            this%transfer_froot_gr(p)     + &
             this%transfer_livestem_gr(p)  + &
             this%transfer_deadstem_gr(p)  + &
             this%transfer_livecroot_gr(p) + &
             this%transfer_deadcroot_gr(p)
-
+#if (defined TAM)
+            this%transfer_gr(p) = this%transfer_gr(p) + &
+            this%transfer_froott_gr(p) + &
+            this%transfer_froota_gr(p) + &
+            this%transfer_frootm_gr(p)
+#else
+            this%transfer_gr(p) = this%transfer_gr(p) + &
+            this%transfer_froot_gr(p)
+#endif
        ! storage GR is respired this time step for growth sent to storage for later display
        this%storage_gr(p) = &
             this%cpool_leaf_storage_gr(p)      + &
@@ -8307,7 +8694,7 @@ module VegetationDataType
 
        this%litfall(p) = &
             this%leafc_to_litter(p)                     + &
-            this%frootc_to_litter(p)                    + &
+            !this%frootc_to_litter(p)                    + &
             this%livecrootc_to_litter(p)                + &
             this%m_leafc_to_litter(p)                   + &
             this%m_leafc_storage_to_litter(p)           + &
@@ -8349,7 +8736,15 @@ module VegetationDataType
             this%m_deadcrootc_xfer_to_litter_fire(p)    + &
             this%m_gresp_storage_to_litter_fire(p)      + &
             this%m_gresp_xfer_to_litter_fire(p)        
-            
+#if (defined TAM)
+            this%litfall(p) = this%litfall(p)            + &
+            this%froottc_to_litter(p)                    + &
+            this%frootac_to_litter(p)                    + &
+            this%frootmc_to_litter(p)
+#else
+            this%litfall(p) = this%litfall(p)            + &
+            this%frootc_to_litter(p)
+#endif
             this%litfall(p) = this%litfall(p) + &
               this%hrv_leafc_to_litter(p)                 + &
               this%hrv_leafc_storage_to_litter(p)         + &
@@ -8425,15 +8820,22 @@ module VegetationDataType
             this%cpool_to_frootc(p)
 
        ! (FROOTC_LOSS) - fine root C loss changed by F. Li and S. Levis
+#if (defined TAM)
+       this%froottc_loss(p) = &
+       this%frootac_loss(p) = &
+       this%frootmc_loss(p) = &
+#else
        this%frootc_loss(p) = &
             this%m_frootc_to_litter(p)       + &
             this%m_frootc_to_fire(p)         + &
             this%m_frootc_to_litter_fire(p)  + &
             this%frootc_to_litter(p)
+#endif
       ! if(use_crop) then 
            this%frootc_loss(p) =  this%frootc_loss(p) + &
                  this%hrv_frootc_to_litter(p)     
-      ! endif 
+      ! endif
+      
        ! (LEAFC_ALLOC) - leaf C allocation
        this%leafc_alloc(p) = &
             this%leafc_xfer_to_leafc(p)    + &
@@ -8559,29 +8961,47 @@ module VegetationDataType
     ! !LOCAL VARIABLES
     integer :: fp, p
     !------------------------------------------------------------
-    associate( &
+     associate( &
       rr_patch => this%rr, &
       rr_col   => col_cf_input%rr &
       )
-    do fp = 1,num_soilp
-      p = filter_soilp(fp)
-      ! root respiration (RR)
-      this%rr(p) = &
-      this%froot_mr(p) + &
-      this%cpool_froot_gr(p) + &
-      this%cpool_livecroot_gr(p) + &
-      this%cpool_deadcroot_gr(p) + &
-      this%transfer_froot_gr(p) + &
-      this%transfer_livecroot_gr(p) + &
-      this%transfer_deadcroot_gr(p) + &
-      this%cpool_froot_storage_gr(p) + &
-      this%cpool_livecroot_storage_gr(p) + &
-      this%cpool_deadcroot_storage_gr(p)
-    enddo
-    call p2c_1d_filter(bounds, num_soilc, filter_soilc, &
-            rr_patch(bounds%begp:bounds%endp), &
-            rr_col(bounds%begc:bounds%endc))
-  end associate
+          do fp = 1,num_soilp
+               p = filter_soilp(fp)
+               ! root respiration (RR)
+               this%rr(p) = &
+               !this%froot_mr(p) + &
+               !this%cpool_froot_gr(p) + &
+               this%cpool_livecroot_gr(p) + &
+               this%cpool_deadcroot_gr(p) + &
+               !this%transfer_froot_gr(p) + &
+               this%transfer_livecroot_gr(p) + &
+               this%transfer_deadcroot_gr(p) + &
+               this%cpool_froot_storage_gr(p) + &
+               this%cpool_livecroot_storage_gr(p) + &
+               this%cpool_deadcroot_storage_gr(p)
+#if (defined TAM)
+               this%rr(p) = this%rr(p) + &
+                    this%froott_mr(p) + &
+                    this%froota_mr(p) + &
+                    this%frootm_mr(p) + &
+                    this%cpool_froott_gr(p) + &
+                    this%cpool_froota_gr(p) + &
+                    this%cpool_frootm_gr(p) + &
+                    this%transfer_froott_gr(p) + &
+                    this%transfer_froota_gr(p) + &
+                    this%transfer_frootm_gr(p)
+#else     
+               this%rr(p) = this%rr(p) + &
+                    this%froot_mr(p)        + &
+                    this%cpool_froot_gr(p)  + &
+                    this%transfer_froot_gr(p)
+
+#endif
+          enddo
+          call p2c_1d_filter(bounds, num_soilc, filter_soilc, &
+                    rr_patch(bounds%begp:bounds%endp), &
+                    rr_col(bounds%begc:bounds%endc))
+     end associate
 
   end subroutine veg_cf_summary_rr
 
@@ -8631,13 +9051,25 @@ module VegetationDataType
        ! field measurements of BGNPP, so it ignores the storage pools
        ! and only treats the fluxes into displayed pools.
        this%bgnpp(p) = &
-            this%cpool_to_frootc(p)                   + &
-            this%frootc_xfer_to_frootc(p)             + &
+            !this%cpool_to_frootc(p)                   + &
+            !this%frootc_xfer_to_frootc(p)             + &
             this%cpool_to_livecrootc(p)               + &
             this%livecrootc_xfer_to_livecrootc(p)     + &
             this%cpool_to_deadcrootc(p)               + &
             this%deadcrootc_xfer_to_deadcrootc(p)
-
+#if (defined TAM)
+       this%bgnpp(p) = this%bgnpp(p) + &
+            this%cpool_to_froottc(p)                   + &
+            this%cpool_to_frootac(p)                   + &
+            this%cpool_to_frootmc(p)                   + &
+            this%frootc_xfer_to_froottc(p)             + &
+            this%frootc_xfer_to_frootac(p)             + &
+            this%frootc_xfer_to_frootmc(p)
+#else
+       this%bgnpp(p) = this%bgnpp(p) + &
+            this%cpool_to_frootc(p)                   + &
+            this%frootc_xfer_to_frootc(p)             + &
+#endif
        this%agwdnpp(p) = &
             this%cpool_to_livestemc(p)              + &
             this%livestemc_xfer_to_livestemc(p)     + &

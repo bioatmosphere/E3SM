@@ -82,13 +82,29 @@ contains
             col_ns%prod1n(c) = col_ns%prod1n(c) + col_nf%dwt_crop_productn_gain(c)*dt
 
             do j = 1,nlevdecomp
+#if defined (TAM)
+               col_ns%decomp_npools_vr(c,j,i_met_lit) = col_ns%decomp_npools_vr(c,j,i_met_lit) + &
+                    col_nf%dwt_froottn_to_litr_met_n(c,j) * dt + &
+                    col_nf%dwt_frootan_to_litr_met_n(c,j) * dt + &
+                    col_nf%dwt_frootmn_to_litr_met_n(c,j) * dt
 
+               col_ns%decomp_npools_vr(c,j,i_cel_lit) = col_ns%decomp_npools_vr(c,j,i_cel_lit) + &
+                    col_nf%dwt_froottn_to_litr_cel_n(c,j) * dt + &
+                    col_nf%dwt_frootan_to_litr_cel_n(c,j) * dt + &
+                    col_nf%dwt_frootmn_to_litr_cel_n(c,j) * dt
+               col_ns%decomp_npools_vr(c,j,i_lig_lit) = col_ns%decomp_npools_vr(c,j,i_lig_lit) + &
+                    col_nf%dwt_froottn_to_litr_lig_n(c,j) * dt + &
+                    col_nf%dwt_frootan_to_litr_lig_n(c,j) * dt + &
+                    col_nf%dwt_frootmn_to_litr_lig_n(c,j) * dt
+
+#else
                col_ns%decomp_npools_vr(c,j,i_met_lit) = col_ns%decomp_npools_vr(c,j,i_met_lit) + &
                     col_nf%dwt_frootn_to_litr_met_n(c,j) * dt
                col_ns%decomp_npools_vr(c,j,i_cel_lit) = col_ns%decomp_npools_vr(c,j,i_cel_lit) + &
                     col_nf%dwt_frootn_to_litr_cel_n(c,j) * dt
                col_ns%decomp_npools_vr(c,j,i_lig_lit) = col_ns%decomp_npools_vr(c,j,i_lig_lit) + &
                     col_nf%dwt_frootn_to_litr_lig_n(c,j) * dt
+#endif
                col_ns%decomp_npools_vr(c,j,i_cwd) = col_ns%decomp_npools_vr(c,j,i_cwd) + &
                     ( col_nf%dwt_livecrootn_to_cwdn(c,j) + col_nf%dwt_deadcrootn_to_cwdn(c,j) ) * dt
 
@@ -285,8 +301,20 @@ contains
               ! phenology: transfer growth fluxes
               veg_ns%leafn(p)       = veg_ns%leafn(p)       + veg_nf%leafn_xfer_to_leafn(p)*dt
               veg_ns%leafn_xfer(p)  = veg_ns%leafn_xfer(p)  - veg_nf%leafn_xfer_to_leafn(p)*dt
+              !TAM
+#if defined (TAM)
+              veg_ns%froottn(p)      = veg_ns%froottn(p)      + veg_nf%frootn_xfer_to_froottn(p)*dt
+              veg_ns%frootan(p)      = veg_ns%frootan(p)      + veg_nf%frootn_xfer_to_frootan(p)*dt
+              veg_ns%frootmn(p)      = veg_ns%frootmn(p)      + veg_nf%frootn_xfer_to_frootmn(p)*dt
+
+              veg_ns%frootn_xfer(p) = veg_ns%frootn_xfer(p) - &
+                     veg_nf%frootn_xfer_to_froottn(p)*dt    - &
+                     veg_nf%frootn_xfer_to_frootan(p)*dt    - &
+                     veg_nf%frootn_xfer_to_frootmn(p)*dt
+#else
               veg_ns%frootn(p)      = veg_ns%frootn(p)      + veg_nf%frootn_xfer_to_frootn(p)*dt
               veg_ns%frootn_xfer(p) = veg_ns%frootn_xfer(p) - veg_nf%frootn_xfer_to_frootn(p)*dt
+#endif
               veg_ns%livecrootn(p)      = veg_ns%livecrootn(p)      + veg_nf%livecrootn_xfer_to_livecrootn(p)*dt
               veg_ns%livecrootn_xfer(p) = veg_ns%livecrootn_xfer(p) - veg_nf%livecrootn_xfer_to_livecrootn(p)*dt
 
@@ -329,7 +357,14 @@ contains
                   veg_ns%retransn(p)   = veg_ns%retransn(p)   + veg_nf%livecrootn_to_retransn(p)*dt      
               end if
               if (ivt(p) >= npcropmin) then ! Beth adds retrans from froot
+#if defined (TAM)
+                  veg_ns%froottn(p)     = veg_ns%froottn(p)     - veg_nf%froottn_to_retransn(p)*dt
+                  veg_ns%frootan(p)     = veg_ns%frootan(p)     - veg_nf%frootan_to_retransn(p)*dt
+                  veg_ns%frootmn(p)     = veg_ns%frootmn(p)     - veg_nf%frootmn_to_retransn(p)*dt
+
+#else
                   veg_ns%frootn(p)     = veg_ns%frootn(p)     - veg_nf%frootn_to_retransn(p)*dt
+#endif
                   veg_ns%retransn(p)   = veg_ns%retransn(p)   + veg_nf%frootn_to_retransn(p)*dt
                   veg_ns%livestemn(p)  = veg_ns%livestemn(p)  - veg_nf%livestemn_to_litter(p)*dt
                   veg_ns%livestemn(p)  = veg_ns%livestemn(p)  - veg_nf%livestemn_to_retransn(p)*dt
@@ -355,8 +390,19 @@ contains
               veg_ns%leafn(p)           = veg_ns%leafn(p)          + veg_nf%npool_to_leafn(p)*dt
               veg_ns%npool(p)           = veg_ns%npool(p)          - veg_nf%npool_to_leafn_storage(p)*dt
               veg_ns%leafn_storage(p)   = veg_ns%leafn_storage(p)  + veg_nf%npool_to_leafn_storage(p)*dt
+              !TAM
+#if defined (TAM)
+              veg_ns%npool(p)           = veg_ns%npool(p)   - &       
+                     veg_nf%npool_to_froottn(p)*dt  - &
+                     veg_nf%npool_to_frootan(p)*dt  - &
+                     veg_nf%npool_to_frootmn(p)*dt
+              veg_ns%froottn(p)          = veg_ns%froottn(p)         + veg_nf%npool_to_froottn(p)*dt
+              veg_ns%frootan(p)          = veg_ns%frootan(p)         + veg_nf%npool_to_frootan(p)*dt
+              veg_ns%frootmn(p)          = veg_ns%frootmn(p)         + veg_nf%npool_to_frootmn(p)*dt
+#else
               veg_ns%npool(p)           = veg_ns%npool(p)          - veg_nf%npool_to_frootn(p)*dt
               veg_ns%frootn(p)          = veg_ns%frootn(p)         + veg_nf%npool_to_frootn(p)*dt
+#endif
               veg_ns%npool(p)           = veg_ns%npool(p)          - veg_nf%npool_to_frootn_storage(p)*dt
               veg_ns%frootn_storage(p)  = veg_ns%frootn_storage(p) + veg_nf%npool_to_frootn_storage(p)*dt
               veg_ns%npool(p)              = veg_ns%npool(p)              - veg_nf%npool_to_livecrootn(p)*dt

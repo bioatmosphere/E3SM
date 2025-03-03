@@ -79,12 +79,27 @@ contains
 
             do j = 1,nlevdecomp
 
+#if defined (TAM)
+               col_ps%decomp_ppools_vr(c,j,i_met_lit) = col_ps%decomp_ppools_vr(c,j,i_met_lit) + &
+                    col_pf%dwt_froottp_to_litr_met_p(c,j) * dt + &
+                    col_pf%dwt_frootap_to_litr_met_p(c,j) * dt + &
+                    col_pf%dwt_frootmp_to_litr_met_p(c,j) * dt
+               col_ps%decomp_ppools_vr(c,j,i_cel_lit) = col_ps%decomp_ppools_vr(c,j,i_cel_lit) + &
+                    col_pf%dwt_frootap_to_litr_cel_p(c,j) * dt + &
+                    col_pf%dwt_frootap_to_litr_cel_p(c,j) * dt + &
+                    col_pf%dwt_frootmp_to_litr_cel_p(c,j) * dt
+               col_ps%decomp_ppools_vr(c,j,i_lig_lit) = col_ps%decomp_ppools_vr(c,j,i_lig_lit) + &
+                    col_pf%dwt_froottp_to_litr_lig_p(c,j) * dt  + &
+                    col_pf%dwt_frootap_to_litr_lig_p(c,j) * dt  + &
+                    col_pf%dwt_frootmp_to_litr_lig_p(c,j) * dt
+#else
                col_ps%decomp_ppools_vr(c,j,i_met_lit) = col_ps%decomp_ppools_vr(c,j,i_met_lit) + &
                     col_pf%dwt_frootp_to_litr_met_p(c,j) * dt
                col_ps%decomp_ppools_vr(c,j,i_cel_lit) = col_ps%decomp_ppools_vr(c,j,i_cel_lit) + &
                     col_pf%dwt_frootp_to_litr_cel_p(c,j) * dt
                col_ps%decomp_ppools_vr(c,j,i_lig_lit) = col_ps%decomp_ppools_vr(c,j,i_lig_lit) + &
                     col_pf%dwt_frootp_to_litr_lig_p(c,j) * dt
+#endif
                col_ps%decomp_ppools_vr(c,j,i_cwd) = col_ps%decomp_ppools_vr(c,j,i_cwd) + &
                     ( col_pf%dwt_livecrootp_to_cwdp(c,j) + col_pf%dwt_deadcrootp_to_cwdp(c,j) ) * dt
 
@@ -241,7 +256,14 @@ contains
               ! phenology: transfer growth fluxes
               veg_ps%leafp(p)       = veg_ps%leafp(p)       + veg_pf%leafp_xfer_to_leafp(p)*dt
               veg_ps%leafp_xfer(p)  = veg_ps%leafp_xfer(p)  - veg_pf%leafp_xfer_to_leafp(p)*dt
+              !TAM
+#if defined (TAM)
+               veg_ps%froottp(p)      = veg_ps%froottp(p)      + veg_pf%frootp_xfer_to_froottp(p)*dt
+               veg_ps%frootap(p)      = veg_ps%frootap(p)      + veg_pf%frootp_xfer_to_frootap(p)*dt
+               veg_ps%frootmp(p)      = veg_ps%frootmp(p)      + veg_pf%frootp_xfer_to_frootmp(p)*dt
+#else
               veg_ps%frootp(p)      = veg_ps%frootp(p)      + veg_pf%frootp_xfer_to_frootp(p)*dt
+#endif
               veg_ps%frootp_xfer(p) = veg_ps%frootp_xfer(p) - veg_pf%frootp_xfer_to_frootp(p)*dt
 
               ! B Sulman: Allow graminoid rhizomes
@@ -267,7 +289,14 @@ contains
 
               ! phenology: litterfall and retranslocation fluxes
               veg_ps%leafp(p)    = veg_ps%leafp(p)    - veg_pf%leafp_to_litter(p)*dt
+              !TAM
+#if defined(TAM)
+              veg_ps%froottp(p)   = veg_ps%froottp(p)   - veg_pf%froottp_to_litter(p)*dt
+              veg_ps%frootap(p)   = veg_ps%frootap(p)   - veg_pf%frootap_to_litter(p)*dt
+              veg_ps%frootmp(p)   = veg_ps%frootmp(p)   - veg_pf%frootmp_to_litter(p)*dt
+#else
               veg_ps%frootp(p)   = veg_ps%frootp(p)   - veg_pf%frootp_to_litter(p)*dt
+#endif
               veg_ps%leafp(p)    = veg_ps%leafp(p)    - veg_pf%leafp_to_retransp(p)*dt
               veg_ps%retransp(p) = veg_ps%retransp(p) + veg_pf%leafp_to_retransp(p)*dt
 
@@ -287,8 +316,19 @@ contains
                   veg_ps%retransp(p)   = veg_ps%retransp(p)   + veg_pf%livecrootp_to_retransp(p)*dt
                end if
               if (ivt(p) >= npcropmin) then ! Beth adds retrans from froot
+#if defined (TAM)
+                  veg_ps%froottp(p)     = veg_ps%froottp(p)     - veg_pf%froottp_to_retransp(p)*dt
+                  veg_ps%frootap(p)     = veg_ps%frootap(p)     - veg_pf%frootap_to_retransp(p)*dt
+                  veg_ps%frootmp(p)     = veg_ps%frootmp(p)     - veg_pf%frootmp_to_retransp(p)*dt
+
+                  veg_ps%retransp(p)   = veg_ps%retransp(p)   &
+                        + veg_pf%froottp_to_retransp(p)*dt &
+                        + veg_pf%frootap_to_retransp(p)*dt &
+                        + veg_pf%frootmp_to_retransp(p)*dt
+#else
                   veg_ps%frootp(p)     = veg_ps%frootp(p)     - veg_pf%frootp_to_retransp(p)*dt
                   veg_ps%retransp(p)   = veg_ps%retransp(p)   + veg_pf%frootp_to_retransp(p)*dt
+#endif
                   veg_ps%livestemp(p)  = veg_ps%livestemp(p)  - veg_pf%livestemp_to_litter(p)*dt
                   veg_ps%livestemp(p)  = veg_ps%livestemp(p)  - veg_pf%livestemp_to_retransp(p)*dt
                   veg_ps%retransp(p)   = veg_ps%retransp(p)   + veg_pf%livestemp_to_retransp(p)*dt
@@ -313,8 +353,19 @@ contains
               veg_ps%leafp(p)           = veg_ps%leafp(p)          + veg_pf%ppool_to_leafp(p)*dt
               veg_ps%ppool(p)           = veg_ps%ppool(p)          - veg_pf%ppool_to_leafp_storage(p)*dt
               veg_ps%leafp_storage(p)   = veg_ps%leafp_storage(p)  + veg_pf%ppool_to_leafp_storage(p)*dt
+              !TAM
+#if defined (TAM)
+              veg_ps%ppool(p)           = veg_ps%ppool(p)          - veg_pf%ppool_to_froottp(p)*dt - &
+                                                                     veg_pf%ppool_to_frootap(p)*dt - &
+                                                                     veg_pf%ppool_to_frootmp(p)*dt
+              veg_ps%froottp(p)          = veg_ps%froottp(p)       + veg_pf%ppool_to_froottp(p)*dt
+              veg_ps%frootap(p)          = veg_ps%frootap(p)       + veg_pf%ppool_to_frootap(p)*dt
+              veg_ps%frootmp(p)          = veg_ps%frootmp(p)       + veg_pf%ppool_to_frootmp(p)*dt                                                   
+
+#else
               veg_ps%ppool(p)           = veg_ps%ppool(p)          - veg_pf%ppool_to_frootp(p)*dt
               veg_ps%frootp(p)          = veg_ps%frootp(p)         + veg_pf%ppool_to_frootp(p)*dt
+#endif
               veg_ps%ppool(p)           = veg_ps%ppool(p)          - veg_pf%ppool_to_frootp_storage(p)*dt
               veg_ps%frootp_storage(p)  = veg_ps%frootp_storage(p) + veg_pf%ppool_to_frootp_storage(p)*dt
               veg_ps%ppool(p)              = veg_ps%ppool(p)              - veg_pf%ppool_to_livecrootp(p)*dt

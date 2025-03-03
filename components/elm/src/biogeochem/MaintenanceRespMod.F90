@@ -19,9 +19,9 @@ module MaintenanceRespMod
   use CanopyStateType     , only : canopystate_type
   use TemperatureType     , only : temperature_type
   use PhotosynthesisType  , only : photosyns_type
-  use CNCarbonFluxType    , only : carbonflux_type
-  use CNCarbonStateType   , only : carbonstate_type
-  use CNNitrogenStateType , only : nitrogenstate_type
+  use CNCarbonFluxType    , only : carbonflux_type !not used
+  use CNCarbonStateType   , only : carbonstate_type !not used
+  use CNNitrogenStateType , only : nitrogenstate_type!not used
   use ColumnDataType      , only : col_es
   use VegetationType      , only : veg_pp
   use VegetationDataType  , only : veg_es, veg_cs, veg_cf, veg_ns
@@ -148,7 +148,6 @@ contains
          frac_veg_nosno =>    canopystate_vars%frac_veg_nosno_patch , & ! Input:  [integer  (:)   ]  fraction of vegetation not covered by snow (0 OR 1) [-]
          laisun         =>    canopystate_vars%laisun_patch         , & ! Input:  [real(r8) (:)   ]  sunlit projected leaf area index
          laisha         =>    canopystate_vars%laisha_patch         , & ! Input:  [real(r8) (:)   ]  shaded projected leaf area index
-
          rootfr         =>    soilstate_vars%rootfr_patch           , & ! Input:  [real(r8) (:,:) ]  fraction of roots in each soil layer  (nlevgrnd)
 
          t_soisno       =>    col_es%t_soisno         , & ! Input:  [real(r8) (:,:) ]  soil temperature (Kelvin)  (-nlevsno+1:nlevgrnd)
@@ -160,14 +159,23 @@ contains
          cpool          =>    veg_cs%cpool          , & ! Input: [real(r8) (:)   ]   plant carbon pool (gC m-2)
 
          leaf_mr        =>    veg_cf%leaf_mr         , & ! Output: [real(r8) (:)   ]
+         !TAM
          froot_mr       =>    veg_cf%froot_mr        , & ! Output: [real(r8) (:)   ]
+         froott_mr       =>    veg_cf%froot_mr        , & ! Output: [real(r8) (:)   ]
+         froota_mr       =>    veg_cf%froot_mr        , & ! Output: [real(r8) (:)   ]
+         frootm_mr       =>    veg_cf%froot_mr        , & ! Output: [real(r8) (:)   ]
+
          livestem_mr    =>    veg_cf%livestem_mr     , & ! Output: [real(r8) (:)   ]
          livecroot_mr   =>    veg_cf%livecroot_mr    , & ! Output: [real(r8) (:)   ]
          grain_mr       =>    veg_cf%grain_mr        , & ! Output: [real(r8) (:)   ]
          xr             =>    veg_cf%xr              , & ! Output: [real(r8) (:)   ]  (gC/m2) respiration of excess C
          totvegc        =>    veg_cs%totvegc         , &
-
+         !TAM
          frootn         =>    veg_ns%frootn       , & ! Input:  [real(r8) (:)   ]  (gN/m2) fine root N
+         froottn        =>    veg_ns%frootn       , & ! Input:  [real(r8) (:)   ]  (gN/m2) fine root N
+         frootan        =>    veg_ns%frootn       , & ! Input:  [real(r8) (:)   ]  (gN/m2) fine root N
+         frootmn        =>    veg_ns%frootn       , & ! Input:  [real(r8) (:)   ]  (gN/m2) fine root N
+
          livestemn      =>    veg_ns%livestemn    , & ! Input:  [real(r8) (:)   ]  (gN/m2) live stem N
          livecrootn     =>    veg_ns%livecrootn   , & ! Input:  [real(r8) (:)   ]  (gN/m2) live coarse root N
          grainn         =>    veg_ns%grainn         & ! Output: [real(r8) (:)   ]  (kgN/m2) grain N
@@ -279,7 +287,14 @@ contains
             end if
             br_mr = br_mr_pft(ivt(p))
 #endif
+
+#if (defined TAM)
+            froott_mr(p) = froott_mr(p) + froottn(p)*br_mr*tcsoi(c,j)*rootfr(p,j)
+            froota_mr(p) = froota_mr(p) + frootan(p)*br_mr*tcsoi(c,j)*rootfr(p,j)
+            frootm_mr(p) = frootm_mr(p) + frootmn(p)*br_mr*tcsoi(c,j)*rootfr(p,j)
+#else
             froot_mr(p) = froot_mr(p) + frootn(p)*br_mr*tcsoi(c,j)*rootfr(p,j)
+#endif
          end do
       end do
       

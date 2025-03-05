@@ -2123,11 +2123,13 @@ module VegetationDataType
        allocate(this%leafc              (begp :endp))   ;  this%leafc              (:)   = spval
        allocate(this%leafc_storage      (begp :endp))   ;  this%leafc_storage      (:)   = spval
        allocate(this%leafc_xfer         (begp :endp))   ;  this%leafc_xfer         (:)   = spval
-       !TAM
-       allocate(this%frootc             (begp :endp))   ;  this%frootc             (:)   = spval
+#if (defined TAM)
        allocate(this%froottc            (begp :endp))   ;  this%frootc             (:)   = spval
        allocate(this%frootac            (begp :endp))   ;  this%frootc             (:)   = spval
        allocate(this%frootmc            (begp :endp))   ;  this%frootc             (:)   = spval
+#else
+       allocate(this%frootc             (begp :endp))   ;  this%frootc             (:)   = spval
+#endif      
      
        allocate(this%frootc_storage     (begp :endp))   ;  this%frootc_storage     (:)   = spval
        allocate(this%frootc_xfer        (begp :endp))   ;  this%frootc_xfer        (:)   = spval
@@ -2188,12 +2190,7 @@ module VegetationDataType
        call hist_addfld1d (fname='LEAFC_XFER', units='gC/m^2', &
              avgflag='A', long_name='leaf C transfer', &
              ptr_patch=this%leafc_xfer, default='inactive')
-       !TAM
-       this%frootc(begp:endp) = spval
-       call hist_addfld1d (fname='FROOTC', units='gC/m^2', &
-             avgflag='A', long_name='fine root C', &
-             ptr_patch=this%frootc)
-
+#if (defined TAM)
        this%froottc(begp:endp) = spval
        call hist_addfld1d (fname='FROOTTC', units='gC/m^2', &
              avgflag='A', long_name='fine root T C', &
@@ -2207,8 +2204,14 @@ module VegetationDataType
        this%frootmc(begp:endp) = spval
        call hist_addfld1d (fname='FROOTMC', units='gC/m^2', &
              avgflag='A', long_name='fine root M C', &
-             ptr_patch=this%frootmc)        
-
+             ptr_patch=this%frootmc) 
+#else
+       this%frootc(begp:endp) = spval
+       call hist_addfld1d (fname='FROOTC', units='gC/m^2', &
+             avgflag='A', long_name='fine root C', &
+             ptr_patch=this%frootc)
+#endif
+              
        this%frootc_storage(begp:endp) = spval
        call hist_addfld1d (fname='FROOTC_STORAGE', units='gC/m^2', &
              avgflag='A', long_name='fine root C storage', &
@@ -2368,12 +2371,27 @@ module VegetationDataType
        call hist_addfld1d (fname='C13_LEAFC_XFER', units='gC13/m^2', &
              avgflag='A', long_name='C13 leaf C transfer', &
              ptr_patch=this%leafc_xfer, default='inactive')
-       !TAM
+#if (defined TAM)
+       this%froottc(begp:endp) = spval
+       call hist_addfld1d (fname='C13_FROOTTC', units='gC13/m^2', &
+             avgflag='A', long_name='C13 fine root t C', &
+             ptr_patch=this%froottc)
+
+       this%frootac(begp:endp) = spval
+       call hist_addfld1d (fname='C13_FROOTAC', units='gC13/m^2', &
+             avgflag='A', long_name='C13 fine root a C', &
+             ptr_patch=this%frootac)
+
+       this%frootmc(begp:endp) = spval
+       call hist_addfld1d (fname='C13_FROOTMC', units='gC13/m^2', &
+             avgflag='A', long_name='C13 fine root m C', &
+             ptr_patch=this%frootmc)
+#else
        this%frootc(begp:endp) = spval
        call hist_addfld1d (fname='C13_FROOTC', units='gC13/m^2', &
              avgflag='A', long_name='C13 fine root C', &
              ptr_patch=this%frootc)
-
+#endif
        this%frootc_storage(begp:endp) = spval
        call hist_addfld1d (fname='C13_FROOTC_STORAGE', units='gC13/m^2', &
              avgflag='A', long_name='C13 fine root C storage', &
@@ -2685,12 +2703,13 @@ module VegetationDataType
                 end if
              end if
              this%leafc_xfer(p) = 0._r8
-             !TAM
-             this%frootc(p)            = 0._r8
+#if (defined TAM)
              this%froottc(p)           = 0._r8
              this%frootac(p)           = 0._r8
              this%frootmc(p)           = 0._r8
-
+#else
+             this%frootc(p)            = 0._r8
+#endif
              this%frootc_storage(p)    = 0._r8
              this%frootc_xfer(p)       = 0._r8
 
@@ -2810,12 +2829,13 @@ module VegetationDataType
           this%leafc(p)                = value_veg
           this%leafc_storage(p)        = value_veg
           this%leafc_xfer(p)           = value_veg
-          !TAM
-          this%frootc(p)               = value_veg
+#if (defined TAM)
           this%froottc(p)              = value_veg
           this%frootac(p)              = value_veg
           this%frootmc(p)              = value_veg
-
+#else
+          this%frootc(p)               = value_veg
+#endif
           this%frootc_storage(p)       = value_veg
           this%frootc_xfer(p)          = value_veg
           this%livestemc(p)            = value_veg
@@ -2911,11 +2931,7 @@ module VegetationDataType
           call restartvar(ncid=ncid, flag=flag, varname='leafc_xfer', xtype=ncd_double,  &
                dim1name='pft', long_name='', units='', &
                interpinic_flag='interp', readvar=readvar, data=this%leafc_xfer)
-          !TAM
-          call restartvar(ncid=ncid, flag=flag, varname='frootc', xtype=ncd_double,  &
-               dim1name='pft', long_name='', units='', &
-               interpinic_flag='interp', readvar=readvar, data=this%frootc)
-
+#if (defined TAM)
           call restartvar(ncid=ncid, flag=flag, varname='froottc', xtype=ncd_double,  &
                dim1name='pft', long_name='', units='', &
                interpinic_flag='interp', readvar=readvar, data=this%froottc)
@@ -2927,7 +2943,11 @@ module VegetationDataType
           call restartvar(ncid=ncid, flag=flag, varname='frootmc', xtype=ncd_double,  &
                dim1name='pft', long_name='', units='', &
                interpinic_flag='interp', readvar=readvar, data=this%frootmc)
-
+#else
+          call restartvar(ncid=ncid, flag=flag, varname='frootc', xtype=ncd_double,  &
+               dim1name='pft', long_name='', units='', &
+               interpinic_flag='interp', readvar=readvar, data=this%frootc)
+#endif
           call restartvar(ncid=ncid, flag=flag, varname='frootc_storage', xtype=ncd_double,  &
                dim1name='pft', long_name='', units='', &
                interpinic_flag='interp', readvar=readvar, data=this%frootc_storage)
@@ -3710,7 +3730,7 @@ module VegetationDataType
     !--------------------------------
     ! the spinup_state variable is being written by the column-level carbon state restart
     ! routine, so only need to handle the reading part here
-    if (carbon_type == 'c12'  .or. carbon_type == 'c14' .or. carbon_type == 'c13') then
+     if (carbon_type == 'c12'  .or. carbon_type == 'c14' .or. carbon_type == 'c13') then
         if (flag == 'read') then
            call restartvar(ncid=ncid, flag=flag, varname='spinup_state', xtype=ncd_int,  &
                 long_name='Spinup state of the model that wrote this restart file: ' &
@@ -3812,7 +3832,7 @@ module VegetationDataType
             this%deadstemc(p)  + &
             this%livecrootc(p) + &
             this%deadcrootc(p)
-#if defined (TAM)
+#if (defined TAM)
        this%dispvegc(p) =        &
             this%dispvegc(p)   + &
             this%froottc(p)    + &
@@ -3954,12 +3974,13 @@ module VegetationDataType
     allocate(this%leafn                  (begp:endp))           ; this%leafn               (:)   = spval
     allocate(this%leafn_storage          (begp:endp))           ; this%leafn_storage       (:)   = spval
     allocate(this%leafn_xfer             (begp:endp))           ; this%leafn_xfer          (:)   = spval
-    !TAM
-    allocate(this%frootn                 (begp:endp))           ; this%frootn              (:)   = spval
+#if (defined TAM)
     allocate(this%froottn                (begp:endp))           ; this%froottn              (:)   = spval
     allocate(this%frootan                (begp:endp))           ; this%frootan              (:)   = spval
     allocate(this%frootmn                (begp:endp))           ; this%frootmn              (:)   = spval
-
+#else
+    allocate(this%frootn                 (begp:endp))           ; this%frootn              (:)   = spval
+#endif    
     allocate(this%frootn_storage         (begp:endp))           ; this%frootn_storage      (:)   = spval
     allocate(this%frootn_xfer            (begp:endp))           ; this%frootn_xfer         (:)   = spval
     allocate(this%livestemn              (begp:endp))           ; this%livestemn           (:)   = spval
@@ -4055,14 +4076,9 @@ module VegetationDataType
     call hist_addfld1d (fname='LEAFN_XFER', units='gN/m^2', &
          avgflag='A', long_name='leaf N transfer', &
          ptr_patch=this%leafn_xfer, default='inactive')
-    !TAM
-    this%frootn(begp:endp) = spval
-    call hist_addfld1d (fname='FROOTN', units='gN/m^2', &
-         avgflag='A', long_name='fine root N', &
-         ptr_patch=this%frootn)
-
-    this%froottn(begp:endp) = spval
-    call hist_addfld1d (fname='FROOTTN', units='gN/m^2', &
+#if (defined TAM)
+     this%froottn(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTTN', units='gN/m^2', &
          avgflag='A', long_name='fine root T N', &
          ptr_patch=this%froottn)
 
@@ -4075,7 +4091,13 @@ module VegetationDataType
     call hist_addfld1d (fname='FROOTMN', units='gN/m^2', &
          avgflag='A', long_name='fine root M N', &
          ptr_patch=this%frootmn)
-
+#else
+    this%frootn(begp:endp) = spval
+    call hist_addfld1d (fname='FROOTN', units='gN/m^2', &
+         avgflag='A', long_name='fine root N', &
+         ptr_patch=this%frootn)
+#endif
+    
     this%frootn_storage(begp:endp) = spval
     call hist_addfld1d (fname='FROOTN_STORAGE', units='gN/m^2', &
          avgflag='A', long_name='fine root N storage', &
@@ -4216,12 +4238,14 @@ module VegetationDataType
              this%grainn_xfer(p)       = 0._r8
           end if
           this%cropseedn_deficit(p) = 0._r8
-          !TAM
-          this%frootn(p)            = 0._r8
+#if (defined TAM)
           this%froottn(p)            = 0._r8
           this%frootan(p)            = 0._r8
           this%frootmn(p)            = 0._r8
-
+#else
+          this%frootn(p)            = 0._r8
+#endif
+          
           this%frootn_storage(p)    = 0._r8
           this%frootn_xfer(p)       = 0._r8
           this%livestemn(p)         = 0._r8
@@ -4320,11 +4344,23 @@ module VegetationDataType
     call restartvar(ncid=ncid, flag=flag, varname='leafn_xfer', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%leafn_xfer)
-    !TAM
-    call restartvar(ncid=ncid, flag=flag, varname='frootn', xtype=ncd_double,  &
+#if (defined TAM)
+     call restartvar(ncid=ncid, flag=flag, varname='froottn', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%frootn)
 
+     call restartvar(ncid=ncid, flag=flag, varname='frootan', xtype=ncd_double,  &
+         dim1name='pft', long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%frootn)
+
+     call restartvar(ncid=ncid, flag=flag, varname='frootmn', xtype=ncd_double,  &
+         dim1name='pft', long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%frootn)
+#else
+    call restartvar(ncid=ncid, flag=flag, varname='frootn', xtype=ncd_double,  &
+         dim1name='pft', long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%frootn)
+#endif
     call restartvar(ncid=ncid, flag=flag, varname='frootn_storage', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%frootn_storage)
@@ -4617,12 +4653,14 @@ module VegetationDataType
        this%leafn(i)              = value_veg
        this%leafn_storage(i)      = value_veg
        this%leafn_xfer(i)         = value_veg
-       !TAM
-       this%frootn(i)             = value_veg
+#if (defined TAM)
        this%froottn(i)             = value_veg
        this%frootan(i)             = value_veg
        this%frootmn(i)             = value_veg
-
+#else
+       this%frootn(i)             = value_veg
+#endif
+       
        this%frootn_storage(i)     = value_veg
        this%frootn_xfer(i)        = value_veg
        this%livestemn(i)          = value_veg
@@ -4715,12 +4753,13 @@ module VegetationDataType
     allocate(this%leafp              (begp:endp)) ; this%leafp              (:) = spval
     allocate(this%leafp_storage      (begp:endp)) ; this%leafp_storage      (:) = spval
     allocate(this%leafp_xfer         (begp:endp)) ; this%leafp_xfer         (:) = spval
-    !TAM
-    allocate(this%frootp             (begp:endp)) ; this%frootp             (:) = spval
+#if (defined TAM)
     allocate(this%froottp             (begp:endp)) ; this%froottp             (:) = spval
     allocate(this%frootap             (begp:endp)) ; this%frootap             (:) = spval
     allocate(this%frootmp             (begp:endp)) ; this%frootmp             (:) = spval
-
+#else
+    allocate(this%frootp             (begp:endp)) ; this%frootp             (:) = spval
+#endif
     allocate(this%frootp_storage     (begp:endp)) ; this%frootp_storage     (:) = spval
     allocate(this%frootp_xfer        (begp:endp)) ; this%frootp_xfer        (:) = spval
     allocate(this%livestemp          (begp:endp)) ; this%livestemp          (:) = spval
@@ -4777,12 +4816,7 @@ module VegetationDataType
     call hist_addfld1d (fname='LEAFP_XFER', units='gP/m^2', &
          avgflag='A', long_name='leaf P transfer', &
          ptr_patch=this%leafp_xfer, default='inactive')
-    !TAM
-    this%frootp(begp:endp) = spval
-    call hist_addfld1d (fname='FROOTP', units='gP/m^2', &
-         avgflag='A', long_name='fine root P', &
-         ptr_patch=this%frootp)
-
+#if (defined TAM)
      this%froottp(begp:endp) = spval
      call hist_addfld1d (fname='FROOTTP', units='gP/m^2', &
           avgflag='A', long_name='fine root T P', &
@@ -4797,6 +4831,13 @@ module VegetationDataType
      call hist_addfld1d (fname='FROOTMP', units='gP/m^2', &
          avgflag='A', long_name='fine root M P', &
          ptr_patch=this%frootmp)
+
+#else
+    this%frootp(begp:endp) = spval
+    call hist_addfld1d (fname='FROOTP', units='gP/m^2', &
+         avgflag='A', long_name='fine root P', &
+         ptr_patch=this%frootp)
+#endif
 
     this%frootp_storage(begp:endp) = spval
     call hist_addfld1d (fname='FROOTP_STORAGE', units='gP/m^2', &
@@ -4940,11 +4981,13 @@ module VegetationDataType
              this%grainp_xfer(p)       = 0._r8
           end if
           this%cropseedp_deficit(p) = 0._r8
-          !TAM
-          this%frootp(p)            = 0._r8
+#if (defined TAM)
           this%froottp(p)            = 0._r8
           this%frootap(p)            = 0._r8
           this%frootmp(p)            = 0._r8
+#else
+          this%frootp(p)            = 0._r8
+#endif
 
           this%frootp_storage(p)    = 0._r8
           this%frootp_xfer(p)       = 0._r8
@@ -5040,11 +5083,7 @@ module VegetationDataType
     call restartvar(ncid=ncid, flag=flag, varname='leafp_xfer', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%leafp_xfer)
-    !TAM
-    call restartvar(ncid=ncid, flag=flag, varname='frootp', xtype=ncd_double,  &
-         dim1name='pft', long_name='', units='', &
-         interpinic_flag='interp', readvar=readvar, data=this%frootp)
-
+#if (defined TAM)
      call restartvar(ncid=ncid, flag=flag, varname='froottp', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%froottp)
@@ -5056,7 +5095,11 @@ module VegetationDataType
      call restartvar(ncid=ncid, flag=flag, varname='frootmp', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%frootmp)
-
+#else
+    call restartvar(ncid=ncid, flag=flag, varname='frootp', xtype=ncd_double,  &
+         dim1name='pft', long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%frootp)
+#endif
     call restartvar(ncid=ncid, flag=flag, varname='frootp_storage', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%frootp_storage)
@@ -5231,12 +5274,13 @@ module VegetationDataType
        this%leafp(i)              = value_patch
        this%leafp_storage(i)      = value_patch
        this%leafp_xfer(i)         = value_patch
-       !TAM
-       this%frootp(i)             = value_patch
+#if (defined TAM)
        this%froottp(i)            = value_patch
        this%frootap(i)            = value_patch
        this%frootmp(i)            = value_patch
-
+#else
+       this%frootp(i)             = value_patch
+#endif
        this%frootp_storage(i)     = value_patch
        this%frootp_xfer(i)        = value_patch
        this%livestemp(i)          = value_patch
@@ -6032,10 +6076,10 @@ module VegetationDataType
        allocate(this%m_leafc_storage_to_litter           (begp:endp)) ;    this%m_leafc_storage_to_litter            (:) = spval
        allocate(this%m_leafc_xfer_to_litter              (begp:endp)) ;    this%m_leafc_xfer_to_litter               (:) = spval
        !TAM
-       allocate(this%m_frootc_to_litter                  (begp:endp)) ;    this%m_frootc_to_litter                   (:) = spval
-       allocate(this%m_froottc_to_litter                 (begp:endp)) ;    this%m_froottc_to_litter                  (:) = spval
-       allocate(this%m_frootac_to_litter                 (begp:endp)) ;    this%m_frootac_to_litter                  (:) = spval
-       allocate(this%m_frootmc_to_litter                 (begp:endp)) ;    this%m_frootmc_to_litter                  (:) = spval
+       !allocate(this%m_frootc_to_litter                  (begp:endp)) ;    this%m_frootc_to_litter                   (:) = spval
+       !allocate(this%m_froottc_to_litter                 (begp:endp)) ;    this%m_froottc_to_litter                  (:) = spval
+       !allocate(this%m_frootac_to_litter                 (begp:endp)) ;    this%m_frootac_to_litter                  (:) = spval
+       !allocate(this%m_frootmc_to_litter                 (begp:endp)) ;    this%m_frootmc_to_litter                  (:) = spval
        
        allocate(this%m_frootc_storage_to_litter          (begp:endp)) ;    this%m_frootc_storage_to_litter           (:) = spval
        allocate(this%m_frootc_xfer_to_litter             (begp:endp)) ;    this%m_frootc_xfer_to_litter              (:) = spval
@@ -6058,10 +6102,10 @@ module VegetationDataType
        allocate(this%hrv_leafc_storage_to_litter         (begp:endp)) ;    this%hrv_leafc_storage_to_litter          (:) = spval
        allocate(this%hrv_leafc_xfer_to_litter            (begp:endp)) ;    this%hrv_leafc_xfer_to_litter             (:) = spval
        !TAM
-       allocate(this%hrv_frootc_to_litter                (begp:endp)) ;    this%hrv_frootc_to_litter                 (:) = spval
-       allocate(this%hrv_froottc_to_litter                (begp:endp)) ;    this%hrv_froottc_to_litter                 (:) = spval
-       allocate(this%hrv_frootac_to_litter                (begp:endp)) ;    this%hrv_frootac_to_litter                 (:) = spval
-       allocate(this%hrv_frootmc_to_litter                (begp:endp)) ;    this%hrv_frootmc_to_litter                 (:) = spval
+       !allocate(this%hrv_frootc_to_litter                (begp:endp)) ;    this%hrv_frootc_to_litter                 (:) = spval
+       !   allocate(this%hrv_froottc_to_litter                (begp:endp)) ;    this%hrv_froottc_to_litter                 (:) = spval
+       !   allocate(this%hrv_frootac_to_litter                (begp:endp)) ;    this%hrv_frootac_to_litter                 (:) = spval
+       !   allocate(this%hrv_frootmc_to_litter                (begp:endp)) ;    this%hrv_frootmc_to_litter                 (:) = spval
        
        allocate(this%hrv_frootc_storage_to_litter        (begp:endp)) ;    this%hrv_frootc_storage_to_litter         (:) = spval
        allocate(this%hrv_frootc_xfer_to_litter           (begp:endp)) ;    this%hrv_frootc_xfer_to_litter            (:) = spval
@@ -6096,10 +6140,10 @@ module VegetationDataType
        allocate(this%m_deadstemc_storage_to_fire         (begp:endp)) ;    this%m_deadstemc_storage_to_fire          (:) = spval
        allocate(this%m_deadstemc_xfer_to_fire            (begp:endp)) ;    this%m_deadstemc_xfer_to_fire             (:) = spval
        !TAM
-       allocate(this%m_frootc_to_fire                    (begp:endp)) ;    this%m_frootc_to_fire                     (:) = spval
-       allocate(this%m_froottc_to_fire                    (begp:endp)) ;    this%m_froottc_to_fire                     (:) = spval
-       allocate(this%m_frootac_to_fire                    (begp:endp)) ;    this%m_frootac_to_fire                     (:) = spval
-       allocate(this%m_frootmc_to_fire                    (begp:endp)) ;    this%m_frootmc_to_fire                     (:) = spval
+       !allocate(this%m_frootc_to_fire                    (begp:endp)) ;    this%m_frootc_to_fire                     (:) = spval
+       !allocate(this%m_froottc_to_fire                    (begp:endp)) ;    this%m_froottc_to_fire                     (:) = spval
+       !allocate(this%m_frootac_to_fire                    (begp:endp)) ;    this%m_frootac_to_fire                     (:) = spval
+       !allocate(this%m_frootmc_to_fire                    (begp:endp)) ;    this%m_frootmc_to_fire                     (:) = spval
 
        allocate(this%m_frootc_storage_to_fire            (begp:endp)) ;    this%m_frootc_storage_to_fire             (:) = spval
        allocate(this%m_frootc_xfer_to_fire               (begp:endp)) ;    this%m_frootc_xfer_to_fire                (:) = spval
@@ -6123,10 +6167,10 @@ module VegetationDataType
        allocate(this%m_deadstemc_storage_to_litter_fire  (begp:endp)) ;    this%m_deadstemc_storage_to_litter_fire   (:) = spval
        allocate(this%m_deadstemc_xfer_to_litter_fire     (begp:endp)) ;    this%m_deadstemc_xfer_to_litter_fire      (:) = spval
        !TAM
-       allocate(this%m_frootc_to_litter_fire             (begp:endp)) ;    this%m_frootc_to_litter_fire              (:) = spval
-       allocate(this%m_froottc_to_litter_fire             (begp:endp)) ;    this%m_froottc_to_litter_fire              (:) = spval
-       allocate(this%m_frootac_to_litter_fire             (begp:endp)) ;    this%m_frootac_to_litter_fire              (:) = spval
-       allocate(this%m_frootmc_to_litter_fire             (begp:endp)) ;    this%m_frootmc_to_litter_fire              (:) = spval
+       !allocate(this%m_frootc_to_litter_fire             (begp:endp)) ;    this%m_frootc_to_litter_fire              (:) = spval
+       !allocate(this%m_froottc_to_litter_fire             (begp:endp)) ;    this%m_froottc_to_litter_fire              (:) = spval
+       !allocate(this%m_frootac_to_litter_fire             (begp:endp)) ;    this%m_frootac_to_litter_fire              (:) = spval
+       !allocate(this%m_frootmc_to_litter_fire             (begp:endp)) ;    this%m_frootmc_to_litter_fire              (:) = spval
 
        allocate(this%m_frootc_storage_to_litter_fire     (begp:endp)) ;    this%m_frootc_storage_to_litter_fire      (:) = spval
        allocate(this%m_frootc_xfer_to_litter_fire        (begp:endp)) ;    this%m_frootc_xfer_to_litter_fire         (:) = spval
@@ -6143,10 +6187,10 @@ module VegetationDataType
        allocate(this%grainc_xfer_to_grainc               (begp:endp)) ;    this%grainc_xfer_to_grainc                (:) = spval
        allocate(this%leafc_xfer_to_leafc                 (begp:endp)) ;    this%leafc_xfer_to_leafc                  (:) = spval
        !TAM
-       allocate(this%frootc_xfer_to_frootc               (begp:endp)) ;    this%frootc_xfer_to_frootc                (:) = spval
-       allocate(this%frootc_xfer_to_froottc               (begp:endp)) ;    this%frootc_xfer_to_froottc                (:) = spval
-       allocate(this%frootc_xfer_to_frootac               (begp:endp)) ;    this%frootc_xfer_to_frootac                (:) = spval
-       allocate(this%frootc_xfer_to_frootmc               (begp:endp)) ;    this%frootc_xfer_to_frootmc                (:) = spval
+       !allocate(this%frootc_xfer_to_frootc               (begp:endp)) ;    this%frootc_xfer_to_frootc                (:) = spval
+       !allocate(this%frootc_xfer_to_froottc               (begp:endp)) ;    this%frootc_xfer_to_froottc                (:) = spval
+       !allocate(this%frootc_xfer_to_frootac               (begp:endp)) ;    this%frootc_xfer_to_frootac                (:) = spval
+       !allocate(this%frootc_xfer_to_frootmc               (begp:endp)) ;    this%frootc_xfer_to_frootmc                (:) = spval
        
        allocate(this%livestemc_xfer_to_livestemc         (begp:endp)) ;    this%livestemc_xfer_to_livestemc          (:) = spval
        allocate(this%deadstemc_xfer_to_deadstemc         (begp:endp)) ;    this%deadstemc_xfer_to_deadstemc          (:) = spval
@@ -6154,21 +6198,53 @@ module VegetationDataType
        allocate(this%deadcrootc_xfer_to_deadcrootc       (begp:endp)) ;    this%deadcrootc_xfer_to_deadcrootc        (:) = spval
        allocate(this%leafc_to_litter                     (begp:endp)) ;    this%leafc_to_litter                      (:) = spval
        !TAM
-       allocate(this%frootc_to_litter                    (begp:endp)) ;    this%frootc_to_litter                     (:) = spval
-       allocate(this%froottc_to_litter                   (begp:endp)) ;    this%froottc_to_litter                    (:) = spval
-       allocate(this%frootac_to_litter                   (begp:endp)) ;    this%frootac_to_litter                    (:) = spval
-       allocate(this%frootmc_to_litter                   (begp:endp)) ;    this%frootmc_to_litter                    (:) = spval
+       !allocate(this%frootc_to_litter                    (begp:endp)) ;    this%frootc_to_litter                     (:) = spval
+       !allocate(this%froottc_to_litter                   (begp:endp)) ;    this%froottc_to_litter                    (:) = spval
+       !allocate(this%frootac_to_litter                   (begp:endp)) ;    this%frootac_to_litter                    (:) = spval
+       !allocate(this%frootmc_to_litter                   (begp:endp)) ;    this%frootmc_to_litter                    (:) = spval
 
        allocate(this%livestemc_to_litter                 (begp:endp)) ;    this%livestemc_to_litter                  (:) = spval
        allocate(this%livecrootc_to_litter                (begp:endp)) ;    this%livecrootc_to_litter                 (:) = spval
        allocate(this%grainc_to_food                      (begp:endp)) ;    this%grainc_to_food                       (:) = spval
        allocate(this%leaf_mr                             (begp:endp)) ;    this%leaf_mr                              (:) = spval
-       !TAM
-       allocate(this%froot_mr                            (begp:endp)) ;    this%froot_mr                             (:) = spval
+#if (defined TAM)
+       allocate(this%m_froottc_to_litter                 (begp:endp)) ;    this%m_froottc_to_litter                  (:) = spval
+       allocate(this%m_frootac_to_litter                 (begp:endp)) ;    this%m_frootac_to_litter                  (:) = spval
+       allocate(this%m_frootmc_to_litter                 (begp:endp)) ;    this%m_frootmc_to_litter                  (:) = spval
+
+       allocate(this%hrv_froottc_to_litter               (begp:endp)) ;    this%hrv_froottc_to_litter                 (:) = spval
+       allocate(this%hrv_frootac_to_litter               (begp:endp)) ;    this%hrv_frootac_to_litter                 (:) = spval
+       allocate(this%hrv_frootmc_to_litter               (begp:endp)) ;    this%hrv_frootmc_to_litter                 (:) = spval
+       
+       allocate(this%m_froottc_to_fire                    (begp:endp)) ;    this%m_froottc_to_fire                     (:) = spval
+       allocate(this%m_frootac_to_fire                    (begp:endp)) ;    this%m_frootac_to_fire                     (:) = spval
+       allocate(this%m_frootmc_to_fire                    (begp:endp)) ;    this%m_frootmc_to_fire                     (:) = spval
+
+       allocate(this%m_froottc_to_litter_fire             (begp:endp)) ;    this%m_froottc_to_litter_fire              (:) = spval
+       allocate(this%m_frootac_to_litter_fire             (begp:endp)) ;    this%m_frootac_to_litter_fire              (:) = spval
+       allocate(this%m_frootmc_to_litter_fire             (begp:endp)) ;    this%m_frootmc_to_litter_fire              (:) = spval
+
+       allocate(this%frootc_xfer_to_froottc               (begp:endp)) ;    this%frootc_xfer_to_froottc                (:) = spval
+       allocate(this%frootc_xfer_to_frootac               (begp:endp)) ;    this%frootc_xfer_to_frootac                (:) = spval
+       allocate(this%frootc_xfer_to_frootmc               (begp:endp)) ;    this%frootc_xfer_to_frootmc                (:) = spval
+       
+       allocate(this%froottc_to_litter                   (begp:endp)) ;    this%froottc_to_litter                    (:) = spval
+       allocate(this%frootac_to_litter                   (begp:endp)) ;    this%frootac_to_litter                    (:) = spval
+       allocate(this%frootmc_to_litter                   (begp:endp)) ;    this%frootmc_to_litter                    (:) = spval
+
        allocate(this%froott_mr                           (begp:endp)) ;    this%froott_mr                             (:) = spval
        allocate(this%froota_mr                           (begp:endp)) ;    this%froota_mr                             (:) = spval
        allocate(this%frootm_mr                           (begp:endp)) ;    this%frootm_mr                             (:) = spval
-
+#else   
+      allocate(this%m_frootc_to_litter                  (begp:endp)) ;    this%m_frootc_to_litter                   (:) = spval
+      allocate(this%hrv_frootc_to_litter                (begp:endp)) ;    this%hrv_frootc_to_litter                 (:) = spval
+      allocate(this%m_frootc_to_fire                    (begp:endp)) ;    this%m_frootc_to_fire                     (:) = spval 
+      allocate(this%m_frootc_to_litter_fire             (begp:endp)) ;    this%m_frootc_to_litter_fire              (:) = spval 
+      allocate(this%frootc_xfer_to_frootc               (begp:endp)) ;    this%frootc_xfer_to_frootc                (:) = spval
+      allocate(this%frootc_to_litter                    (begp:endp)) ;    this%frootc_to_litter                     (:) = spval
+      allocate(this%froot_mr                            (begp:endp)) ;    this%froot_mr                             (:) = spval
+#endif
+       
        allocate(this%livestem_mr                         (begp:endp)) ;    this%livestem_mr                          (:) = spval
        allocate(this%livecroot_mr                        (begp:endp)) ;    this%livecroot_mr                         (:) = spval
        allocate(this%grain_mr                            (begp:endp)) ;    this%grain_mr                             (:) = spval
@@ -6283,9 +6359,15 @@ module VegetationDataType
     allocate(this%agwdnpp                             (begp:endp)) ;    this%agwdnpp                              (:) = spval
     allocate(this%allocation_leaf                     (begp:endp)) ;    this%allocation_leaf                      (:) = spval
     allocate(this%allocation_stem                     (begp:endp)) ;    this%allocation_stem                      (:) = spval
-    !TAM
+#if (defined TAM)
+    allocate(this%allocation_froott                   (begp:endp)) ;    this%allocation_froott                     (:) = spval
+    allocate(this%allocation_froota                   (begp:endp)) ;    this%allocation_froota                     (:) = spval
+    allocate(this%allocation_frootm                   (begp:endp)) ;    this%allocation_frootm                     (:) = spval
+#else
     allocate(this%allocation_froot                    (begp:endp)) ;    this%allocation_froot                     (:) = spval
-
+#endif    
+    
+    
     !-----------------------------------------------------------------------
     ! initialize history fields for select members of veg_cf
     !-----------------------------------------------------------------------
@@ -6319,7 +6401,37 @@ module VegetationDataType
        call hist_addfld1d (fname='LEAFC_ALLOC', units='gC/m^2/s', &
             avgflag='A', long_name='leaf C allocation', &
             ptr_patch=this%leafc_alloc)
+#if (defined TAM)
+       this%froottc_loss(begp:endp) = spval
+       call hist_addfld1d (fname='FROOTTC_LOSS', units='gC/m^2/s', &
+            avgflag='A', long_name='fine root t C loss', &
+            ptr_patch=this%froottc_loss)
 
+       this%frootac_loss(begp:endp) = spval
+       call hist_addfld1d (fname='FROOTAC_LOSS', units='gC/m^2/s', &
+            avgflag='A', long_name='fine root a C loss', &
+            ptr_patch=this%frootac_loss)
+
+       this%frootmc_loss(begp:endp) = spval
+       call hist_addfld1d (fname='FROOTMC_LOSS', units='gC/m^2/s', &
+            avgflag='A', long_name='fine root m C loss', &
+            ptr_patch=this%frootmc_loss)
+
+       this%froottc_alloc(begp:endp) = spval
+       call hist_addfld1d (fname='FROOTTC_ALLOC', units='gC/m^2/s', &
+            avgflag='A', long_name='fine root t C allocation', &
+            ptr_patch=this%froottc_alloc)
+
+       this%frootac_alloc(begp:endp) = spval
+       call hist_addfld1d (fname='FROOTAC_ALLOC', units='gC/m^2/s', &
+            avgflag='A', long_name='fine root a C allocation', &
+            ptr_patch=this%frootac_alloc)
+
+       this%frootmc_alloc(begp:endp) = spval
+       call hist_addfld1d (fname='FROOTMC_ALLOC', units='gC/m^2/s', &
+            avgflag='A', long_name='fine root m C allocation', &
+            ptr_patch=this%frootmc_alloc)
+#else
        this%frootc_loss(begp:endp) = spval
        call hist_addfld1d (fname='FROOTC_LOSS', units='gC/m^2/s', &
             avgflag='A', long_name='fine root C loss', &
@@ -6329,7 +6441,7 @@ module VegetationDataType
        call hist_addfld1d (fname='FROOTC_ALLOC', units='gC/m^2/s', &
             avgflag='A', long_name='fine root C allocation', &
             ptr_patch=this%frootc_alloc)
-
+#endif
        this%m_leafc_to_litter(begp:endp) = spval
        call hist_addfld1d (fname='M_LEAFC_TO_LITTER', units='gC/m^2/s', &
             avgflag='A', long_name='leaf C mortality', &
@@ -8336,8 +8448,13 @@ module VegetationDataType
              this%excess_cflux(p)          = spval
              this%plant_calloc(p)          = spval
              this%prev_leafc_to_litter(p)  = spval
-             !TAM
+#if (defined TAM)
+             this%prev_froottc_to_litter(p) = spval
+             this%prev_frootac_to_litter(p) = spval
+             this%prev_frootmc_to_litter(p) = spval
+#else
              this%prev_frootc_to_litter(p) = spval
+#endif
              if ( use_c13 ) then
                 this%xsmrpool_c13ratio(p)  = spval
              endif
@@ -8349,8 +8466,13 @@ module VegetationDataType
              this%xsmrpool_recover(p)      = 0._r8
              this%excess_cflux(p)          = 0._r8
              this%prev_leafc_to_litter(p)  = 0._r8
-             !TAM
+#if (defined TAM)
+             this%prev_froottc_to_litter(p) = 0._r8
+             this%prev_frootac_to_litter(p) = 0._r8
+             this%prev_frootmc_to_litter(p) = 0._r8
+#else
              this%prev_frootc_to_litter(p) = 0._r8
+#endif
              this%plant_calloc(p)          = 0._r8
           end if
        end do
@@ -8699,7 +8821,7 @@ module VegetationDataType
             this%m_leafc_to_litter(p)                   + &
             this%m_leafc_storage_to_litter(p)           + &
             this%m_leafc_xfer_to_litter(p)              + &
-            this%m_frootc_to_litter(p)                  + &
+            !this%m_frootc_to_litter(p)                  + &
             this%m_frootc_storage_to_litter(p)          + &
             this%m_frootc_xfer_to_litter(p)             + &
             this%m_livestemc_to_litter(p)               + &
@@ -8725,7 +8847,7 @@ module VegetationDataType
             this%m_deadstemc_to_litter_fire(p)          + &
             this%m_deadstemc_storage_to_litter_fire(p)  + &
             this%m_deadstemc_xfer_to_litter_fire(p)     + &
-            this%m_frootc_to_litter_fire(p)             + &
+            !this%m_frootc_to_litter_fire(p)             + &
             this%m_frootc_storage_to_litter_fire(p)     + &
             this%m_frootc_xfer_to_litter_fire(p)        + &
             this%m_livecrootc_to_litter_fire(p)         + &
@@ -8738,18 +8860,26 @@ module VegetationDataType
             this%m_gresp_xfer_to_litter_fire(p)        
 #if (defined TAM)
             this%litfall(p) = this%litfall(p)            + &
-            this%froottc_to_litter(p)                    + &
-            this%frootac_to_litter(p)                    + &
-            this%frootmc_to_litter(p)
+              this%froottc_to_litter(p)                    + &
+              this%frootac_to_litter(p)                    + &
+              this%frootmc_to_litter(p)                    + &
+              this%m_froottc_to_litter(p)                  + &
+              this%m_frootac_to_litter(p)                  + &
+              this%m_frootmc_to_litter(p)                  + &
+              this%m_froottc_to_litter_fire(p)             + &
+              this%m_frootac_to_litter_fire(p)             + &
+              this%m_frootmc_to_litter_fire(p)
 #else
             this%litfall(p) = this%litfall(p)            + &
-            this%frootc_to_litter(p)
+              this%frootc_to_litter(p)                     + &
+              this%m_frootc_to_litter(p)                   + &
+              this%m_frootc_to_litter_fire(p)
 #endif
             this%litfall(p) = this%litfall(p) + &
               this%hrv_leafc_to_litter(p)                 + &
               this%hrv_leafc_storage_to_litter(p)         + &
               this%hrv_leafc_xfer_to_litter(p)            + &
-              this%hrv_frootc_to_litter(p)                + &
+              !this%hrv_frootc_to_litter(p)                + &
               this%hrv_frootc_storage_to_litter(p)        + &
               this%hrv_frootc_xfer_to_litter(p)           + &
               this%hrv_livestemc_to_litter(p)             + &
@@ -8766,6 +8896,15 @@ module VegetationDataType
               this%hrv_gresp_storage_to_litter(p)         + &
               this%hrv_gresp_xfer_to_litter(p)            + &
               this%hrv_cpool_to_litter(p)
+#if (defined TAM)
+              this%litfall(p) = this%litfall(p) + &
+                this%hrv_froottc_to_litter(p)     + &
+                this%hrv_frootac_to_litter(p)     + &
+                this%hrv_froomc_to_litter(p)
+#else
+              this%litfall(p) = this%litfall(p) + &
+               this%hrv_frootc_to_litter(p)
+#endif
        
        ! patch-level fire losses (VEGFIRE)
        this%vegfire(p) = 0._r8
@@ -8786,7 +8925,7 @@ module VegetationDataType
             this%m_leafc_to_fire(p)                + &
             this%m_leafc_storage_to_fire(p)        + &
             this%m_leafc_xfer_to_fire(p)           + &
-            this%m_frootc_to_fire(p)               + &
+            !this%m_frootc_to_fire(p)               + &
             this%m_frootc_storage_to_fire(p)       + &
             this%m_frootc_xfer_to_fire(p)          + &
             this%m_livestemc_to_fire(p)            + &
@@ -8804,7 +8943,17 @@ module VegetationDataType
             this%m_gresp_storage_to_fire(p)        + &
             this%m_gresp_xfer_to_fire(p)           + &
             this%m_cpool_to_fire(p)
-
+#if (defined TAM)
+            this%fire_closs(p) = &
+               this%fire_closs(p) + &
+               this%m_froottc_to_fire(p)               + &
+               this%m_frootac_to_fire(p)               + &
+               this%m_frootmc_to_fire(p)
+#else
+            this%fire_closs(p) = &
+               this%fire_closs(p) + &
+               this%m_frootc_to_fire(p)            
+#endif
        if ( crop_prog .and. veg_pp%itype(p) >= npcropmin )then
           this%litfall(p) =                  &
                this%litfall(p)             + &
@@ -8815,27 +8964,64 @@ module VegetationDataType
        ! new summary variables for CLAMP
 
        ! (FROOTC_ALLOC) - fine root C allocation
+       !this%frootc_alloc(p) = &
+       !     this%frootc_xfer_to_frootc(p)    + &
+       !     this%cpool_to_frootc(p)
+
+       ! (FROOTC_LOSS) - fine root C loss changed by F. Li and S. Levis
+#if (defined TAM)
+
+       this%froottc_alloc(p) = &
+            this%frootc_xfer_to_froottc(p)    + &
+            this%cpool_to_froottc(p)
+
+       this%frootac_alloc(p) = &
+            this%frootc_xfer_to_frootac(p)    + &
+            this%cpool_to_frootac(p)
+
+       this%frootmc_alloc(p) = &
+            this%frootc_xfer_to_frootmc(p)    + &
+            this%cpool_to_frootmc(p)
+
+       this%froottc_loss(p) = &
+            this%m_froottc_to_litter(p)       + &
+            this%m_froottc_to_fire(p)         + &
+            this%m_froottc_to_litter_fire(p)  + &
+            this%froottc_to_litter(p)
+       this%frootac_loss(p) = &
+            this%m_frootac_to_litter(p)       + &
+            this%m_frootac_to_fire(p)         + &
+            this%m_frootac_to_litter_fire(p)  + &
+            this%frootac_to_litter(p)
+       this%frootmc_loss(p) = &
+            this%m_frootmc_to_litter(p)       + &
+            this%m_frootmc_to_fire(p)         + &
+            this%m_frootmc_to_litter_fire(p)  + &
+            this%frootmc_to_litter(p)
+
+       this%froottc_loss(p) =  this%froottc_loss(p) + &
+            this%hrv_froottc_to_litter(p)
+       this%frootac_loss(p) =  this%frootac_loss(p) + &
+            this%hrv_frootac_to_litter(p)
+       this%frootmc_loss(p) =  this%frootmc_loss(p) + &
+                 this%hrv_frootmc_to_litter(p)
+#else
+
        this%frootc_alloc(p) = &
             this%frootc_xfer_to_frootc(p)    + &
             this%cpool_to_frootc(p)
 
-       ! (FROOTC_LOSS) - fine root C loss changed by F. Li and S. Levis
-#if (defined TAM)
-       this%froottc_loss(p) = &
-       this%frootac_loss(p) = &
-       this%frootmc_loss(p) = &
-#else
        this%frootc_loss(p) = &
             this%m_frootc_to_litter(p)       + &
             this%m_frootc_to_fire(p)         + &
             this%m_frootc_to_litter_fire(p)  + &
             this%frootc_to_litter(p)
-#endif
+
       ! if(use_crop) then 
            this%frootc_loss(p) =  this%frootc_loss(p) + &
                  this%hrv_frootc_to_litter(p)     
       ! endif
-      
+#endif      
        ! (LEAFC_ALLOC) - leaf C allocation
        this%leafc_alloc(p) = &
             this%leafc_xfer_to_leafc(p)    + &
@@ -9101,26 +9287,26 @@ module VegetationDataType
           i = filter_patch(fi)
 
           this%leafc_xfer_to_leafc(i)                 = value_patch
-          this%frootc_xfer_to_frootc(i)               = value_patch
+          !this%frootc_xfer_to_frootc(i)               = value_patch
           this%livestemc_xfer_to_livestemc(i)         = value_patch
           this%deadstemc_xfer_to_deadstemc(i)         = value_patch
           this%livecrootc_xfer_to_livecrootc(i)       = value_patch
           this%deadcrootc_xfer_to_deadcrootc(i)       = value_patch
           this%leafc_to_litter(i)                     = value_patch
-          this%frootc_to_litter(i)                    = value_patch
+          !this%frootc_to_litter(i)                    = value_patch
           this%livecrootc_to_litter(i)                = value_patch
           this%leaf_mr(i)                             = value_patch
-          this%froot_mr(i)                            = value_patch
+          !this%froot_mr(i)                            = value_patch
           this%livestem_mr(i)                         = value_patch
           this%livecroot_mr(i)                        = value_patch
           this%grain_mr(i)                            = value_patch
           this%leaf_curmr(i)                          = value_patch
-          this%froot_curmr(i)                         = value_patch
+          !this%froot_curmr(i)                         = value_patch
           this%livestem_curmr(i)                      = value_patch
           this%livecroot_curmr(i)                     = value_patch
           this%grain_curmr(i)                         = value_patch
           this%leaf_xsmr(i)                           = value_patch
-          this%froot_xsmr(i)                          = value_patch
+          !this%froot_xsmr(i)                          = value_patch
           this%livestem_xsmr(i)                       = value_patch
           this%livecroot_xsmr(i)                      = value_patch
           this%grain_xsmr(i)                          = value_patch
@@ -9130,7 +9316,7 @@ module VegetationDataType
           this%cpool_to_xsmrpool(i)                   = value_patch
           this%cpool_to_leafc(i)                      = value_patch
           this%cpool_to_leafc_storage(i)              = value_patch
-          this%cpool_to_frootc(i)                     = value_patch
+          !this%cpool_to_frootc(i)                     = value_patch
           this%cpool_to_frootc_storage(i)             = value_patch
           this%cpool_to_livestemc(i)                  = value_patch
           this%cpool_to_livestemc_storage(i)          = value_patch
@@ -9183,13 +9369,49 @@ module VegetationDataType
           this%cinputs(i)                             = value_patch
           this%coutputs(i)                            = value_patch
           this%fire_closs(i)                          = value_patch
-          this%frootc_alloc(i)                        = value_patch
-          this%frootc_loss(i)                         = value_patch
+          !this%frootc_alloc(i)                        = value_patch
+          !this%frootc_loss(i)                         = value_patch
           this%leafc_alloc(i)                         = value_patch
           this%leafc_loss(i)                          = value_patch
           this%woodc_alloc(i)                         = value_patch
           this%woodc_loss(i)                          = value_patch
           this%xsmrpool_turnover(i)                   = value_patch
+#if (defined TAM)
+     this%frootc_xfer_to_froottc(i)               = value_patch
+     this%frootc_xfer_to_frootac(i)               = value_patch
+     this%frootc_xfer_to_frootmc(i)               = value_patch
+     this%froottc_to_litter(i)                    = value_patch
+     this%frootac_to_litter(i)                    = value_patch
+     this%frootmc_to_litter(i)                    = value_patch
+     this%froott_mr(i)                            = value_patch
+     this%froota_mr(i)                            = value_patch
+     this%frootm_mr(i)                            = value_patch
+     this%froott_curmr(i)                         = value_patch
+     this%froota_curmr(i)                         = value_patch
+     this%frootm_curmr(i)                         = value_patch
+     this%froott_xsmr(i)                          = value_patch
+     this%froota_xsmr(i)                          = value_patch
+     this%frootm_xsmr(i)                          = value_patch
+     this%cpool_to_froottc(i)                     = value_patch
+     this%cpool_to_frootac(i)                     = value_patch
+     this%cpool_to_frootmc(i)                     = value_patch
+     this%froottc_alloc(i)                        = value_patch
+     this%frootac_alloc(i)                        = value_patch
+     this%frootmc_alloc(i)                        = value_patch
+     this%froottc_loss(i)                         = value_patch
+     this%frootac_loss(i)                         = value_patch
+     this%frootmc_loss(i)                         = value_patch
+#else
+     this%frootc_xfer_to_frootc(i)               = value_patch
+     this%frootc_to_litter(i)                    = value_patch
+     this%froot_mr(i)                            = value_patch
+     this%froot_curmr(i)                         = value_patch
+     this%froot_xsmr(i)                          = value_patch
+     this%cpool_to_frootc(i)                     = value_patch
+     this%frootc_alloc(i)                        = value_patch
+     this%frootc_loss(i)                         = value_patch
+#endif
+
        end do
     end if !(.not.use_fates)
 
@@ -9215,7 +9437,13 @@ module VegetationDataType
        this%hrv_leafc_to_litter(i)                 = value_patch
        this%hrv_leafc_storage_to_litter(i)         = value_patch
        this%hrv_leafc_xfer_to_litter(i)            = value_patch
+#if (defined TAM)
+       this%hrv_froottc_to_litter(i)                = value_patch
+       this%hrv_frootac_to_litter(i)                = value_patch
+       this%hrv_frootmc_to_litter(i)                = value_patch
+#else
        this%hrv_frootc_to_litter(i)                = value_patch
+#endif
        this%hrv_frootc_storage_to_litter(i)        = value_patch
        this%hrv_frootc_xfer_to_litter(i)           = value_patch
        this%hrv_livestemc_to_litter(i)             = value_patch
@@ -9271,7 +9499,12 @@ module VegetationDataType
     ! allocate for each member of veg_nf
     !-----------------------------------------------------------------------
     allocate(this%m_leafn_to_litter                   (begp:endp)) ; this%m_leafn_to_litter                   (:) = spval
-    allocate(this%m_frootn_to_litter                  (begp:endp)) ; this%m_frootn_to_litter                  (:) = spval
+    !TAM
+    !allocate(this%m_frootn_to_litter                  (begp:endp)) ; this%m_frootn_to_litter                  (:) = spval
+    !allocate(this%m_froottn_to_litter                  (begp:endp)) ; this%m_froottn_to_litter                (:) = spval
+    !allocate(this%m_frootan_to_litter                  (begp:endp)) ; this%m_frootan_to_litter                (:) = spval
+    !allocate(this%m_frootmn_to_litter                  (begp:endp)) ; this%m_frootmn_to_litter                (:) = spval
+
     allocate(this%m_leafn_storage_to_litter           (begp:endp)) ; this%m_leafn_storage_to_litter           (:) = spval
     allocate(this%m_frootn_storage_to_litter          (begp:endp)) ; this%m_frootn_storage_to_litter          (:) = spval
     allocate(this%m_livestemn_storage_to_litter       (begp:endp)) ; this%m_livestemn_storage_to_litter       (:) = spval
@@ -9291,7 +9524,12 @@ module VegetationDataType
     allocate(this%m_retransn_to_litter                (begp:endp)) ; this%m_retransn_to_litter                (:) = spval
     allocate(this%m_npool_to_litter                   (begp:endp)) ; this%m_npool_to_litter                   (:) = spval
     allocate(this%hrv_leafn_to_litter                 (begp:endp)) ; this%hrv_leafn_to_litter                 (:) = spval
-    allocate(this%hrv_frootn_to_litter                (begp:endp)) ; this%hrv_frootn_to_litter                (:) = spval
+    !TAM
+    !allocate(this%hrv_frootn_to_litter                (begp:endp)) ; this%hrv_frootn_to_litter                (:) = spval
+    !allocate(this%hrv_froottn_to_litter                (begp:endp)) ; this%hrv_froottn_to_litter                (:) = spval
+    !allocate(this%hrv_frootan_to_litter                (begp:endp)) ; this%hrv_frootan_to_litter                (:) = spval
+    !allocate(this%hrv_frootmn_to_litter                (begp:endp)) ; this%hrv_frootmn_to_litter                (:) = spval
+
     allocate(this%hrv_leafn_storage_to_litter         (begp:endp)) ; this%hrv_leafn_storage_to_litter         (:) = spval
     allocate(this%hrv_frootn_storage_to_litter        (begp:endp)) ; this%hrv_frootn_storage_to_litter        (:) = spval
     allocate(this%hrv_livestemn_storage_to_litter     (begp:endp)) ; this%hrv_livestemn_storage_to_litter     (:) = spval
@@ -9324,7 +9562,12 @@ module VegetationDataType
     allocate(this%m_deadstemn_to_fire                 (begp:endp)) ; this%m_deadstemn_to_fire                 (:) = spval
     allocate(this%m_deadstemn_storage_to_fire         (begp:endp)) ; this%m_deadstemn_storage_to_fire         (:) = spval
     allocate(this%m_deadstemn_xfer_to_fire            (begp:endp)) ; this%m_deadstemn_xfer_to_fire            (:) = spval
-    allocate(this%m_frootn_to_fire                    (begp:endp)) ; this%m_frootn_to_fire                    (:) = spval
+    !TAM
+    !allocate(this%m_frootn_to_fire                    (begp:endp)) ; this%m_frootn_to_fire                    (:) = spval
+    !allocate(this%m_froottn_to_fire                    (begp:endp)) ; this%m_froottn_to_fire                    (:) = spval
+    !allocate(this%m_frootan_to_fire                    (begp:endp)) ; this%m_frootan_to_fire                    (:) = spval
+    !allocate(this%m_frootmn_to_fire                    (begp:endp)) ; this%m_frootmn_to_fire                    (:) = spval
+
     allocate(this%m_frootn_storage_to_fire            (begp:endp)) ; this%m_frootn_storage_to_fire            (:) = spval
     allocate(this%m_frootn_xfer_to_fire               (begp:endp)) ; this%m_frootn_xfer_to_fire               (:) = spval
     allocate(this%m_livecrootn_to_fire                (begp:endp)) ; this%m_livecrootn_to_fire                (:) = spval
@@ -9345,7 +9588,12 @@ module VegetationDataType
     allocate(this%m_deadstemn_to_litter_fire          (begp:endp)) ; this%m_deadstemn_to_litter_fire          (:) = spval
     allocate(this%m_deadstemn_storage_to_litter_fire  (begp:endp)) ; this%m_deadstemn_storage_to_litter_fire  (:) = spval
     allocate(this%m_deadstemn_xfer_to_litter_fire     (begp:endp)) ; this%m_deadstemn_xfer_to_litter_fire     (:) = spval
-    allocate(this%m_frootn_to_litter_fire             (begp:endp)) ; this%m_frootn_to_litter_fire             (:) = spval
+    !TAM
+    !allocate(this%m_frootn_to_litter_fire             (begp:endp)) ; this%m_frootn_to_litter_fire             (:) = spval
+    !allocate(this%m_froottn_to_litter_fire             (begp:endp)) ; this%m_froottn_to_litter_fire             (:) = spval
+    !allocate(this%m_frootan_to_litter_fire             (begp:endp)) ; this%m_frootan_to_litter_fire             (:) = spval
+    !allocate(this%m_frootmn_to_litter_fire             (begp:endp)) ; this%m_frootmn_to_litter_fire             (:) = spval
+
     allocate(this%m_frootn_storage_to_litter_fire     (begp:endp)) ; this%m_frootn_storage_to_litter_fire     (:) = spval
     allocate(this%m_frootn_xfer_to_litter_fire        (begp:endp)) ; this%m_frootn_xfer_to_litter_fire        (:) = spval
     allocate(this%m_livecrootn_to_litter_fire         (begp:endp)) ; this%m_livecrootn_to_litter_fire         (:) = spval
@@ -9358,20 +9606,39 @@ module VegetationDataType
     allocate(this%m_retransn_to_litter_fire           (begp:endp)) ; this%m_retransn_to_litter_fire           (:) = spval
     allocate(this%m_npool_to_litter_fire              (begp:endp)) ; this%m_npool_to_litter_fire              (:) = spval
     allocate(this%leafn_xfer_to_leafn                 (begp:endp)) ; this%leafn_xfer_to_leafn                 (:) = spval
-    allocate(this%frootn_xfer_to_frootn               (begp:endp)) ; this%frootn_xfer_to_frootn               (:) = spval
+    !TAM
+    !allocate(this%frootn_xfer_to_frootn               (begp:endp)) ; this%frootn_xfer_to_frootn               (:) = spval
+    !allocate(this%frootn_xfer_to_froottn               (begp:endp)) ; this%frootn_xfer_to_froottn               (:) = spval
+    !allocate(this%frootn_xfer_to_frootan               (begp:endp)) ; this%frootn_xfer_to_frootan               (:) = spval
+    !allocate(this%frootn_xfer_to_frootmn               (begp:endp)) ; this%frootn_xfer_to_frootmn               (:) = spval
+
     allocate(this%livestemn_xfer_to_livestemn         (begp:endp)) ; this%livestemn_xfer_to_livestemn         (:) = spval
     allocate(this%deadstemn_xfer_to_deadstemn         (begp:endp)) ; this%deadstemn_xfer_to_deadstemn         (:) = spval
     allocate(this%livecrootn_xfer_to_livecrootn       (begp:endp)) ; this%livecrootn_xfer_to_livecrootn       (:) = spval
     allocate(this%deadcrootn_xfer_to_deadcrootn       (begp:endp)) ; this%deadcrootn_xfer_to_deadcrootn       (:) = spval
     allocate(this%leafn_to_litter                     (begp:endp)) ; this%leafn_to_litter                     (:) = spval
     allocate(this%leafn_to_retransn                   (begp:endp)) ; this%leafn_to_retransn                   (:) = spval
-    allocate(this%frootn_to_retransn                  (begp:endp)) ; this%frootn_to_retransn                  (:) = spval
-    allocate(this%frootn_to_litter                    (begp:endp)) ; this%frootn_to_litter                    (:) = spval
+    !TAM
+    !allocate(this%frootn_to_retransn                  (begp:endp)) ; this%frootn_to_retransn                  (:) = spval
+    !allocate(this%froottn_to_retransn                  (begp:endp)) ; this%froottn_to_retransn                  (:) = spval
+    !allocate(this%frootan_to_retransn                  (begp:endp)) ; this%frootan_to_retransn                  (:) = spval
+    !allocate(this%frootmn_to_retransn                  (begp:endp)) ; this%frootmn_to_retransn                  (:) = spval
+    !TAM
+    !allocate(this%frootn_to_litter                    (begp:endp)) ; this%frootn_to_litter                    (:) = spval
+    !allocate(this%froottn_to_litter                    (begp:endp)) ; this%froottn_to_litter                    (:) = spval
+    !allocate(this%frootan_to_litter                    (begp:endp)) ; this%frootan_to_litter                    (:) = spval
+    !allocate(this%frootmn_to_litter                    (begp:endp)) ; this%frootmn_to_litter                    (:) = spval
+
     allocate(this%retransn_to_npool                   (begp:endp)) ; this%retransn_to_npool                   (:) = spval
     allocate(this%sminn_to_npool                      (begp:endp)) ; this%sminn_to_npool                      (:) = spval
     allocate(this%npool_to_leafn                      (begp:endp)) ; this%npool_to_leafn                      (:) = spval
     allocate(this%npool_to_leafn_storage              (begp:endp)) ; this%npool_to_leafn_storage              (:) = spval
-    allocate(this%npool_to_frootn                     (begp:endp)) ; this%npool_to_frootn                     (:) = spval
+    !TAM
+    !allocate(this%npool_to_frootn                     (begp:endp)) ; this%npool_to_frootn                     (:) = spval
+    !allocate(this%npool_to_froottn                     (begp:endp)) ; this%npool_to_froottn                     (:) = spval
+    !allocate(this%npool_to_frootan                     (begp:endp)) ; this%npool_to_frootan                     (:) = spval
+    !allocate(this%npool_to_frootmn                     (begp:endp)) ; this%npool_to_frootmn                     (:) = spval
+
     allocate(this%npool_to_frootn_storage             (begp:endp)) ; this%npool_to_frootn_storage             (:) = spval
     allocate(this%npool_to_livestemn                  (begp:endp)) ; this%npool_to_livestemn                  (:) = spval
     allocate(this%npool_to_livestemn_storage          (begp:endp)) ; this%npool_to_livestemn_storage          (:) = spval
@@ -9427,12 +9694,56 @@ module VegetationDataType
     allocate(this%plant_no3demand_vr                  (begp:endp,1:nlevdecomp)); this%plant_no3demand_vr    (:,:) = spval
     allocate(this%plant_ndemand_vr                    (begp:endp,1:nlevdecomp)); this%plant_ndemand_vr      (:,:) = spval
     allocate(this%prev_leafn_to_litter                (begp:endp)) ; this%prev_leafn_to_litter                (:) = spval
-    allocate(this%prev_frootn_to_litter               (begp:endp)) ; this%prev_frootn_to_litter               (:) = spval
+    !TAM
+    !allocate(this%prev_frootn_to_litter               (begp:endp)) ; this%prev_frootn_to_litter               (:) = spval
+    !allocate(this%prev_froottn_to_litter               (begp:endp)) ; this%prev_froottn_to_litter               (:) = spval
+    !allocate(this%prev_frootan_to_litter               (begp:endp)) ; this%prev_frootan_to_litter               (:) = spval
+    !allocate(this%prev_frootmn_to_litter               (begp:endp)) ; this%prev_frootmn_to_litter               (:) = spval
+
     allocate(this%supplement_to_plantn                (begp:endp)) ; this%supplement_to_plantn                (:) = 0.d0
     allocate(this%gap_nloss_litter                    (begp:endp)) ; this%gap_nloss_litter                    (:) = spval
     allocate(this%fire_nloss_litter                   (begp:endp)) ; this%fire_nloss_litter                   (:) = spval
     allocate(this%hrv_nloss_litter                    (begp:endp)) ; this%hrv_nloss_litter                    (:) = spval
     allocate(this%sen_nloss_litter                    (begp:endp)) ; this%sen_nloss_litter                    (:) = spval
+#if (defined TAM)
+    allocate(this%m_froottn_to_litter                  (begp:endp)) ; this%m_froottn_to_litter                (:) = spval
+    allocate(this%m_frootan_to_litter                  (begp:endp)) ; this%m_frootan_to_litter                (:) = spval
+    allocate(this%m_frootmn_to_litter                  (begp:endp)) ; this%m_frootmn_to_litter                (:) = spval
+    allocate(this%hrv_froottn_to_litter                (begp:endp)) ; this%hrv_froottn_to_litter                (:) = spval
+    allocate(this%hrv_frootan_to_litter                (begp:endp)) ; this%hrv_frootan_to_litter                (:) = spval
+    allocate(this%hrv_frootmn_to_litter                (begp:endp)) ; this%hrv_frootmn_to_litter                (:) = spval
+    allocate(this%m_froottn_to_fire                    (begp:endp)) ; this%m_froottn_to_fire                    (:) = spval
+    allocate(this%m_frootan_to_fire                    (begp:endp)) ; this%m_frootan_to_fire                    (:) = spval
+    allocate(this%m_frootmn_to_fire                    (begp:endp)) ; this%m_frootmn_to_fire                    (:) = spval
+    allocate(this%m_froottn_to_litter_fire             (begp:endp)) ; this%m_froottn_to_litter_fire             (:) = spval
+    allocate(this%m_frootan_to_litter_fire             (begp:endp)) ; this%m_frootan_to_litter_fire             (:) = spval
+    allocate(this%m_frootmn_to_litter_fire             (begp:endp)) ; this%m_frootmn_to_litter_fire             (:) = spval
+    allocate(this%frootn_xfer_to_froottn               (begp:endp)) ; this%frootn_xfer_to_froottn               (:) = spval
+    allocate(this%frootn_xfer_to_frootan               (begp:endp)) ; this%frootn_xfer_to_frootan               (:) = spval
+    allocate(this%frootn_xfer_to_frootmn               (begp:endp)) ; this%frootn_xfer_to_frootmn               (:) = spval
+    allocate(this%froottn_to_retransn                  (begp:endp)) ; this%froottn_to_retransn                  (:) = spval
+    allocate(this%frootan_to_retransn                  (begp:endp)) ; this%frootan_to_retransn                  (:) = spval
+    allocate(this%frootmn_to_retransn                  (begp:endp)) ; this%frootmn_to_retransn                  (:) = spval
+    allocate(this%froottn_to_litter                    (begp:endp)) ; this%froottn_to_litter                    (:) = spval
+    allocate(this%frootan_to_litter                    (begp:endp)) ; this%frootan_to_litter                    (:) = spval
+    allocate(this%frootmn_to_litter                    (begp:endp)) ; this%frootmn_to_litter                    (:) = spval
+    allocate(this%npool_to_froottn                     (begp:endp)) ; this%npool_to_froottn                     (:) = spval
+    allocate(this%npool_to_frootan                     (begp:endp)) ; this%npool_to_frootan                     (:) = spval
+    allocate(this%npool_to_frootmn                     (begp:endp)) ; this%npool_to_frootmn                     (:) = spval
+    allocate(this%prev_froottn_to_litter               (begp:endp)) ; this%prev_froottn_to_litter               (:) = spval
+    allocate(this%prev_frootan_to_litter               (begp:endp)) ; this%prev_frootan_to_litter               (:) = spval
+    allocate(this%prev_frootmn_to_litter               (begp:endp)) ; this%prev_frootmn_to_litter               (:) = spval
+#else
+     allocate(this%m_frootn_to_litter                  (begp:endp)) ; this%m_frootn_to_litter                  (:) = spval
+     allocate(this%hrv_frootn_to_litter                (begp:endp)) ; this%hrv_frootn_to_litter                (:) = spval
+     allocate(this%m_frootn_to_fire                    (begp:endp)) ; this%m_frootn_to_fire                    (:) = spval
+     allocate(this%m_frootn_to_litter_fire             (begp:endp)) ; this%m_frootn_to_litter_fire             (:) = spval
+     allocate(this%frootn_xfer_to_frootn               (begp:endp)) ; this%frootn_xfer_to_frootn               (:) = spval
+     allocate(this%frootn_to_retransn                  (begp:endp)) ; this%frootn_to_retransn                  (:) = spval
+     allocate(this%frootn_to_litter                    (begp:endp)) ; this%frootn_to_litter                    (:) = spval
+     allocate(this%npool_to_frootn                     (begp:endp)) ; this%npool_to_frootn                     (:) = spval
+     allocate(this%prev_frootn_to_litter               (begp:endp)) ; this%prev_frootn_to_litter               (:) = spval
+#endif
 
     !-----------------------------------------------------------------------
     ! initialize history fields for select members of veg_nf
@@ -9443,11 +9754,109 @@ module VegetationDataType
     call hist_addfld1d (fname='M_LEAFN_TO_LITTER', units='gN/m^2/s', &
          avgflag='A', long_name='leaf N mortality', &
          ptr_patch=this%m_leafn_to_litter, default='inactive')
+#if (defined TAM)
 
-    this%m_frootn_to_litter(begp:endp) = spval
-    call hist_addfld1d (fname='M_FROOTN_TO_LITTER', units='gN/m^2/s', &
-         avgflag='A', long_name='fine root N mortality', &
-         ptr_patch=this%m_frootn_to_litter, default='inactive')
+     this%m_froottn_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='M_FROOTTN_TO_LITTER', units='gN/m^2/s', &
+          avgflag='A', long_name='fine root t N mortality', &
+          ptr_patch=this%m_froottn_to_litter, default='inactive')
+
+     this%m_frootan_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='M_FROOTAN_TO_LITTER', units='gN/m^2/s', &
+          avgflag='A', long_name='fine root a N mortality', &
+          ptr_patch=this%m_frootan_to_litter, default='inactive')
+
+     this%m_frootmn_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='M_FROOTMN_TO_LITTER', units='gN/m^2/s', &
+          avgflag='A', long_name='fine root m N mortality', &
+          ptr_patch=this%m_frootmn_to_litter, default='inactive')
+
+     this%m_froottn_to_fire(begp:endp) = spval
+    call hist_addfld1d (fname='M_FROOTTN_TO_FIRE', units='gN/m^2/s', &
+         avgflag='A', long_name='fine root t N fire loss ', &
+         ptr_patch=this%m_froottn_to_fire, default='inactive')
+
+    this%m_frootan_to_fire(begp:endp) = spval
+    call hist_addfld1d (fname='M_FROOTAN_TO_FIRE', units='gN/m^2/s', &
+         avgflag='A', long_name='fine root a N fire loss ', &
+         ptr_patch=this%m_frootan_to_fire, default='inactive')
+
+     this%m_frootmn_to_fire(begp:endp) = spval
+     call hist_addfld1d (fname='M_FROOTMN_TO_FIRE', units='gN/m^2/s', &
+              avgflag='A', long_name='fine root m N fire loss ', &
+              ptr_patch=this%m_frootmn_to_fire, default='inactive')
+
+     this%frootn_xfer_to_froottn(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTN_XFER_TO_FROOTTN', units='gN/m^2/s', &
+          avgflag='A', long_name='fine root t N growth from storage', &
+          ptr_patch=this%frootn_xfer_to_froottn, default='inactive')
+
+     this%frootn_xfer_to_frootan(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTN_XFER_TO_FROOTAN', units='gN/m^2/s', &
+          avgflag='A', long_name='fine root a N growth from storage', &
+          ptr_patch=this%frootn_xfer_to_frootan, default='inactive')
+
+     this%frootn_xfer_to_frootmn(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTN_XFER_TO_FROOTMN', units='gN/m^2/s', &
+          avgflag='A', long_name='fine root m N growth from storage', &
+          ptr_patch=this%frootn_xfer_to_frootmn, default='inactive')
+    
+          this%froottn_to_litter(begp:endp) = spval
+    call hist_addfld1d (fname='FROOTTN_TO_LITTER', units='gN/m^2/s', &
+         avgflag='A', long_name='fine root t N litterfall', &
+         ptr_patch=this%froottn_to_litter, default='inactive')
+
+     this%frootan_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTAN_TO_LITTER', units='gN/m^2/s', &
+         avgflag='A', long_name='fine root a N litterfall', &
+         ptr_patch=this%frootan_to_litter, default='inactive')
+
+     this%frootmn_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTMN_TO_LITTER', units='gN/m^2/s', &
+         avgflag='A', long_name='fine root m N litterfall', &
+         ptr_patch=this%frootmn_to_litter, default='inactive')
+
+     this%npool_to_froottn(begp:endp) = spval
+     call hist_addfld1d (fname='NPOOL_TO_FROOTTN', units='gN/m^2/s', &
+          avgflag='A', long_name='allocation to fine root t N', &
+          ptr_patch=this%npool_to_froottn, default='inactive')
+
+     this%npool_to_frootan(begp:endp) = spval
+     call hist_addfld1d (fname='NPOOL_TO_FROOTAN', units='gN/m^2/s', &
+          avgflag='A', long_name='allocation to fine root a N', &
+          ptr_patch=this%npool_to_frootan, default='inactive')
+
+     this%npool_to_frootmn(begp:endp) = spval
+     call hist_addfld1d (fname='NPOOL_TO_FROOTMN', units='gN/m^2/s', &
+          avgflag='A', long_name='allocation to fine root m N', &
+          ptr_patch=this%npool_to_frootmn, default='inactive')
+
+#else
+     this%m_frootn_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='M_FROOTN_TO_LITTER', units='gN/m^2/s', &
+          avgflag='A', long_name='fine root N mortality', &
+          ptr_patch=this%m_frootn_to_litter, default='inactive')
+
+     this%m_frootn_to_fire(begp:endp) = spval
+     call hist_addfld1d (fname='M_FROOTN_TO_FIRE', units='gN/m^2/s', &
+         avgflag='A', long_name='fine root N fire loss ', &
+         ptr_patch=this%m_frootn_to_fire, default='inactive')
+
+     this%frootn_xfer_to_frootn(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTN_XFER_TO_FROOTN', units='gN/m^2/s', &
+          avgflag='A', long_name='fine root N growth from storage', &
+          ptr_patch=this%frootn_xfer_to_frootn, default='inactive')
+
+     this%frootn_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTN_TO_LITTER', units='gN/m^2/s', &
+          avgflag='A', long_name='fine root N litterfall', &
+          ptr_patch=this%frootn_to_litter, default='inactive')
+
+     this%npool_to_frootn(begp:endp) = spval
+     call hist_addfld1d (fname='NPOOL_TO_FROOTN', units='gN/m^2/s', &
+          avgflag='A', long_name='allocation to fine root N', &
+          ptr_patch=this%npool_to_frootn, default='inactive')
+#endif
 
     this%m_leafn_storage_to_litter(begp:endp) = spval
     call hist_addfld1d (fname='M_LEAFN_STORAGE_TO_LITTER', units='gN/m^2/s', &
@@ -9548,11 +9957,26 @@ module VegetationDataType
     call hist_addfld1d (fname='M_LEAFN_TO_FIRE', units='gN/m^2/s', &
          avgflag='A', long_name='leaf N fire loss', &
          ptr_patch=this%m_leafn_to_fire, default='inactive')
+    !TAM
+!     this%m_frootn_to_fire(begp:endp) = spval
+!     call hist_addfld1d (fname='M_FROOTN_TO_FIRE', units='gN/m^2/s', &
+!          avgflag='A', long_name='fine root N fire loss ', &
+!          ptr_patch=this%m_frootn_to_fire, default='inactive')
 
-    this%m_frootn_to_fire(begp:endp) = spval
-    call hist_addfld1d (fname='M_FROOTN_TO_FIRE', units='gN/m^2/s', &
-         avgflag='A', long_name='fine root N fire loss ', &
-         ptr_patch=this%m_frootn_to_fire, default='inactive')
+!     this%m_froottn_to_fire(begp:endp) = spval
+!     call hist_addfld1d (fname='M_FROOTTN_TO_FIRE', units='gN/m^2/s', &
+!          avgflag='A', long_name='fine root t N fire loss ', &
+!          ptr_patch=this%m_froottn_to_fire, default='inactive')
+
+!     this%m_frootan_to_fire(begp:endp) = spval
+!     call hist_addfld1d (fname='M_FROOTAN_TO_FIRE', units='gN/m^2/s', &
+!          avgflag='A', long_name='fine root a N fire loss ', &
+!          ptr_patch=this%m_frootan_to_fire, default='inactive')
+
+!      this%m_frootmn_to_fire(begp:endp) = spval
+!      call hist_addfld1d (fname='M_FROOTMN_TO_FIRE', units='gN/m^2/s', &
+!               avgflag='A', long_name='fine root m N fire loss ', &
+!               ptr_patch=this%m_frootmn_to_fire, default='inactive')
 
     this%m_leafn_storage_to_fire(begp:endp) = spval
     call hist_addfld1d (fname='M_LEAFN_STORAGE_TO_FIRE', units='gN/m^2/s', &
@@ -9658,11 +10082,26 @@ module VegetationDataType
     call hist_addfld1d (fname='LEAFN_XFER_TO_LEAFN', units='gN/m^2/s', &
          avgflag='A', long_name='leaf N growth from storage', &
          ptr_patch=this%leafn_xfer_to_leafn, default='inactive')
+    !TAM
+!     this%frootn_xfer_to_frootn(begp:endp) = spval
+!     call hist_addfld1d (fname='FROOTN_XFER_TO_FROOTN', units='gN/m^2/s', &
+!          avgflag='A', long_name='fine root N growth from storage', &
+!          ptr_patch=this%frootn_xfer_to_frootn, default='inactive')
 
-    this%frootn_xfer_to_frootn(begp:endp) = spval
-    call hist_addfld1d (fname='FROOTN_XFER_TO_FROOTN', units='gN/m^2/s', &
-         avgflag='A', long_name='fine root N growth from storage', &
-         ptr_patch=this%frootn_xfer_to_frootn, default='inactive')
+!     this%frootn_xfer_to_froottn(begp:endp) = spval
+!     call hist_addfld1d (fname='FROOTN_XFER_TO_FROOTTN', units='gN/m^2/s', &
+!          avgflag='A', long_name='fine root t N growth from storage', &
+!          ptr_patch=this%frootn_xfer_to_froottn, default='inactive')
+
+!     this%frootn_xfer_to_frootan(begp:endp) = spval
+!     call hist_addfld1d (fname='FROOTN_XFER_TO_FROOTAN', units='gN/m^2/s', &
+!          avgflag='A', long_name='fine root a N growth from storage', &
+!          ptr_patch=this%frootn_xfer_to_frootan, default='inactive')
+
+!     this%frootn_xfer_to_frootmn(begp:endp) = spval
+!     call hist_addfld1d (fname='FROOTN_XFER_TO_FROOTMN', units='gN/m^2/s', &
+!          avgflag='A', long_name='fine root m N growth from storage', &
+!          ptr_patch=this%frootn_xfer_to_frootmn, default='inactive')
 
     this%livestemn_xfer_to_livestemn(begp:endp) = spval
     call hist_addfld1d (fname='LIVESTEMN_XFER_TO_LIVESTEMN', units='gN/m^2/s', &
@@ -9693,11 +10132,26 @@ module VegetationDataType
     call hist_addfld1d (fname='LEAFN_TO_RETRANSN', units='gN/m^2/s', &
          avgflag='A', long_name='leaf N to retranslocated N pool', &
          ptr_patch=this%leafn_to_retransn, default='inactive')
+    !TAM 
+!     this%frootn_to_litter(begp:endp) = spval
+!     call hist_addfld1d (fname='FROOTN_TO_LITTER', units='gN/m^2/s', &
+!          avgflag='A', long_name='fine root N litterfall', &
+!          ptr_patch=this%frootn_to_litter, default='inactive')
 
-    this%frootn_to_litter(begp:endp) = spval
-    call hist_addfld1d (fname='FROOTN_TO_LITTER', units='gN/m^2/s', &
-         avgflag='A', long_name='fine root N litterfall', &
-         ptr_patch=this%frootn_to_litter, default='inactive')
+!     this%froottn_to_litter(begp:endp) = spval
+!     call hist_addfld1d (fname='FROOTTN_TO_LITTER', units='gN/m^2/s', &
+!          avgflag='A', long_name='fine root t N litterfall', &
+!          ptr_patch=this%froottn_to_litter, default='inactive')
+
+!     this%frootan_to_litter(begp:endp) = spval
+!     call hist_addfld1d (fname='FROOTAN_TO_LITTER', units='gN/m^2/s', &
+!          avgflag='A', long_name='fine root a N litterfall', &
+!          ptr_patch=this%frootan_to_litter, default='inactive')
+
+!     this%frootmn_to_litter(begp:endp) = spval
+!     call hist_addfld1d (fname='FROOTMN_TO_LITTER', units='gN/m^2/s', &
+!          avgflag='A', long_name='fine root m N litterfall', &
+!          ptr_patch=this%frootmn_to_litter, default='inactive')
 
     this%livecrootn_to_litter(begp:endp) = spval
     call hist_addfld1d (fname='LIVECROOTN_TO_LITTER', units='gN/m^2/s', &
@@ -9723,11 +10177,26 @@ module VegetationDataType
     call hist_addfld1d (fname='NPOOL_TO_LEAFN_STORAGE', units='gN/m^2/s', &
          avgflag='A', long_name='allocation to leaf N storage', &
          ptr_patch=this%npool_to_leafn_storage, default='inactive')
+    !TAM
+!     this%npool_to_frootn(begp:endp) = spval
+!     call hist_addfld1d (fname='NPOOL_TO_FROOTN', units='gN/m^2/s', &
+!          avgflag='A', long_name='allocation to fine root N', &
+!          ptr_patch=this%npool_to_frootn, default='inactive')
 
-    this%npool_to_frootn(begp:endp) = spval
-    call hist_addfld1d (fname='NPOOL_TO_FROOTN', units='gN/m^2/s', &
-         avgflag='A', long_name='allocation to fine root N', &
-         ptr_patch=this%npool_to_frootn, default='inactive')
+!     this%npool_to_froottn(begp:endp) = spval
+!     call hist_addfld1d (fname='NPOOL_TO_FROOTTN', units='gN/m^2/s', &
+!          avgflag='A', long_name='allocation to fine root t N', &
+!          ptr_patch=this%npool_to_froottn, default='inactive')
+
+!     this%npool_to_frootan(begp:endp) = spval
+!     call hist_addfld1d (fname='NPOOL_TO_FROOTAN', units='gN/m^2/s', &
+!          avgflag='A', long_name='allocation to fine root a N', &
+!          ptr_patch=this%npool_to_frootan, default='inactive')
+
+!     this%npool_to_frootmn(begp:endp) = spval
+!     call hist_addfld1d (fname='NPOOL_TO_FROOTMN', units='gN/m^2/s', &
+!          avgflag='A', long_name='allocation to fine root m N', &
+!          ptr_patch=this%npool_to_frootmn, default='inactive')
 
     this%npool_to_frootn_storage(begp:endp) = spval
     call hist_addfld1d (fname='NPOOL_TO_FROOTN_STORAGE', units='gN/m^2/s', &
@@ -9961,7 +10430,13 @@ module VegetationDataType
        l = veg_pp%landunit(p)
 
        this%prev_leafn_to_litter(p)  = 0._r8
+#if (defined TAM)
+       this%prev_froottn_to_litter(p) = 0._r8
+       this%prev_frootan_to_litter(p) = 0._r8
+       this%prev_frootmn_to_litter(p) = 0._r8
+#else
        this%prev_frootn_to_litter(p) = 0._r8
+#endif
 
        if ( crop_prog )then
           this%fert_counter(p)  = spval
@@ -10090,7 +10565,7 @@ module VegetationDataType
        i=filter_patch(fi)
 
        this%hrv_leafn_to_litter(i)                 = value_patch
-       this%hrv_frootn_to_litter(i)                = value_patch
+       !this%hrv_frootn_to_litter(i)                = value_patch
        this%hrv_leafn_storage_to_litter(i)         = value_patch
        this%hrv_frootn_storage_to_litter(i)        = value_patch
        this%hrv_livestemn_storage_to_litter(i)     = value_patch
@@ -10118,20 +10593,20 @@ module VegetationDataType
 
 
        this%leafn_xfer_to_leafn(i)                 = value_patch
-       this%frootn_xfer_to_frootn(i)               = value_patch
+       !this%frootn_xfer_to_frootn(i)               = value_patch
        this%livestemn_xfer_to_livestemn(i)         = value_patch
        this%deadstemn_xfer_to_deadstemn(i)         = value_patch
        this%livecrootn_xfer_to_livecrootn(i)       = value_patch
        this%deadcrootn_xfer_to_deadcrootn(i)       = value_patch
        this%leafn_to_litter(i)                     = value_patch
        this%leafn_to_retransn(i)                   = value_patch
-       this%frootn_to_litter(i)                    = value_patch
+       !this%frootn_to_litter(i)                    = value_patch
        this%livecrootn_to_litter(i)                = value_patch
        this%retransn_to_npool(i)                   = value_patch
        this%sminn_to_npool(i)                      = value_patch
        this%npool_to_leafn(i)                      = value_patch
        this%npool_to_leafn_storage(i)              = value_patch
-       this%npool_to_frootn(i)                     = value_patch
+       !this%npool_to_frootn(i)                     = value_patch
        this%npool_to_frootn_storage(i)             = value_patch
        this%npool_to_livestemn(i)                  = value_patch
        this%npool_to_livestemn_storage(i)          = value_patch
@@ -10161,6 +10636,25 @@ module VegetationDataType
        this%sen_nloss_litter(i)                    = value_patch
        this%crop_seedn_to_leaf(i)                  = value_patch
        this%livestemn_to_litter(i)                 = value_patch
+#if (defined TAM)
+     this%hrv_froottn_to_litter(i)                = value_patch
+     this%hrv_frootan_to_litter(i)                = value_patch
+     this%hrv_frootmn_to_litter(i)                = value_patch
+     this%frootn_xfer_to_froottn(i)               = value_patch
+     this%frootn_xfer_to_frootan(i)               = value_patch
+     this%frootn_xfer_to_frootmn(i)               = value_patch
+     this%froottn_to_litter(i)                    = value_patch
+     this%frootan_to_litter(i)                    = value_patch
+     this%frootmn_to_litter(i)                    = value_patch
+     this%npool_to_froottn(i)                     = value_patch
+     this%npool_to_frootan(i)                     = value_patch
+     this%npool_to_frootmn(i)                     = value_patch
+#else
+     this%hrv_frootn_to_litter(i)                = value_patch
+     this%frootn_xfer_to_frootn(i)               = value_patch
+     this%frootn_to_litter(i)                    = value_patch 
+     this%npool_to_frootn(i)                     = value_patch
+#endif
     end do
 
     if ( crop_prog )then
@@ -10172,6 +10666,7 @@ module VegetationDataType
           this%npool_to_grainn_storage(i)          = value_patch
           this%grainn_storage_to_xfer(i)           = value_patch
           this%soyfixn(i)                          = value_patch
+          !TAM
           this%frootn_to_retransn(i)               = value_patch
        end do
     end if
@@ -10228,7 +10723,7 @@ module VegetationDataType
             this%m_leafn_to_fire(p)               + &
             this%m_leafn_storage_to_fire(p)       + &
             this%m_leafn_xfer_to_fire(p)          + &
-            this%m_frootn_to_fire(p)              + &
+            !this%m_frootn_to_fire(p)              + &
             this%m_frootn_storage_to_fire(p)      + &
             this%m_frootn_xfer_to_fire(p)         + &
             this%m_livestemn_to_fire(p)           + &
@@ -10245,12 +10740,24 @@ module VegetationDataType
             this%m_deadcrootn_xfer_to_fire(p)     + &
             this%m_retransn_to_fire(p)            + &
             this%m_npool_to_fire(p)
+#if (defined TAM)
+     this%fire_nloss(p) = &
+            this%fire_nloss(p) + &
+            this%m_froottn_to_fire(p) + &
+            this%m_frootan_to_fire(p) + &
+            this%m_frootmn_to_fire(p)
+
+#else
+     this%fire_nloss(p) = &
+            this%fire_nloss(p) + &
+            this%m_frootn_to_fire(p)
+#endif
 
       this%gap_nloss_litter(p) = &
            this%m_leafn_to_litter(p)              + &
            this%m_leafn_storage_to_litter(p)      + &
            this%m_leafn_xfer_to_litter(p)         + &
-           this%m_frootn_to_litter(p)             + &
+           !this%m_frootn_to_litter(p)             + &
            this%m_frootn_storage_to_litter(p)     + &
            this%m_frootn_xfer_to_litter(p)        + &
            this%m_livestemn_to_litter(p)          + &
@@ -10267,6 +10774,17 @@ module VegetationDataType
            this%m_deadcrootn_xfer_to_litter(p)    + &
            this%m_retransn_to_litter(p)           + &
            this%m_npool_to_litter(p)
+#if (defined TAM)
+     this%gap_nloss_litter(p) = &
+           this%gap_nloss_litter(p) + &
+           this%m_froottn_to_litter(p) + &
+           this%m_frootan_to_litter(p) + &
+           this%m_frootmn_to_litter(p)
+#else
+     this%gap_nloss_litter(p) = &
+           this%gap_nloss_litter(p) + &
+           this%m_frootn_to_litter(p)
+#endif
 
       this%fire_nloss_litter(p) = &
            this%m_deadstemn_to_litter_fire(p)     + &
@@ -10274,7 +10792,7 @@ module VegetationDataType
            this%m_retransn_to_litter_fire(p)      + &
            this%m_npool_to_litter_fire(p)         + &
            this%m_leafn_to_litter_fire(p)         + &
-           this%m_frootn_to_litter_fire(p)        + &
+           !this%m_frootn_to_litter_fire(p)        + &
            this%m_livestemn_to_litter_fire(p)     + &
            this%m_livecrootn_to_litter_fire(p)    + &
            this%m_leafn_storage_to_litter_fire(p) + &
@@ -10289,14 +10807,24 @@ module VegetationDataType
            this%m_deadstemn_xfer_to_litter_fire(p)       + &
            this%m_livecrootn_xfer_to_litter_fire(p)      + &
            this%m_deadcrootn_xfer_to_litter_fire(p)
-
+#if (defined TAM)
+     this%fire_nloss_litter(p) = &
+           this%fire_nloss_litter(p) + &
+           this%m_froottn_to_litter_fire(p) + &
+           this%m_frootan_to_litter_fire(p) + &
+           this%m_frootmn_to_litter_fire(p)
+#else
+     this%fire_nloss_litter(p) = &
+           this%fire_nloss_litter(p) + &
+           this%m_frootn_to_litter_fire(p)
+#endif
       this%hrv_nloss_litter(p) = &
            this%hrv_retransn_to_litter(p)          + &
            this%hrv_npool_to_litter(p)             + &
            this%hrv_leafn_to_litter(p)             + &
            this%hrv_leafn_storage_to_litter(p)     + &
            this%hrv_leafn_xfer_to_litter(p)        + &
-           this%hrv_frootn_to_litter(p)            + &
+           !this%hrv_frootn_to_litter(p)            + &
            this%hrv_frootn_storage_to_litter(p)    + &
            this%hrv_frootn_xfer_to_litter(p)       + &
            this%hrv_livestemn_to_litter(p)         + &
@@ -10310,6 +10838,18 @@ module VegetationDataType
            this%hrv_deadcrootn_to_litter(p)        + &
            this%hrv_deadcrootn_storage_to_litter(p)+ &
            this%hrv_deadcrootn_xfer_to_litter(p)
+#if (defined TAM)
+     this%hrv_nloss_litter(p) = &
+           this%hrv_nloss_litter(p) + &
+           this%hrv_froottn_to_litter(p) + &
+           this%hrv_frootan_to_litter(p) + &
+           this%hrv_frootmn_to_litter(p)
+#else
+     this%hrv_nloss_litter(p) = &
+           this%hrv_nloss_litter(p) + &
+           this%hrv_frootn_to_litter(p)
+#endif
+
       if (crop_prog) then
          this%sen_nloss_litter(p) = &
              this%livestemn_to_litter(p)            + &
@@ -10318,8 +10858,19 @@ module VegetationDataType
       else
          this%sen_nloss_litter(p) = &
              this%leafn_to_litter(p)                + &
-             this%frootn_to_litter(p)               + &
+             !this%frootn_to_litter(p)               + &
              this%livecrootn_to_litter(p)
+#if (defined TAM)
+     this%sen_nloss_litter(p) = &
+             this%sen_nloss_litter(p) + &
+             this%froottn_to_litter(p) + &
+             this%frootan_to_litter(p) + &
+             this%frootmn_to_litter(p)
+#else
+     this%sen_nloss_litter(p) = &
+             this%sen_nloss_litter(p) + &
+             this%frootn_to_litter(p)
+#endif
       end if
 
     end do
@@ -10365,7 +10916,8 @@ module VegetationDataType
     ! allocate for each member of veg_pf
     !-----------------------------------------------------------------------
     allocate(this%m_leafp_to_litter                   (begp:endp)) ; this%m_leafp_to_litter                   (:) = spval
-    allocate(this%m_frootp_to_litter                  (begp:endp)) ; this%m_frootp_to_litter                  (:) = spval
+    !TAM
+    !allocate(this%m_frootp_to_litter                  (begp:endp)) ; this%m_frootp_to_litter                  (:) = spval
     allocate(this%m_leafp_storage_to_litter           (begp:endp)) ; this%m_leafp_storage_to_litter           (:) = spval
     allocate(this%m_frootp_storage_to_litter          (begp:endp)) ; this%m_frootp_storage_to_litter          (:) = spval
     allocate(this%m_livestemp_storage_to_litter       (begp:endp)) ; this%m_livestemp_storage_to_litter       (:) = spval
@@ -10385,7 +10937,8 @@ module VegetationDataType
     allocate(this%m_retransp_to_litter                (begp:endp)) ; this%m_retransp_to_litter                (:) = spval
     allocate(this%m_ppool_to_litter                   (begp:endp)) ; this%m_ppool_to_litter                   (:) = spval
     allocate(this%hrv_leafp_to_litter                 (begp:endp)) ; this%hrv_leafp_to_litter                 (:) = spval
-    allocate(this%hrv_frootp_to_litter                (begp:endp)) ; this%hrv_frootp_to_litter                (:) = spval
+    !TAM
+    !allocate(this%hrv_frootp_to_litter                (begp:endp)) ; this%hrv_frootp_to_litter                (:) = spval
     allocate(this%hrv_leafp_storage_to_litter         (begp:endp)) ; this%hrv_leafp_storage_to_litter         (:) = spval
     allocate(this%hrv_frootp_storage_to_litter        (begp:endp)) ; this%hrv_frootp_storage_to_litter        (:) = spval
     allocate(this%hrv_livestemp_storage_to_litter     (begp:endp)) ; this%hrv_livestemp_storage_to_litter     (:) = spval
@@ -10418,7 +10971,8 @@ module VegetationDataType
     allocate(this%m_deadstemp_to_fire                 (begp:endp)) ; this%m_deadstemp_to_fire                 (:) = spval
     allocate(this%m_deadstemp_storage_to_fire         (begp:endp)) ; this%m_deadstemp_storage_to_fire         (:) = spval
     allocate(this%m_deadstemp_xfer_to_fire            (begp:endp)) ; this%m_deadstemp_xfer_to_fire            (:) = spval
-    allocate(this%m_frootp_to_fire                    (begp:endp)) ; this%m_frootp_to_fire                    (:) = spval
+    !TAM
+    !allocate(this%m_frootp_to_fire                    (begp:endp)) ; this%m_frootp_to_fire                    (:) = spval
     allocate(this%m_frootp_storage_to_fire            (begp:endp)) ; this%m_frootp_storage_to_fire            (:) = spval
     allocate(this%m_frootp_xfer_to_fire               (begp:endp)) ; this%m_frootp_xfer_to_fire               (:) = spval
     allocate(this%m_livecrootp_to_fire                (begp:endp)) ; this%m_livecrootp_to_fire                (:) = spval
@@ -10439,7 +10993,8 @@ module VegetationDataType
     allocate(this%m_deadstemp_to_litter_fire          (begp:endp)) ; this%m_deadstemp_to_litter_fire          (:) = spval
     allocate(this%m_deadstemp_storage_to_litter_fire  (begp:endp)) ; this%m_deadstemp_storage_to_litter_fire  (:) = spval
     allocate(this%m_deadstemp_xfer_to_litter_fire     (begp:endp)) ; this%m_deadstemp_xfer_to_litter_fire     (:) = spval
-    allocate(this%m_frootp_to_litter_fire             (begp:endp)) ; this%m_frootp_to_litter_fire             (:) = spval
+    !TAM
+    !allocate(this%m_frootp_to_litter_fire             (begp:endp)) ; this%m_frootp_to_litter_fire             (:) = spval
     allocate(this%m_frootp_storage_to_litter_fire     (begp:endp)) ; this%m_frootp_storage_to_litter_fire     (:) = spval
     allocate(this%m_frootp_xfer_to_litter_fire        (begp:endp)) ; this%m_frootp_xfer_to_litter_fire        (:) = spval
     allocate(this%m_livecrootp_to_litter_fire         (begp:endp)) ; this%m_livecrootp_to_litter_fire         (:) = spval
@@ -10452,21 +11007,24 @@ module VegetationDataType
     allocate(this%m_retransp_to_litter_fire           (begp:endp)) ; this%m_retransp_to_litter_fire           (:) = spval
     allocate(this%m_ppool_to_litter_fire              (begp:endp)) ; this%m_ppool_to_litter_fire              (:) = spval
     allocate(this%leafp_xfer_to_leafp                 (begp:endp)) ; this%leafp_xfer_to_leafp                 (:) = spval
-    allocate(this%frootp_xfer_to_frootp               (begp:endp)) ; this%frootp_xfer_to_frootp               (:) = spval
+    !TAM
+    !allocate(this%frootp_xfer_to_frootp               (begp:endp)) ; this%frootp_xfer_to_frootp               (:) = spval
     allocate(this%livestemp_xfer_to_livestemp         (begp:endp)) ; this%livestemp_xfer_to_livestemp         (:) = spval
     allocate(this%deadstemp_xfer_to_deadstemp         (begp:endp)) ; this%deadstemp_xfer_to_deadstemp         (:) = spval
     allocate(this%livecrootp_xfer_to_livecrootp       (begp:endp)) ; this%livecrootp_xfer_to_livecrootp       (:) = spval
     allocate(this%deadcrootp_xfer_to_deadcrootp       (begp:endp)) ; this%deadcrootp_xfer_to_deadcrootp       (:) = spval
     allocate(this%leafp_to_litter                     (begp:endp)) ; this%leafp_to_litter                     (:) = spval
     allocate(this%leafp_to_retransp                   (begp:endp)) ; this%leafp_to_retransp                   (:) = spval
-    allocate(this%frootp_to_retransp                  (begp:endp)) ; this%frootp_to_retransp                  (:) = spval
+    !TAM
+    !allocate(this%frootp_to_retransp                  (begp:endp)) ; this%frootp_to_retransp                  (:) = spval
     allocate(this%frootp_to_litter                    (begp:endp)) ; this%frootp_to_litter                    (:) = spval
     allocate(this%retransp_to_ppool                   (begp:endp)) ; this%retransp_to_ppool                   (:) = spval
     allocate(this%sminp_to_ppool                      (begp:endp)) ; this%sminp_to_ppool                      (:) = spval
     allocate(this%biochem_pmin_to_plant               (begp:endp)) ; this%biochem_pmin_to_plant               (:) = spval
     allocate(this%ppool_to_leafp                      (begp:endp)) ; this%ppool_to_leafp                      (:) = spval
     allocate(this%ppool_to_leafp_storage              (begp:endp)) ; this%ppool_to_leafp_storage              (:) = spval
-    allocate(this%ppool_to_frootp                     (begp:endp)) ; this%ppool_to_frootp                     (:) = spval
+    !TAM
+    !allocate(this%ppool_to_frootp                     (begp:endp)) ; this%ppool_to_frootp                     (:) = spval
     allocate(this%ppool_to_frootp_storage             (begp:endp)) ; this%ppool_to_frootp_storage             (:) = spval
     allocate(this%ppool_to_livestemp                  (begp:endp)) ; this%ppool_to_livestemp                  (:) = spval
     allocate(this%ppool_to_livestemp_storage          (begp:endp)) ; this%ppool_to_livestemp_storage          (:) = spval
@@ -10513,13 +11071,56 @@ module VegetationDataType
     allocate(this%sminp_to_plant_trans                (begp:endp)) ; this%sminp_to_plant_trans                (:) = spval
     allocate(this%plant_pdemand_vr                    (begp:endp,1:nlevdecomp_full )) ; this%plant_pdemand_vr (:,:) = spval
     allocate(this%prev_leafp_to_litter                (begp:endp)) ; this%prev_leafp_to_litter                (:) = spval
-    allocate(this%prev_frootp_to_litter               (begp:endp)) ; this%prev_frootp_to_litter               (:) = spval
+    !TAM
+    !allocate(this%prev_frootp_to_litter               (begp:endp)) ; this%prev_frootp_to_litter               (:) = spval
     allocate(this%supplement_to_plantp                (begp:endp)) ; this%supplement_to_plantp                (:) = 0.d0
     allocate(this%gap_ploss_litter                    (begp:endp)) ; this%gap_ploss_litter                    (:) = spval
     allocate(this%fire_ploss_litter                   (begp:endp)) ; this%fire_ploss_litter                   (:) = spval
     allocate(this%hrv_ploss_litter                    (begp:endp)) ; this%hrv_ploss_litter                    (:) = spval
     allocate(this%sen_ploss_litter                    (begp:endp)) ; this%sen_ploss_litter                    (:) = spval
+#if (defined TAM)
+    allocate(this%m_froottp_to_litter                  (begp:endp)) ; this%m_froottp_to_litter                  (:) = spval
+    allocate(this%m_frootap_to_litter                  (begp:endp)) ; this%m_frootap_to_litter                  (:) = spval
+    allocate(this%m_frootmp_to_litter                  (begp:endp)) ; this%m_frootmp_to_litter                  (:) = spval
 
+    allocate(this%hrv_froottp_to_litter                (begp:endp)) ; this%hrv_froottp_to_litter                (:) = spval
+    allocate(this%hrv_frootap_to_litter                (begp:endp)) ; this%hrv_frootap_to_litter                (:) = spval
+    allocate(this%hrv_frootmp_to_litter                (begp:endp)) ; this%hrv_frootmp_to_litter                (:) = spval
+
+    allocate(this%m_froottp_to_fire                    (begp:endp)) ; this%m_froottp_to_fire                    (:) = spval
+    allocate(this%m_frootap_to_fire                    (begp:endp)) ; this%m_frootap_to_fire                    (:) = spval
+    allocate(this%m_frootmp_to_fire                    (begp:endp)) ; this%m_frootmp_to_fire                    (:) = spval
+
+    allocate(this%m_froottp_to_litter_fire             (begp:endp)) ; this%m_froottp_to_litter_fire             (:) = spval
+    allocate(this%m_frootap_to_litter_fire             (begp:endp)) ; this%m_frootap_to_litter_fire             (:) = spval
+    allocate(this%m_frootmp_to_litter_fire             (begp:endp)) ; this%m_frootmp_to_litter_fire             (:) = spval
+
+    allocate(this%froottp_xfer_to_frootp               (begp:endp)) ; this%froottp_xfer_to_frootp               (:) = spval
+    allocate(this%frootap_xfer_to_frootp               (begp:endp)) ; this%frootap_xfer_to_frootp               (:) = spval
+    allocate(this%frootmp_xfer_to_frootp               (begp:endp)) ; this%frootmp_xfer_to_frootp               (:) = spval
+
+    allocate(this%froottp_to_retransp                  (begp:endp)) ; this%froottp_to_retransp                  (:) = spval
+    allocate(this%frootap_to_retransp                  (begp:endp)) ; this%frootap_to_retransp                  (:) = spval
+    allocate(this%frootmp_to_retransp                  (begp:endp)) ; this%frootmp_to_retransp                  (:) = spval
+
+    allocate(this%ppool_to_froottp                     (begp:endp)) ; this%ppool_to_froottp                     (:) = spval
+    allocate(this%ppool_to_frootap                     (begp:endp)) ; this%ppool_to_frootap                     (:) = spval
+    allocate(this%ppool_to_frootmp                     (begp:endp)) ; this%ppool_to_frootmp                     (:) = spval
+
+    allocate(this%prev_froottp_to_litter               (begp:endp)) ; this%prev_froottp_to_litter               (:) = spval
+    allocate(this%prev_frootap_to_litter               (begp:endp)) ; this%prev_frootap_to_litter               (:) = spval
+    allocate(this%prev_frootmp_to_litter               (begp:endp)) ; this%prev_frootmp_to_litter               (:) = spval
+
+#else
+    allocate(this%m_frootp_to_litter                  (begp:endp)) ; this%m_frootp_to_litter                  (:) = spval
+    allocate(this%hrv_frootp_to_litter                (begp:endp)) ; this%hrv_frootp_to_litter                (:) = spval
+    allocate(this%m_frootp_to_fire                    (begp:endp)) ; this%m_frootp_to_fire                    (:) = spval
+    allocate(this%m_frootp_to_litter_fire             (begp:endp)) ; this%m_frootp_to_litter_fire             (:) = spval
+    allocate(this%frootp_xfer_to_frootp               (begp:endp)) ; this%frootp_xfer_to_frootp               (:) = spval
+    allocate(this%frootp_to_retransp                  (begp:endp)) ; this%frootp_to_retransp                  (:) = spval
+    allocate(this%ppool_to_frootp                     (begp:endp)) ; this%ppool_to_frootp                     (:) = spval
+    allocate(this%prev_frootp_to_litter               (begp:endp)) ; this%prev_frootp_to_litter               (:) = spval
+#endif
 
     !-----------------------------------------------------------------------
     ! initialize history fields for select members of veg_pf
@@ -10528,12 +11129,108 @@ module VegetationDataType
     call hist_addfld1d (fname='M_LEAFP_TO_LITTER', units='gP/m^2/s', &
          avgflag='A', long_name='leaf P mortality', &
          ptr_patch=this%m_leafp_to_litter, default='inactive')
+#if (defined TAM)
+     this%m_froottp_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='M_FROOTTP_TO_LITTER', units='gP/m^2/s', &
+         avgflag='A', long_name='fine root t P mortality', &
+         ptr_patch=this%m_froottp_to_litter, default='inactive')
 
+     this%m_frootap_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='M_FROOTAP_TO_LITTER', units='gP/m^2/s', &
+          avgflag='A', long_name='fine root a P mortality', &
+          ptr_patch=this%m_frootap_to_litter, default='inactive')
+
+     this%m_frootmp_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='M_FROOTMP_TO_LITTER', units='gP/m^2/s', &
+         avgflag='A', long_name='fine root m P mortality', &
+         ptr_patch=this%m_frootmp_to_litter, default='inactive')
+
+     this%m_froottp_to_fire(begp:endp) = spval
+     call hist_addfld1d (fname='M_FROOTTP_TO_FIRE', units='gP/m^2/s', &
+          avgflag='A', long_name='fine root t P fire loss ', &
+          ptr_patch=this%m_froottp_to_fire, default='inactive')
+
+     this%m_frootap_to_fire(begp:endp) = spval
+     call hist_addfld1d (fname='M_FROOTAP_TO_FIRE', units='gP/m^2/s', &
+          avgflag='A', long_name='fine root a P fire loss ', &
+          ptr_patch=this%m_frootap_to_fire, default='inactive')
+
+     this%m_frootmp_to_fire(begp:endp) = spval
+     call hist_addfld1d (fname='M_FROOTMP_TO_FIRE', units='gP/m^2/s', &
+          avgflag='A', long_name='fine root m P fire loss ', &
+          ptr_patch=this%m_frootmp_to_fire, default='inactive')
+
+     this%froottp_xfer_to_frootp(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTTP_XFER_TO_FROOTP', units='gP/m^2/s', &
+          avgflag='A', long_name='fine root t P growth from storage', &
+          ptr_patch=this%froottp_xfer_to_frootp, default='inactive') 
+
+     this%frootap_xfer_to_frootp(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTAP_XFER_TO_FROOTP', units='gP/m^2/s', &
+          avgflag='A', long_name='fine root a P growth from storage', &
+          ptr_patch=this%frootap_xfer_to_frootp, default='inactive') 
+
+     this%frootmp_xfer_to_frootp(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTMP_XFER_TO_FROOTP', units='gP/m^2/s', &
+          avgflag='A', long_name='fine root m P growth from storage', &
+          ptr_patch=this%frootmp_xfer_to_frootp, default='inactive')
+
+     this%froottp_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTTP_TO_LITTER', units='gP/m^2/s', &
+          avgflag='A', long_name='fine root t P litterfall', &
+          ptr_patch=this%froottp_to_litter, default='inactive')
+
+     this%frootap_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTAP_TO_LITTER', units='gP/m^2/s', &
+          avgflag='A', long_name='fine root a P litterfall', &
+          ptr_patch=this%frootap_to_litter, default='inactive')
+
+     this%frootmp_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTMP_TO_LITTER', units='gP/m^2/s', &
+          avgflag='A', long_name='fine root m P litterfall', &
+          ptr_patch=this%frootmp_to_litter, default='inactive')
+
+     this%ppool_to_froottp(begp:endp) = spval
+    call hist_addfld1d (fname='PPOOL_TO_FROOTTP', units='gP/m^2/s', &
+         avgflag='A', long_name='allocation to fine root t P', &
+         ptr_patch=this%ppool_to_froottp, default='inactive')
+
+     this%ppool_to_frootap(begp:endp) = spval
+    call hist_addfld1d (fname='PPOOL_TO_FROOTAP', units='gP/m^2/s', &
+         avgflag='A', long_name='allocation to fine root a P', &
+         ptr_patch=this%ppool_to_frootap, default='inactive')
+
+     this%ppool_to_frootmp(begp:endp) = spval
+    call hist_addfld1d (fname='PPOOL_TO_FROOTMP', units='gP/m^2/s', &
+         avgflag='A', long_name='allocation to fine root m P', &
+         ptr_patch=this%ppool_to_frootmp, default='inactive')
+
+#else
     this%m_frootp_to_litter(begp:endp) = spval
     call hist_addfld1d (fname='M_FROOTP_TO_LITTER', units='gP/m^2/s', &
          avgflag='A', long_name='fine root P mortality', &
          ptr_patch=this%m_frootp_to_litter, default='inactive')
 
+     this%m_frootp_to_fire(begp:endp) = spval
+     call hist_addfld1d (fname='M_FROOTP_TO_FIRE', units='gP/m^2/s', &
+          avgflag='A', long_name='fine root P fire loss ', &
+          ptr_patch=this%m_frootp_to_fire, default='inactive')
+
+     this%frootp_xfer_to_frootp(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTP_XFER_TO_FROOTP', units='gP/m^2/s', &
+          avgflag='A', long_name='fine root P growth from storage', &
+          ptr_patch=this%frootp_xfer_to_frootp, default='inactive') 
+          
+     this%frootp_to_litter(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTP_TO_LITTER', units='gP/m^2/s', &
+          avgflag='A', long_name='fine root P litterfall', &
+          ptr_patch=this%frootp_to_litter, default='inactive')
+
+    this%ppool_to_frootp(begp:endp) = spval
+    call hist_addfld1d (fname='PPOOL_TO_FROOTP', units='gP/m^2/s', &
+         avgflag='A', long_name='allocation to fine root P', &
+         ptr_patch=this%ppool_to_frootp, default='inactive')
+#endif
     this%m_leafp_storage_to_litter(begp:endp) = spval
     call hist_addfld1d (fname='M_LEAFP_STORAGE_TO_LITTER', units='gP/m^2/s', &
          avgflag='A', long_name='leaf P storage mortality', &
@@ -10633,11 +11330,11 @@ module VegetationDataType
     call hist_addfld1d (fname='M_LEAFP_TO_FIRE', units='gP/m^2/s', &
          avgflag='A', long_name='leaf P fire loss', &
          ptr_patch=this%m_leafp_to_fire, default='inactive')
-
-    this%m_frootp_to_fire(begp:endp) = spval
-    call hist_addfld1d (fname='M_FROOTP_TO_FIRE', units='gP/m^2/s', &
-         avgflag='A', long_name='fine root P fire loss ', &
-         ptr_patch=this%m_frootp_to_fire, default='inactive')
+    !TAM
+!     this%m_frootp_to_fire(begp:endp) = spval
+!     call hist_addfld1d (fname='M_FROOTP_TO_FIRE', units='gP/m^2/s', &
+!          avgflag='A', long_name='fine root P fire loss ', &
+!          ptr_patch=this%m_frootp_to_fire, default='inactive')
 
     this%m_leafp_storage_to_fire(begp:endp) = spval
     call hist_addfld1d (fname='M_LEAFP_STORAGE_TO_FIRE', units='gP/m^2/s', &
@@ -10743,11 +11440,11 @@ module VegetationDataType
     call hist_addfld1d (fname='LEAFP_XFER_TO_LEAFP', units='gP/m^2/s', &
          avgflag='A', long_name='leaf P growth from storage', &
          ptr_patch=this%leafp_xfer_to_leafp, default='inactive')
-
-    this%frootp_xfer_to_frootp(begp:endp) = spval
-    call hist_addfld1d (fname='FROOTP_XFER_TO_FROOTP', units='gP/m^2/s', &
-         avgflag='A', long_name='fine root P growth from storage', &
-         ptr_patch=this%frootp_xfer_to_frootp, default='inactive')
+    !TAM
+!     this%frootp_xfer_to_frootp(begp:endp) = spval
+!     call hist_addfld1d (fname='FROOTP_XFER_TO_FROOTP', units='gP/m^2/s', &
+!          avgflag='A', long_name='fine root P growth from storage', &
+!          ptr_patch=this%frootp_xfer_to_frootp, default='inactive')
 
     this%livestemp_xfer_to_livestemp(begp:endp) = spval
     call hist_addfld1d (fname='LIVESTEMP_XFER_TO_LIVESTEMP', units='gP/m^2/s', &
@@ -10778,11 +11475,11 @@ module VegetationDataType
     call hist_addfld1d (fname='LEAFP_TO_RETRANSP', units='gP/m^2/s', &
          avgflag='A', long_name='leaf P to retranslocated P pool', &
          ptr_patch=this%leafp_to_retransp, default='inactive')
-
-    this%frootp_to_litter(begp:endp) = spval
-    call hist_addfld1d (fname='FROOTP_TO_LITTER', units='gP/m^2/s', &
-         avgflag='A', long_name='fine root P litterfall', &
-         ptr_patch=this%frootp_to_litter, default='inactive')
+    !TAM
+!     this%frootp_to_litter(begp:endp) = spval
+!     call hist_addfld1d (fname='FROOTP_TO_LITTER', units='gP/m^2/s', &
+!          avgflag='A', long_name='fine root P litterfall', &
+!          ptr_patch=this%frootp_to_litter, default='inactive')
 
     this%livecrootp_to_litter(begp:endp) = spval
     call hist_addfld1d (fname='LIVECROOTP_TO_LITTER', units='gP/m^2/s', &
@@ -10808,11 +11505,11 @@ module VegetationDataType
     call hist_addfld1d (fname='PPOOL_TO_LEAFP_STORAGE', units='gP/m^2/s', &
          avgflag='A', long_name='allocation to leaf P storage', &
          ptr_patch=this%ppool_to_leafp_storage, default='inactive')
-
-    this%ppool_to_frootp(begp:endp) = spval
-    call hist_addfld1d (fname='PPOOL_TO_FROOTP', units='gP/m^2/s', &
-         avgflag='A', long_name='allocation to fine root P', &
-         ptr_patch=this%ppool_to_frootp, default='inactive')
+    !TAM
+!     this%ppool_to_frootp(begp:endp) = spval
+!     call hist_addfld1d (fname='PPOOL_TO_FROOTP', units='gP/m^2/s', &
+!          avgflag='A', long_name='allocation to fine root P', &
+!          ptr_patch=this%ppool_to_frootp, default='inactive')
 
     this%ppool_to_frootp_storage(begp:endp) = spval
     call hist_addfld1d (fname='PPOOL_TO_FROOTP_STORAGE', units='gP/m^2/s', &
@@ -11032,7 +11729,13 @@ module VegetationDataType
        l = veg_pp%landunit(p)
 
        this%prev_leafp_to_litter (p)  = 0._r8
+#if (defined TAM)
+       this%prev_froottp_to_litter(p)  = 0._r8
+       this%prev_frootap_to_litter(p)  = 0._r8
+       this%prev_frootmp_to_litter(p)  = 0._r8
+#else
        this%prev_frootp_to_litter(p)  = 0._r8
+#endif
 
        if ( crop_prog )then
           this%fert_p_counter(p)  = spval
@@ -11163,7 +11866,7 @@ module VegetationDataType
        i=filter_patch(fi)
 
        this%hrv_leafp_to_litter(i)                 = value_patch
-       this%hrv_frootp_to_litter(i)                = value_patch
+       !this%hrv_frootp_to_litter(i)                = value_patch
        this%hrv_leafp_storage_to_litter(i)         = value_patch
        this%hrv_frootp_storage_to_litter(i)        = value_patch
        this%hrv_livestemp_storage_to_litter(i)     = value_patch
@@ -11189,20 +11892,20 @@ module VegetationDataType
        this%hrv_ppool_to_litter(i)                 = value_patch
 
        this%leafp_xfer_to_leafp(i)                 = value_patch
-       this%frootp_xfer_to_frootp(i)               = value_patch
+       !this%frootp_xfer_to_frootp(i)               = value_patch
        this%livestemp_xfer_to_livestemp(i)         = value_patch
        this%deadstemp_xfer_to_deadstemp(i)         = value_patch
        this%livecrootp_xfer_to_livecrootp(i)       = value_patch
        this%deadcrootp_xfer_to_deadcrootp(i)       = value_patch
        this%leafp_to_litter(i)                     = value_patch
        this%leafp_to_retransp(i)                   = value_patch
-       this%frootp_to_litter(i)                    = value_patch
+       !this%frootp_to_litter(i)                    = value_patch
        this%livecrootp_to_litter(i)                = value_patch
        this%retransp_to_ppool(i)                   = value_patch
        this%sminp_to_ppool(i)                      = value_patch
        this%ppool_to_leafp(i)                      = value_patch
        this%ppool_to_leafp_storage(i)              = value_patch
-       this%ppool_to_frootp(i)                     = value_patch
+       !this%ppool_to_frootp(i)                     = value_patch
        this%ppool_to_frootp_storage(i)             = value_patch
        this%ppool_to_livestemp(i)                  = value_patch
        this%ppool_to_livestemp_storage(i)          = value_patch
@@ -11231,6 +11934,29 @@ module VegetationDataType
        this%hrv_ploss_litter(i)                    = value_patch
        this%sen_ploss_litter(i)                    = value_patch
        this%livestemp_to_litter(i)                 = value_patch
+#if (defined TAM)
+     this%hrv_froottp_to_litter(i)                = value_patch
+     this%hrv_frootap_to_litter(i)                = value_patch
+     this%hrv_frootmp_to_litter(i)                = value_patch
+     this%frootp_xfer_to_froottp(i)               = value_patch
+     this%frootp_xfer_to_frootap(i)               = value_patch
+     this%frootp_xfer_to_frootmp(i)               = value_patch
+     this%froottp_to_litter(i)                    = value_patch
+     this%frootap_to_litter(i)                    = value_patch
+     this%frootmp_to_litter(i)                    = value_patch
+     this%froottp_to_litter(i)                    = value_patch
+     this%frootap_to_litter(i)                    = value_patch
+     this%frootmp_to_litter(i)                    = value_patch
+     this%ppool_to_froottp(i)                     = value_patch
+     this%ppool_to_frootap(i)                     = value_patch
+     this%ppool_to_frootmp(i)                     = value_patch
+#else
+     this%hrv_frootp_to_litter(i)                = value_patch
+     this%frootp_xfer_to_frootp(i)               = value_patch
+     this%frootp_to_litter(i)                    = value_patch
+     this%frootp_to_litter(i)                    = value_patch
+     this%ppool_to_frootp(i)                     = value_patch
+#endif
     end do
 
     if ( crop_prog )then
@@ -11292,7 +12018,7 @@ module VegetationDataType
             this%m_leafp_to_fire(p)               + &
             this%m_leafp_storage_to_fire(p)       + &
             this%m_leafp_xfer_to_fire(p)          + &
-            this%m_frootp_to_fire(p)              + &
+            !this%m_frootp_to_fire(p)              + &
             this%m_frootp_storage_to_fire(p)      + &
             this%m_frootp_xfer_to_fire(p)         + &
             this%m_livestemp_to_fire(p)           + &
@@ -11309,12 +12035,23 @@ module VegetationDataType
             this%m_deadcrootp_xfer_to_fire(p)     + &
             this%m_retransp_to_fire(p)            + &
             this%m_ppool_to_fire(p)
+#if (defined TAM)
+       this%fire_ploss(p) = &
+          this%fire_ploss(p) + &
+          this%m_froottp_to_fire(p) = &
+          this%m_frootap_to_fire(p) = &
+          this%m_frootmp_to_fire(p)
+#else
+       this%fire_ploss(p) = &
+          this%fire_ploss(p) + &
+          this%m_frootp_to_fire(p)
+#endif
 
       this%gap_ploss_litter(p) = &
            this%m_leafp_to_litter(p)              + &
            this%m_leafp_storage_to_litter(p)      + &
            this%m_leafp_xfer_to_litter(p)         + &
-           this%m_frootp_to_litter(p)             + &
+           !this%m_frootp_to_litter(p)             + &
            this%m_frootp_storage_to_litter(p)     + &
            this%m_frootp_xfer_to_litter(p)        + &
            this%m_livestemp_to_litter(p)          + &
@@ -11331,6 +12068,17 @@ module VegetationDataType
            this%m_deadcrootp_xfer_to_litter(p)    + &
            this%m_retransp_to_litter(p)           + &
            this%m_ppool_to_litter(p)
+#if (defined TAM)
+     this%gap_ploss_litter(p) = &
+           this%gap_ploss_litter(p) + &
+           this%m_froottp_to_litter(p) + &
+           this%m_frootap_to_litter(p) + &
+           this%m_frootmp_to_litter(p)
+#else
+     this%gap_ploss_litter(p) = &
+           this%gap_ploss_litter(p) + &
+           this%m_frootp_to_litter(p)
+#endif
 
       this%fire_ploss_litter(p) = &
            this%m_deadstemp_to_litter_fire(p)     + &
@@ -11338,7 +12086,7 @@ module VegetationDataType
            this%m_retransp_to_litter_fire(p)      + &
            this%m_ppool_to_litter_fire(p)         + &
            this%m_leafp_to_litter_fire(p)         + &
-           this%m_frootp_to_litter_fire(p)        + &
+           !this%m_frootp_to_litter_fire(p)        + &
            this%m_livestemp_to_litter_fire(p)     + &
            this%m_livecrootp_to_litter_fire(p)    + &
            this%m_leafp_storage_to_litter_fire(p) + &
@@ -11353,6 +12101,17 @@ module VegetationDataType
            this%m_deadstemp_xfer_to_litter_fire(p)       + &
            this%m_livecrootp_xfer_to_litter_fire(p)      + &
            this%m_deadcrootp_xfer_to_litter_fire(p)
+#if (defined TAM)
+     this%fire_ploss_litter(p) = &
+           this%fire_ploss_litter(p) + &
+           this%m_froottp_to_litter_fire(p) + &
+           this%m_frootap_to_litter_fire(p) + &
+           this%m_frootmp_to_litter_fire(p)
+#else
+     this%fire_ploss_litter(p) = &
+           this%fire_ploss_litter(p) + &
+           this%m_frootp_to_litter_fire(p)
+#endif
 
       this%hrv_ploss_litter(p) = &
            this%hrv_retransp_to_litter(p)         + &
@@ -11360,7 +12119,7 @@ module VegetationDataType
            this%hrv_leafp_to_litter(p)            + &
            this%hrv_leafp_storage_to_litter(p)    + &
            this%hrv_leafp_xfer_to_litter(p)       + &
-           this%hrv_frootp_to_litter(p)           + &
+           !this%hrv_frootp_to_litter(p)           + &
            this%hrv_frootp_storage_to_litter(p)   + &
            this%hrv_frootp_xfer_to_litter(p)      + &
            this%hrv_livestemp_to_litter(p)        + &
@@ -11374,6 +12133,17 @@ module VegetationDataType
            this%hrv_deadcrootp_to_litter(p)       + &
            this%hrv_deadcrootp_storage_to_litter(p)+ &
            this%hrv_deadcrootp_xfer_to_litter(p)
+#if (defined TAM)
+     this%hrv_ploss_litter(p) = &
+           this%hrv_ploss_litter(p) + &
+           this%hrv_froottp_to_litter(p) + &
+           this%hrv_frootap_to_litter(p) + &
+           this%hrv_frootmp_to_litter(p)
+#else
+     this%hrv_ploss_litter(p) = &
+           this%hrv_ploss_litter(p) + &
+           this%hrv_frootp_to_litter(p)
+#endif
 
       if (crop_prog) then
          this%sen_ploss_litter(p) = &
@@ -11383,8 +12153,20 @@ module VegetationDataType
       else
          this%sen_ploss_litter(p) = &
              this%leafp_to_litter(p)                + &
-             this%frootp_to_litter(p)               + &
+             !this%frootp_to_litter(p)               + &
              this%livecrootp_to_litter(p)
+#if (defined TAM)
+     this%sen_ploss_litter(p) = &
+             this%sen_ploss_litter(p) + &
+             this%froottp_to_litter(p) + &
+             this%frootap_to_litter(p) + &
+             this%frootmp_to_litter(p)
+#endif
+#else
+     this%sen_ploss_litter(p) = &
+             this%sen_ploss_litter(p) + &
+             this%frootp_to_litter(p)
+#endif
       end if
 
     end do

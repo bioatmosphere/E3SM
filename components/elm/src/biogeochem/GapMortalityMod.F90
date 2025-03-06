@@ -326,10 +326,7 @@ contains
          lf_flab                             =>    veg_vp%lf_flab                          , & ! Input:  [real(r8) (:)   ]  leaf litter labile fraction
          lf_fcel                             =>    veg_vp%lf_fcel                          , & ! Input:  [real(r8) (:)   ]  leaf litter cellulose fraction
          lf_flig                             =>    veg_vp%lf_flig                          , & ! Input:  [real(r8) (:)   ]  leaf litter lignin fraction
-         !TAM
-         fr_flab                             =>    veg_vp%fr_flab                          , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
-         fr_fcel                             =>    veg_vp%fr_fcel                          , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
-         fr_flig                             =>    veg_vp%fr_flig                          , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
+#if (defined TAM)
          frt_flab                             =>    veg_vp%frt_flab                          , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
          frt_fcel                             =>    veg_vp%frt_fcel                          , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
          frt_flig                             =>    veg_vp%frt_flig                          , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
@@ -339,24 +336,31 @@ contains
          frm_flab                             =>    veg_vp%frm_flab                          , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
          frm_fcel                             =>    veg_vp%frm_fcel                          , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
          frm_flig                             =>    veg_vp%frm_flig                          , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
-
-         leaf_prof                           =>    cnstate_vars%leaf_prof_patch            , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of leaves
-         !TAM
-         froot_prof                          =>    cnstate_vars%froot_prof_patch           , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
          froott_prof                         =>    cnstate_vars%froott_prof_patch           , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
          froota_prof                         =>    cnstate_vars%froota_prof_patch           , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
          frootm_prof                         =>    cnstate_vars%frootm_prof_patch           , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
-
-         croot_prof                          =>    cnstate_vars%croot_prof_patch           , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of coarse roots
-         stem_prof                           =>    cnstate_vars%stem_prof_patch            , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of stems
-
-         m_leafc_to_litter                   =>    veg_cf%m_leafc_to_litter                , & ! Input:  [real(r8) (:)   ]
-         !TAM
-         m_frootc_to_litter                  =>    veg_cf%m_frootc_to_litter               , & ! Input:  [real(r8) (:)   ]
          m_froottc_to_litter                 =>    veg_cf%m_froottc_to_litter               , & ! Input:  [real(r8) (:)   ]
          m_frootac_to_litter                 =>    veg_cf%m_frootac_to_litter               , & ! Input:  [real(r8) (:)   ]
          m_frootmc_to_litter                 =>    veg_cf%m_frootmc_to_litter               , & ! Input:  [real(r8) (:)   ]
-
+         m_froottn_to_litter                 =>    veg_nf%m_froottn_to_litter             , & ! Input:  [real(r8) (:)   ]
+         m_frootan_to_litter                 =>    veg_nf%m_frootan_to_litter             , & ! Input:  [real(r8) (:)   ]
+         m_frootmn_to_litter                 =>    veg_nf%m_frootmn_to_litter             , & ! Input:  [real(r8) (:)   ]
+         m_froottp_to_litter                 =>    veg_pf%m_froottp_to_litter            , & ! Input:  [real(r8) (:)   ]
+         m_frootap_to_litter                 =>    veg_pf%m_frootap_to_litter            , & ! Input:  [real(r8) (:)   ]
+         m_frootmp_to_litter                 =>    veg_pf%m_frootmp_to_litter            , & ! Input:  [real(r8) (:)   ]
+#else
+         fr_flab                             =>    veg_vp%fr_flab                          , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
+         fr_fcel                             =>    veg_vp%fr_fcel                          , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
+         fr_flig                             =>    veg_vp%fr_flig                          , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
+         froot_prof                          =>    cnstate_vars%froot_prof_patch           , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
+         m_frootc_to_litter                  =>    veg_cf%m_frootc_to_litter               , & ! Input:  [real(r8) (:)   ]
+         m_frootn_to_litter                  =>    veg_nf%m_frootn_to_litter             , & ! Input:  [real(r8) (:)   ]
+         m_frootp_to_litter                  =>    veg_pf%m_frootp_to_litter             , & ! Input:  [real(r8) (:)   ]
+ #endif        
+         leaf_prof                           =>    cnstate_vars%leaf_prof_patch            , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of leaves
+         croot_prof                          =>    cnstate_vars%croot_prof_patch           , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of coarse roots
+         stem_prof                           =>    cnstate_vars%stem_prof_patch            , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of stems
+         m_leafc_to_litter                   =>    veg_cf%m_leafc_to_litter                , & ! Input:  [real(r8) (:)   ]
          m_livestemc_to_litter               =>    veg_cf%m_livestemc_to_litter            , & ! Input:  [real(r8) (:)   ]
          m_deadstemc_to_litter               =>    veg_cf%m_deadstemc_to_litter            , & ! Input:  [real(r8) (:)   ]
          m_livecrootc_to_litter              =>    veg_cf%m_livecrootc_to_litter           , & ! Input:  [real(r8) (:)   ]
@@ -378,12 +382,7 @@ contains
          m_cpool_to_litter                   =>    veg_cf%m_cpool_to_litter                , & ! Input:  [real(r8) (:)   ]
 
          m_leafn_to_litter                   =>    veg_nf%m_leafn_to_litter              , & ! Input:  [real(r8) (:)   ]
-         !TAM
-         m_frootn_to_litter                  =>    veg_nf%m_frootn_to_litter             , & ! Input:  [real(r8) (:)   ]
-         m_froottn_to_litter                 =>    veg_nf%m_froottn_to_litter             , & ! Input:  [real(r8) (:)   ]
-         m_frootan_to_litter                 =>    veg_nf%m_frootan_to_litter             , & ! Input:  [real(r8) (:)   ]
-         m_frootmn_to_litter                 =>    veg_nf%m_frootmn_to_litter             , & ! Input:  [real(r8) (:)   ]
-
+         
          m_livestemn_to_litter               =>    veg_nf%m_livestemn_to_litter          , & ! Input:  [real(r8) (:)   ]
          m_deadstemn_to_litter               =>    veg_nf%m_deadstemn_to_litter          , & ! Input:  [real(r8) (:)   ]
          m_livecrootn_to_litter              =>    veg_nf%m_livecrootn_to_litter         , & ! Input:  [real(r8) (:)   ]
@@ -405,12 +404,7 @@ contains
 
          !! add phosphorus  -X.YANG
          m_leafp_to_litter                   =>    veg_pf%m_leafp_to_litter              , & ! Input:  [real(r8) (:)   ]
-         !TAM
-         m_frootp_to_litter                  =>    veg_pf%m_frootp_to_litter             , & ! Input:  [real(r8) (:)   ]
-         m_froottp_to_litter                 =>    veg_pf%m_froottp_to_litter            , & ! Input:  [real(r8) (:)   ]
-         m_frootap_to_litter                 =>    veg_pf%m_frootap_to_litter            , & ! Input:  [real(r8) (:)   ]
-         m_frootmp_to_litter                 =>    veg_pf%m_frootmp_to_litter            , & ! Input:  [real(r8) (:)   ]
-
+         
          m_livestemp_to_litter               =>    veg_pf%m_livestemp_to_litter          , & ! Input:  [real(r8) (:)   ]
          m_deadstemp_to_litter               =>    veg_pf%m_deadstemp_to_litter          , & ! Input:  [real(r8) (:)   ]
          m_livecrootp_to_litter              =>    veg_pf%m_livecrootp_to_litter         , & ! Input:  [real(r8) (:)   ]

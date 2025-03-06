@@ -55,11 +55,27 @@ contains
 
          cpool_to_leafc                =>    veg_cf%cpool_to_leafc                , & ! Input:  [real(r8) (:)]
          cpool_to_leafc_storage        =>    veg_cf%cpool_to_leafc_storage        , & ! Input:  [real(r8) (:)]
-         !TAM
-         cpool_to_frootc               =>    veg_cf%cpool_to_frootc               , & ! Input:  [real(r8) (:)]
+#if (defined TAM)
          cpool_to_froottc              =>    veg_cf%cpool_to_froottc              , & ! Input:  [real(r8) (:)]
          cpool_to_frootac              =>    veg_cf%cpool_to_frootac              , & ! Input:  [real(r8) (:)]
          cpool_to_frootmc              =>    veg_cf%cpool_to_frootmc              , & ! Input:  [real(r8) (:)]
+         frootc_xfer_to_froottc        =>    veg_cf%frootc_xfer_to_froottc        , & ! Input:  [real(r8) (:)]  fine root C growth from storage (gC/m2/s)
+         frootc_xfer_to_frootac        =>    veg_cf%frootc_xfer_to_frootac        , & ! Input:  [real(r8) (:)]  fine root C growth from storage (gC/m2/s)
+         frootc_xfer_to_frootmc        =>    veg_cf%frootc_xfer_to_frootmc        , & ! Input:  [real(r8) (:)]  fine root C growth from storage (gC/m2/s)
+         cpool_froott_gr               =>    veg_cf%cpool_froott_gr               , & ! InOut:  [real(r8) (:)]
+         cpool_froota_gr               =>    veg_cf%cpool_froota_gr               , & ! InOut:  [real(r8) (:)]
+         cpool_frootm_gr               =>    veg_cf%cpool_frootm_gr               , & ! InOut:  [real(r8) (:)]
+         transfer_froott_gr            =>    veg_cf%transfer_froott_gr            , & ! InOut:  [real(r8) (:)] resp. from transport root growth from storage/transfer pool
+         transfer_froota_gr            =>    veg_cf%transfer_froota_gr            , & ! InOut:  [real(r8) (:)] resp. from absorptive root growth from storage/transfer pool
+         transfer_frootm_gr            =>    veg_cf%transfer_frootm_gr            , & ! InOut:  [real(r8) (:)] resp. from mycorrhizal fungi growth from storage/transfer pool
+
+#else
+         cpool_to_frootc               =>    veg_cf%cpool_to_frootc               , & ! Input:  [real(r8) (:)]
+         frootc_xfer_to_frootc         =>    veg_cf%frootc_xfer_to_frootc         , & ! Input:  [real(r8) (:)]  fine root C growth from storage (gC/m2/s)
+         cpool_froot_gr                =>    veg_cf%cpool_froot_gr                , & ! InOut:  [real(r8) (:)]
+         transfer_froot_gr             =>    veg_cf%transfer_froot_gr             , & ! InOut:  [real(r8) (:)] resp. from fine root growth from storage/transfer pool
+#endif
+         
          
          cpool_to_frootc_storage       =>    veg_cf%cpool_to_frootc_storage       , & ! Input:  [real(r8) (:)]
          cpool_to_livestemc            =>    veg_cf%cpool_to_livestemc            , & ! Input:  [real(r8) (:)]
@@ -74,12 +90,7 @@ contains
          cpool_to_grainc_storage       =>    veg_cf%cpool_to_grainc_storage       , & ! Input:  [real(r8) (:)]  allocation to grain C storage (gC/m2/s)
          grainc_xfer_to_grainc         =>    veg_cf%grainc_xfer_to_grainc         , & ! Input:  [real(r8) (:)]  grain C growth from storage (gC/m2/s)
          leafc_xfer_to_leafc           =>    veg_cf%leafc_xfer_to_leafc           , & ! Input:  [real(r8) (:)]  leaf C growth from storage (gC/m2/s)
-         !TAM
-         frootc_xfer_to_frootc         =>    veg_cf%frootc_xfer_to_frootc         , & ! Input:  [real(r8) (:)]  fine root C growth from storage (gC/m2/s)
-         frootc_xfer_to_froottc        =>    veg_cf%frootc_xfer_to_froottc        , & ! Input:  [real(r8) (:)]  fine root C growth from storage (gC/m2/s)
-         frootc_xfer_to_frootac        =>    veg_cf%frootc_xfer_to_frootac        , & ! Input:  [real(r8) (:)]  fine root C growth from storage (gC/m2/s)
-         frootc_xfer_to_frootmc        =>    veg_cf%frootc_xfer_to_frootmc        , & ! Input:  [real(r8) (:)]  fine root C growth from storage (gC/m2/s)
-         
+                  
          livestemc_xfer_to_livestemc   =>    veg_cf%livestemc_xfer_to_livestemc   , & ! Input:  [real(r8) (:)]  live stem C growth from storage (gC/m2/s)
          deadstemc_xfer_to_deadstemc   =>    veg_cf%deadstemc_xfer_to_deadstemc   , & ! Input:  [real(r8) (:)]  dead stem C growth from storage (gC/m2/s)
          livecrootc_xfer_to_livecrootc =>    veg_cf%livecrootc_xfer_to_livecrootc , & ! Input:  [real(r8) (:)]  live coarse root C growth from storage (gC/m2/s)
@@ -90,18 +101,9 @@ contains
          cpool_leaf_gr                 =>    veg_cf%cpool_leaf_gr                 , & ! InOut:  [real(r8) (:)]
          cpool_leaf_storage_gr         =>    veg_cf%cpool_leaf_storage_gr         , & ! InOut:  [real(r8) (:)]
          transfer_leaf_gr              =>    veg_cf%transfer_leaf_gr              , & ! InOut:  [real(r8) (:)]
-         !TAM
-         cpool_froot_gr                =>    veg_cf%cpool_froot_gr                , & ! InOut:  [real(r8) (:)]
-         cpool_froott_gr               =>    veg_cf%cpool_froott_gr               , & ! InOut:  [real(r8) (:)]
-         cpool_froota_gr               =>    veg_cf%cpool_froota_gr               , & ! InOut:  [real(r8) (:)]
-         cpool_frootm_gr               =>    veg_cf%cpool_frootm_gr               , & ! InOut:  [real(r8) (:)]
+        
          cpool_froot_storage_gr        =>    veg_cf%cpool_froot_storage_gr        , & ! InOut:  [real(r8) (:)]
-         !TAM
-         transfer_froot_gr             =>    veg_cf%transfer_froot_gr             , & ! InOut:  [real(r8) (:)] resp. from fine root growth from storage/transfer pool
-         transfer_froott_gr            =>    veg_cf%transfer_froott_gr            , & ! InOut:  [real(r8) (:)] resp. from transport root growth from storage/transfer pool
-         transfer_froota_gr            =>    veg_cf%transfer_froota_gr            , & ! InOut:  [real(r8) (:)] resp. from absorptive root growth from storage/transfer pool
-         transfer_frootm_gr            =>    veg_cf%transfer_frootm_gr            , & ! InOut:  [real(r8) (:)] resp. from mycorrhizal fungi growth from storage/transfer pool
-         
+                  
          cpool_livestem_gr             =>    veg_cf%cpool_livestem_gr             , & ! InOut:  [real(r8) (:)]
          cpool_livestem_storage_gr     =>    veg_cf%cpool_livestem_storage_gr     , & ! InOut:  [real(r8) (:)]
          transfer_livestem_gr          =>    veg_cf%transfer_livestem_gr          , & ! InOut:  [real(r8) (:)]

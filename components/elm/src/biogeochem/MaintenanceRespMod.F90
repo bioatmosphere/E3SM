@@ -159,23 +159,23 @@ contains
          cpool          =>    veg_cs%cpool          , & ! Input: [real(r8) (:)   ]   plant carbon pool (gC m-2)
 
          leaf_mr        =>    veg_cf%leaf_mr         , & ! Output: [real(r8) (:)   ]
-         !TAM
-         froot_mr       =>    veg_cf%froot_mr        , & ! Output: [real(r8) (:)   ]
-         froott_mr       =>    veg_cf%froot_mr        , & ! Output: [real(r8) (:)   ]
-         froota_mr       =>    veg_cf%froot_mr        , & ! Output: [real(r8) (:)   ]
-         frootm_mr       =>    veg_cf%froot_mr        , & ! Output: [real(r8) (:)   ]
 
          livestem_mr    =>    veg_cf%livestem_mr     , & ! Output: [real(r8) (:)   ]
          livecroot_mr   =>    veg_cf%livecroot_mr    , & ! Output: [real(r8) (:)   ]
          grain_mr       =>    veg_cf%grain_mr        , & ! Output: [real(r8) (:)   ]
          xr             =>    veg_cf%xr              , & ! Output: [real(r8) (:)   ]  (gC/m2) respiration of excess C
          totvegc        =>    veg_cs%totvegc         , &
-         !TAM
+#if (defined TAM)
+         froott_mr      =>    veg_cf%froott_mr        , & ! Output: [real(r8) (:)   ]
+         froota_mr      =>    veg_cf%froota_mr        , & ! Output: [real(r8) (:)   ]
+         frootm_mr      =>    veg_cf%frootm_mr        , & ! Output: [real(r8) (:)   ]
+         froottn        =>    veg_ns%froottn       , & ! Input:  [real(r8) (:)   ]  (gN/m2) fine root N
+         frootan        =>    veg_ns%frootan       , & ! Input:  [real(r8) (:)   ]  (gN/m2) fine root N
+         frootmn        =>    veg_ns%frootmn       , & ! Input:  [real(r8) (:)   ]  (gN/m2) fine root N
+#else
+         froot_mr       =>    veg_cf%froot_mr        , & ! Output: [real(r8) (:)   ]
          frootn         =>    veg_ns%frootn       , & ! Input:  [real(r8) (:)   ]  (gN/m2) fine root N
-         froottn        =>    veg_ns%frootn       , & ! Input:  [real(r8) (:)   ]  (gN/m2) fine root N
-         frootan        =>    veg_ns%frootn       , & ! Input:  [real(r8) (:)   ]  (gN/m2) fine root N
-         frootmn        =>    veg_ns%frootn       , & ! Input:  [real(r8) (:)   ]  (gN/m2) fine root N
-
+#endif
          livestemn      =>    veg_ns%livestemn    , & ! Input:  [real(r8) (:)   ]  (gN/m2) live stem N
          livecrootn     =>    veg_ns%livecrootn   , & ! Input:  [real(r8) (:)   ]  (gN/m2) live coarse root N
          grainn         =>    veg_ns%grainn         & ! Output: [real(r8) (:)   ]  (kgN/m2) grain N

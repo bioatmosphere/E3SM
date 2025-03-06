@@ -105,12 +105,13 @@ contains
          pdep_prof            => cnstate_vars%pdep_prof_col                , & ! Input:  [real(r8)  (:,:) ]  (1/m) profile for P depostition additions          
          
          leaf_prof            => cnstate_vars%leaf_prof_patch              , & ! Output:  [real(r8) (:,:) ]  (1/m) profile of leaves
-         !TAM                         
-         froot_prof           => cnstate_vars%froot_prof_patch             , & ! Output:  [real(r8) (:,:) ]  (1/m) profile of fine roots
+#if (defined TAM)
          froott_prof          => cnstate_vars%froott_prof_patch            , & ! Output:  [real(r8) (:,:) ]  (1/m) profile of fine roots
          froota_prof          => cnstate_vars%froota_prof_patch            , & ! Output:  [real(r8) (:,:) ]  (1/m) profile of fine roots
          frootm_prof          => cnstate_vars%frootm_prof_patch            , & ! Output:  [real(r8) (:,:) ]  (1/m) profile of fine roots
-
+#else
+         froot_prof           => cnstate_vars%froot_prof_patch             , & ! Output:  [real(r8) (:,:) ]  (1/m) profile of fine roots
+#endif
          croot_prof           => cnstate_vars%croot_prof_patch             , & ! Output:  [real(r8) (:,:) ]  (1/m) profile of coarse roots                   
          stem_prof            => cnstate_vars%stem_prof_patch              , & ! Output:  [real(r8) (:,:) ]  (1/m) profile of stems                          
          

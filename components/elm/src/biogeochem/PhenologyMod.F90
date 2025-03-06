@@ -551,18 +551,23 @@ contains
 
          evergreen   => veg_vp%evergreen     , & ! Input:  [real(r8) (:) ]  binary flag for evergreen leaf habit (0 or 1)
          leaf_long   => veg_vp%leaf_long     , & ! Input:  [real(r8) (:) ]  leaf longevity (yrs)
-         ! TAM
-         froot_long  => veg_vp%froot_long    , & ! Input:  [real(r8) (:) ]  fine root longevity (yrs)
+#if (defined TAM)
          froott_long  => veg_vp%froott_long    , & ! Input:  [real(r8) (:) ]  fine root longevity (yrs)
          froota_long  => veg_vp%froota_long    , & ! Input:  [real(r8) (:) ]  fine root longevity (yrs)
          frootm_long  => veg_vp%frootm_long    , & ! Input:  [real(r8) (:) ]  fine root longevity (yrs)
-
-         bglfr_leaf  => cnstate_vars%bglfr_leaf_patch , & ! Output: [real(r8) (:) ]  background leaf litterfall rate (1/s)
-         ! TAM
-         bglfr_froot  => cnstate_vars%bglfr_froot_patch, & ! Output: [real(r8) (:) ]  background fine root litterfall (1/s)
          bglfr_froott => cnstate_vars%bglfr_froott_patch, & ! Output: [real(r8) (:) ]  background fine root litterfall (1/s)
          bglfr_froota => cnstate_vars%bglfr_froota_patch, & ! Output: [real(r8) (:) ]  background fine root litterfall (1/s)
          bglfr_frootm => cnstate_vars%bglfr_frootm_patch, & ! Output: [real(r8) (:) ]  background fine root litterfall (1/s)
+#else
+         froot_long  => veg_vp%froot_long    , & ! Input:  [real(r8) (:) ]  fine root longevity (yrs)
+         bglfr_froot  => cnstate_vars%bglfr_froot_patch, & ! Output: [real(r8) (:) ]  background fine root litterfall (1/s)
+#endif
+         bglfr_leaf  => cnstate_vars%bglfr_leaf_patch , & ! Output: [real(r8) (:) ]  background leaf litterfall rate (1/s)
+         ! TAM
+         !bglfr_froot  => cnstate_vars%bglfr_froot_patch, & ! Output: [real(r8) (:) ]  background fine root litterfall (1/s)
+         !bglfr_froott => cnstate_vars%bglfr_froott_patch, & ! Output: [real(r8) (:) ]  background fine root litterfall (1/s)
+         !bglfr_froota => cnstate_vars%bglfr_froota_patch, & ! Output: [real(r8) (:) ]  background fine root litterfall (1/s)
+         !bglfr_frootm => cnstate_vars%bglfr_frootm_patch, & ! Output: [real(r8) (:) ]  background fine root litterfall (1/s)
 
          bgtr        => cnstate_vars%bgtr_patch  , & ! Output: [real(r8) (:) ]  background transfer growth rate (1/s)
          lgsf        => cnstate_vars%lgsf_patch  , & ! Output: [real(r8) (:) ]  long growing season factor [0-1]
@@ -729,12 +734,29 @@ contains
          offset_flag                         =>    cnstate_vars%offset_flag_patch                        , & ! Output: [real(r8)  (:)   ]  offset flag
          offset_counter                      =>    cnstate_vars%offset_counter_patch                     , & ! Output: [real(r8)  (:)   ]  offset counter (seconds)
          bglfr_leaf                          =>    cnstate_vars%bglfr_leaf_patch                         , & ! Output: [real(r8)  (:)   ]  background leaf litterfall rate (1/s)
-         !TAM
-         bglfr_froot                         =>    cnstate_vars%bglfr_froot_patch                        , & ! Output: [real(r8)  (:)   ]  background fine root litterfall rate (1/s)
+#if (defined TAM)
          bglfr_froott                        =>    cnstate_vars%bglfr_froott_patch                       , & ! Output: [real(r8)  (:)   ]  background fine root litterfall rate (1/s)
          bglfr_froota                        =>    cnstate_vars%bglfr_froota_patch                       , & ! Output: [real(r8)  (:)   ]  background fine root litterfall rate (1/s)
          bglfr_frootm                        =>    cnstate_vars%bglfr_frootm_patch                       , & ! Output: [real(r8)  (:)   ]  background fine root litterfall rate (1/s)
-
+         prev_froottc_to_litter              =>    veg_cf%prev_froottc_to_litter          , & ! Output: [real(r8)  (:)   ]  previous timestep froot T C litterfall flux (gC/m2/s)
+         prev_frootac_to_litter              =>    veg_cf%prev_frootac_to_litter          , & ! Output: [real(r8)  (:)   ]  previous timestep froot A C litterfall flux (gC/m2/s)
+         prev_frootmc_to_litter              =>    veg_cf%prev_frootmc_to_litter          , & ! Output: [real(r8)  (:)   ]  previous timestep froot M C litterfall flux (gC/m2/s)
+         frootc_xfer_to_froottc              =>    veg_cf%frootc_xfer_to_froottc           , & ! Output:  [real(r8) (:)   ]
+         frootc_xfer_to_frootac              =>    veg_cf%frootc_xfer_to_frootac           , & ! Output:  [real(r8) (:)   ]
+         frootc_xfer_to_frootmc              =>    veg_cf%frootc_xfer_to_frootmc           , & ! Output:  [real(r8) (:)   ]
+         frootn_xfer_to_froottn              =>    veg_nf%frootn_xfer_to_froottn         , & ! Output:  [real(r8) (:)   ]
+         frootn_xfer_to_frootan              =>    veg_nf%frootn_xfer_to_frootan         , & ! Output:  [real(r8) (:)   ]
+         frootn_xfer_to_frootmn              =>    veg_nf%frootn_xfer_to_frootmn         , & ! Output:  [real(r8) (:)   ]
+         frootp_xfer_to_froottp              =>    veg_pf%frootp_xfer_to_froottp         , & ! Output:  [real(r8) (:)   ]
+         frootp_xfer_to_frootap              =>    veg_pf%frootp_xfer_to_frootap         , & ! Output:  [real(r8) (:)   ]
+         frootp_xfer_to_frootmp              =>    veg_pf%frootp_xfer_to_frootmp         , & ! Output:  [real(r8) (:)   ]
+#else
+         bglfr_froot                         =>    cnstate_vars%bglfr_froot_patch                        , & ! Output: [real(r8)  (:)   ]  background fine root litterfall rate (1/s)
+         prev_frootc_to_litter               =>    veg_cf%prev_frootc_to_litter           , & ! Output: [real(r8)  (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         frootc_xfer_to_frootc               =>    veg_cf%frootc_xfer_to_frootc           , & ! Output:  [real(r8) (:)   ]
+         frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:)   ]
+         frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:)   ]
+#endif           
          bgtr                                =>    cnstate_vars%bgtr_patch                               , & ! Output: [real(r8)  (:)   ]  background transfer growth rate (1/s)
          lgsf                                =>    cnstate_vars%lgsf_patch                               , & ! Output: [real(r8)  (:)   ]  long growing season factor [0-1]
 
@@ -769,17 +791,17 @@ contains
 
          prev_leafc_to_litter                =>    veg_cf%prev_leafc_to_litter            , & ! Output: [real(r8)  (:)   ]  previous timestep leaf C litterfall flux (gC/m2/s)
          !TAM
-         prev_frootc_to_litter               =>    veg_cf%prev_frootc_to_litter           , & ! Output: [real(r8)  (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
-         prev_froottc_to_litter              =>    veg_cf%prev_froottc_to_litter          , & ! Output: [real(r8)  (:)   ]  previous timestep froot T C litterfall flux (gC/m2/s)
-         prev_frootac_to_litter              =>    veg_cf%prev_frootac_to_litter          , & ! Output: [real(r8)  (:)   ]  previous timestep froot A C litterfall flux (gC/m2/s)
-         prev_frootmc_to_litter              =>    veg_cf%prev_frootmc_to_litter          , & ! Output: [real(r8)  (:)   ]  previous timestep froot M C litterfall flux (gC/m2/s)
+         ! prev_frootc_to_litter               =>    veg_cf%prev_frootc_to_litter           , & ! Output: [real(r8)  (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         ! prev_froottc_to_litter              =>    veg_cf%prev_froottc_to_litter          , & ! Output: [real(r8)  (:)   ]  previous timestep froot T C litterfall flux (gC/m2/s)
+         ! prev_frootac_to_litter              =>    veg_cf%prev_frootac_to_litter          , & ! Output: [real(r8)  (:)   ]  previous timestep froot A C litterfall flux (gC/m2/s)
+         ! prev_frootmc_to_litter              =>    veg_cf%prev_frootmc_to_litter          , & ! Output: [real(r8)  (:)   ]  previous timestep froot M C litterfall flux (gC/m2/s)
 
          leafc_xfer_to_leafc                 =>    veg_cf%leafc_xfer_to_leafc             , & ! Output:  [real(r8) (:)   ]
          !TAM
-         frootc_xfer_to_frootc               =>    veg_cf%frootc_xfer_to_frootc           , & ! Output:  [real(r8) (:)   ]
-         frootc_xfer_to_froottc              =>    veg_cf%frootc_xfer_to_froottc           , & ! Output:  [real(r8) (:)   ]
-         frootc_xfer_to_frootac              =>    veg_cf%frootc_xfer_to_frootac           , & ! Output:  [real(r8) (:)   ]
-         frootc_xfer_to_frootmc              =>    veg_cf%frootc_xfer_to_frootmc           , & ! Output:  [real(r8) (:)   ]
+         ! frootc_xfer_to_frootc               =>    veg_cf%frootc_xfer_to_frootc           , & ! Output:  [real(r8) (:)   ]
+         ! frootc_xfer_to_froottc              =>    veg_cf%frootc_xfer_to_froottc           , & ! Output:  [real(r8) (:)   ]
+         ! frootc_xfer_to_frootac              =>    veg_cf%frootc_xfer_to_frootac           , & ! Output:  [real(r8) (:)   ]
+         ! frootc_xfer_to_frootmc              =>    veg_cf%frootc_xfer_to_frootmc           , & ! Output:  [real(r8) (:)   ]
 
          livestemc_xfer_to_livestemc         =>    veg_cf%livestemc_xfer_to_livestemc     , & ! Output:  [real(r8) (:)   ]
          deadstemc_xfer_to_deadstemc         =>    veg_cf%deadstemc_xfer_to_deadstemc     , & ! Output:  [real(r8) (:)   ]
@@ -795,10 +817,10 @@ contains
 
          leafn_xfer_to_leafn                 =>    veg_nf%leafn_xfer_to_leafn           , & ! Output:  [real(r8) (:)   ]
          !TAM
-         frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:)   ]
-         frootn_xfer_to_froottn              =>    veg_nf%frootn_xfer_to_froottn         , & ! Output:  [real(r8) (:)   ]
-         frootn_xfer_to_frootan              =>    veg_nf%frootn_xfer_to_frootan         , & ! Output:  [real(r8) (:)   ]
-         frootn_xfer_to_frootmn              =>    veg_nf%frootn_xfer_to_frootmn         , & ! Output:  [real(r8) (:)   ]
+         ! frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:)   ]
+         ! frootn_xfer_to_froottn              =>    veg_nf%frootn_xfer_to_froottn         , & ! Output:  [real(r8) (:)   ]
+         ! frootn_xfer_to_frootan              =>    veg_nf%frootn_xfer_to_frootan         , & ! Output:  [real(r8) (:)   ]
+         ! frootn_xfer_to_frootmn              =>    veg_nf%frootn_xfer_to_frootmn         , & ! Output:  [real(r8) (:)   ]
 
          livestemn_xfer_to_livestemn         =>    veg_nf%livestemn_xfer_to_livestemn   , & ! Output:  [real(r8) (:)   ]
          deadstemn_xfer_to_deadstemn         =>    veg_nf%deadstemn_xfer_to_deadstemn   , & ! Output:  [real(r8) (:)   ]
@@ -819,10 +841,10 @@ contains
 
          leafp_xfer_to_leafp                 =>    veg_pf%leafp_xfer_to_leafp           , & ! Output:  [real(r8) (:)   ]
          !TAM
-         frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:)   ]
-         frootp_xfer_to_froottp              =>    veg_pf%frootp_xfer_to_froottp         , & ! Output:  [real(r8) (:)   ]
-         frootp_xfer_to_frootap              =>    veg_pf%frootp_xfer_to_frootap         , & ! Output:  [real(r8) (:)   ]
-         frootp_xfer_to_frootmp              =>    veg_pf%frootp_xfer_to_frootmp         , & ! Output:  [real(r8) (:)   ]
+         ! frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:)   ]
+         ! frootp_xfer_to_froottp              =>    veg_pf%frootp_xfer_to_froottp         , & ! Output:  [real(r8) (:)   ]
+         ! frootp_xfer_to_frootap              =>    veg_pf%frootp_xfer_to_frootap         , & ! Output:  [real(r8) (:)   ]
+         ! frootp_xfer_to_frootmp              =>    veg_pf%frootp_xfer_to_frootmp         , & ! Output:  [real(r8) (:)   ]
 
          livestemp_xfer_to_livestemp         =>    veg_pf%livestemp_xfer_to_livestemp   , & ! Output:  [real(r8) (:)   ]
          deadstemp_xfer_to_deadstemp         =>    veg_pf%deadstemp_xfer_to_deadstemp   , & ! Output:  [real(r8) (:)   ]
@@ -1273,12 +1295,36 @@ contains
          dayl                                =>    grc_pp%dayl                                              , & ! Input:  [real(r8)  (:)   ]  daylength (s)
 
          leaf_long                           =>    veg_vp%leaf_long                                  , & ! Input:  [real(r8)  (:)   ]  leaf longevity (yrs)
-         !TAM
-         froot_long                          =>    veg_vp%froot_long                                 , & ! Input:  [real(r8)  (:)   ]  fine root longevity (yrs)
+#if (defined TAM)
          froott_long                         =>    veg_vp%froott_long                                , & ! Input:  [real(r8)  (:)   ]  fine root T longevity (yrs)
          froota_long                         =>    veg_vp%froota_long                                , & ! Input:  [real(r8)  (:)   ]  fine root A longevity (yrs)
          frootm_long                         =>    veg_vp%frootm_long                                , & ! Input:  [real(r8)  (:)   ]  fine root M longevity (yrs)
+         bglfr_froott                        =>    cnstate_vars%bglfr_froott_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
+         bglfr_froota                        =>    cnstate_vars%bglfr_froota_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
+         bglfr_frootm                        =>    cnstate_vars%bglfr_frootm_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
+         prev_froottc_to_litter              =>    veg_cf%prev_froottc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         prev_frootac_to_litter              =>    veg_cf%prev_frootac_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         prev_frootmc_to_litter              =>    veg_cf%prev_frootmc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         frootn_xfer_to_froottn               =>    veg_nf%frootn_xfer_to_froottn         , & ! Output:  [real(r8) (:)   ]
+         frootn_xfer_to_frootan               =>    veg_nf%frootn_xfer_to_frootan         , & ! Output:  [real(r8) (:)   ]
+         frootn_xfer_to_frootmn               =>    veg_nf%frootn_xfer_to_frootmn         , & ! Output:  [real(r8) (:)   ]
+         frootc_xfer_to_froottc              =>    veg_cf%frootc_xfer_to_froottc           , & ! Output:  [real(r8) (:)   ]
+         frootc_xfer_to_frootac              =>    veg_cf%frootc_xfer_to_frootac           , & ! Output:  [real(r8) (:)   ]
+         frootc_xfer_to_frootmc              =>    veg_cf%frootc_xfer_to_frootmc           , & ! Output:  [real(r8) (:)   ]
+         frootp_xfer_to_froottp               =>    veg_pf%frootp_xfer_to_froottp         , & ! Output:  [real(r8) (:)   ]
+         frootp_xfer_to_frootap               =>    veg_pf%frootp_xfer_to_frootap         , & ! Output:  [real(r8) (:)   ]
+         frootp_xfer_to_frootmp               =>    veg_pf%frootp_xfer_to_frootmp         , & ! Output:  [real(r8) (:)   ]
 
+#else
+         froot_long                          =>    veg_vp%froot_long                                 , & ! Input:  [real(r8)  (:)   ]  fine root longevity (yrs)
+         bglfr_froot                         =>    cnstate_vars%bglfr_froot_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
+         prev_frootc_to_litter               =>    veg_cf%prev_frootc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:)   ]
+         frootc_xfer_to_frootc               =>    veg_cf%frootc_xfer_to_frootc           , & ! Output:  [real(r8) (:)   ]
+         frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:)   ]
+
+#endif         
+        
          woody                               =>    veg_vp%woody                                      , & ! Input:  [real(r8)  (:)   ]  binary flag for woody lifeform (1=woody, 0=not woody)
          stress_decid                        =>    veg_vp%stress_decid                               , & ! Input:  [real(r8)  (:)   ]  binary flag for stress-deciduous leaf habit (0 or 1)
          crit_gdd1                           =>    veg_vp%crit_gdd1                                  , & ! Input:  [real(r8) (:) ] critical GDD intercept (at t = 0)
@@ -1303,10 +1349,10 @@ contains
          lgsf                                =>    cnstate_vars%lgsf_patch                               , & ! Output:  [real(r8) (:)   ]  long growing season factor [0-1]
          bglfr_leaf                          =>    cnstate_vars%bglfr_leaf_patch                         , & ! Output:  [real(r8) (:)   ]  background leaf litterfall rate (1/s)
          !TAM
-         bglfr_froot                         =>    cnstate_vars%bglfr_froot_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
-         bglfr_froott                        =>    cnstate_vars%bglfr_froott_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
-         bglfr_froota                        =>    cnstate_vars%bglfr_froota_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
-         bglfr_frootm                        =>    cnstate_vars%bglfr_frootm_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
+         ! bglfr_froot                         =>    cnstate_vars%bglfr_froot_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
+         ! bglfr_froott                        =>    cnstate_vars%bglfr_froott_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
+         ! bglfr_froota                        =>    cnstate_vars%bglfr_froota_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
+         ! bglfr_frootm                        =>    cnstate_vars%bglfr_frootm_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
 
          bgtr                                =>    cnstate_vars%bgtr_patch                               , & ! Output:  [real(r8) (:)   ]  background transfer growth rate (1/s)
          annavg_t2m                          =>    cnstate_vars%annavg_t2m_patch                         , & ! Output:  [real(r8) (:)   ]  annual average 2m air temperature (K)
@@ -1354,17 +1400,17 @@ contains
 
          prev_leafc_to_litter                =>    veg_cf%prev_leafc_to_litter            , & ! Output:  [real(r8) (:)   ]  previous timestep leaf C litterfall flux (gC/m2/s)
          !TAM
-         prev_frootc_to_litter               =>    veg_cf%prev_frootc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
-         prev_froottc_to_litter              =>    veg_cf%prev_froottc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
-         prev_frootac_to_litter              =>    veg_cf%prev_frootac_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
-         prev_frootmc_to_litter              =>    veg_cf%prev_frootmc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         ! prev_frootc_to_litter               =>    veg_cf%prev_frootc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         ! prev_froottc_to_litter              =>    veg_cf%prev_froottc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         ! prev_frootac_to_litter              =>    veg_cf%prev_frootac_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         ! prev_frootmc_to_litter              =>    veg_cf%prev_frootmc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
 
          leafc_xfer_to_leafc                 =>    veg_cf%leafc_xfer_to_leafc             , & ! Output:  [real(r8) (:)   ]
          !TAM
-         frootc_xfer_to_frootc               =>    veg_cf%frootc_xfer_to_frootc           , & ! Output:  [real(r8) (:)   ]
-         frootc_xfer_to_froottc              =>    veg_cf%frootc_xfer_to_froottc           , & ! Output:  [real(r8) (:)   ]
-         frootc_xfer_to_frootac              =>    veg_cf%frootc_xfer_to_frootac           , & ! Output:  [real(r8) (:)   ]
-         frootc_xfer_to_frootmc              =>    veg_cf%frootc_xfer_to_frootmc           , & ! Output:  [real(r8) (:)   ]
+         ! frootc_xfer_to_frootc               =>    veg_cf%frootc_xfer_to_frootc           , & ! Output:  [real(r8) (:)   ]
+         ! frootc_xfer_to_froottc              =>    veg_cf%frootc_xfer_to_froottc           , & ! Output:  [real(r8) (:)   ]
+         ! frootc_xfer_to_frootac              =>    veg_cf%frootc_xfer_to_frootac           , & ! Output:  [real(r8) (:)   ]
+         ! frootc_xfer_to_frootmc              =>    veg_cf%frootc_xfer_to_frootmc           , & ! Output:  [real(r8) (:)   ]
 
          livestemc_xfer_to_livestemc         =>    veg_cf%livestemc_xfer_to_livestemc     , & ! Output:  [real(r8) (:)   ]
          deadstemc_xfer_to_deadstemc         =>    veg_cf%deadstemc_xfer_to_deadstemc     , & ! Output:  [real(r8) (:)   ]
@@ -1380,10 +1426,10 @@ contains
 
          leafn_xfer_to_leafn                 =>    veg_nf%leafn_xfer_to_leafn           , & ! Output:  [real(r8) (:)   ]
          !TAM
-         frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:)   ]
-         frootn_xfer_to_froottn               =>    veg_nf%frootn_xfer_to_froottn         , & ! Output:  [real(r8) (:)   ]
-         frootn_xfer_to_frootan               =>    veg_nf%frootn_xfer_to_frootan         , & ! Output:  [real(r8) (:)   ]
-         frootn_xfer_to_frootmn               =>    veg_nf%frootn_xfer_to_frootmn         , & ! Output:  [real(r8) (:)   ]
+         ! frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:)   ]
+         ! frootn_xfer_to_froottn               =>    veg_nf%frootn_xfer_to_froottn         , & ! Output:  [real(r8) (:)   ]
+         ! frootn_xfer_to_frootan               =>    veg_nf%frootn_xfer_to_frootan         , & ! Output:  [real(r8) (:)   ]
+         ! frootn_xfer_to_frootmn               =>    veg_nf%frootn_xfer_to_frootmn         , & ! Output:  [real(r8) (:)   ]
 
          livestemn_xfer_to_livestemn         =>    veg_nf%livestemn_xfer_to_livestemn   , & ! Output:  [real(r8) (:)   ]
          deadstemn_xfer_to_deadstemn         =>    veg_nf%deadstemn_xfer_to_deadstemn   , & ! Output:  [real(r8) (:)   ]
@@ -1398,10 +1444,10 @@ contains
 
          leafp_xfer_to_leafp                 =>    veg_pf%leafp_xfer_to_leafp           , & ! Output:  [real(r8) (:)   ]
          !TAM
-         frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:)   ]
-         frootp_xfer_to_froottp               =>    veg_pf%frootp_xfer_to_froottp         , & ! Output:  [real(r8) (:)   ]
-         frootp_xfer_to_frootap               =>    veg_pf%frootp_xfer_to_frootap         , & ! Output:  [real(r8) (:)   ]
-         frootp_xfer_to_frootmp               =>    veg_pf%frootp_xfer_to_frootmp         , & ! Output:  [real(r8) (:)   ]
+         ! frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:)   ]
+         ! frootp_xfer_to_froottp               =>    veg_pf%frootp_xfer_to_froottp         , & ! Output:  [real(r8) (:)   ]
+         ! frootp_xfer_to_frootap               =>    veg_pf%frootp_xfer_to_frootap         , & ! Output:  [real(r8) (:)   ]
+         ! frootp_xfer_to_frootmp               =>    veg_pf%frootp_xfer_to_frootmp         , & ! Output:  [real(r8) (:)   ]
 
          livestemp_xfer_to_livestemp         =>    veg_pf%livestemp_xfer_to_livestemp   , & ! Output:  [real(r8) (:)   ]
          deadstemp_xfer_to_deadstemp         =>    veg_pf%deadstemp_xfer_to_deadstemp   , & ! Output:  [real(r8) (:)   ]
@@ -3054,12 +3100,24 @@ contains
 
 
          leafc_xfer_to_leafc                 =>    veg_cf%leafc_xfer_to_leafc             , & ! Output:  [real(r8) (:) ]
-         !TAM
-         frootc_xfer_to_frootc               =>    veg_cf%frootc_xfer_to_frootc           , & ! Output:  [real(r8) (:) ]
-         frootc_xfer_to_froottc              =>    veg_cf%frootc_xfer_to_froottc           , & ! Output:  [real(r8) (:) ]
+#if (defined TAM)
+frootc_xfer_to_froottc              =>    veg_cf%frootc_xfer_to_froottc           , & ! Output:  [real(r8) (:) ]
          frootc_xfer_to_frootac              =>    veg_cf%frootc_xfer_to_frootac           , & ! Output:  [real(r8) (:) ]
          frootc_xfer_to_frootmc              =>    veg_cf%frootc_xfer_to_frootmc           , & ! Output:  [real(r8) (:) ]
+         frootn_xfer_to_froottn              =>    veg_nf%frootn_xfer_to_froottn         , & ! Output:  [real(r8) (:) ]
+         frootn_xfer_to_frootan              =>    veg_nf%frootn_xfer_to_frootan         , & ! Output:  [real(r8) (:) ]
+         frootn_xfer_to_frootmn              =>    veg_nf%frootn_xfer_to_frootmn         , & ! Output:  [real(r8) (:) ]
+         frootp_xfer_to_froottp              =>    veg_pf%frootp_xfer_to_froottp         , & ! Output:  [real(r8) (:) ]
+         frootp_xfer_to_frootap              =>    veg_pf%frootp_xfer_to_frootap         , & ! Output:  [real(r8) (:) ]
+         frootp_xfer_to_frootmp              =>    veg_pf%frootp_xfer_to_frootmp         , & ! Output:  [real(r8) (:) ]
 
+#else
+         frootc_xfer_to_frootc               =>    veg_cf%frootc_xfer_to_frootc           , & ! Output:  [real(r8) (:) ]
+         frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:) ]
+         frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:) ]
+
+#endif
+         
          livestemc_xfer_to_livestemc         =>    veg_cf%livestemc_xfer_to_livestemc     , & ! Output:  [real(r8) (:) ]
          deadstemc_xfer_to_deadstemc         =>    veg_cf%deadstemc_xfer_to_deadstemc     , & ! Output:  [real(r8) (:) ]
          livecrootc_xfer_to_livecrootc       =>    veg_cf%livecrootc_xfer_to_livecrootc   , & ! Output:  [real(r8) (:) ]
@@ -3067,10 +3125,10 @@ contains
          
          leafn_xfer_to_leafn                 =>    veg_nf%leafn_xfer_to_leafn           , & ! Output:  [real(r8) (:) ]
          !TAM
-         frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:) ]
-         frootn_xfer_to_froottn              =>    veg_nf%frootn_xfer_to_froottn         , & ! Output:  [real(r8) (:) ]
-         frootn_xfer_to_frootan              =>    veg_nf%frootn_xfer_to_frootan         , & ! Output:  [real(r8) (:) ]
-         frootn_xfer_to_frootmn              =>    veg_nf%frootn_xfer_to_frootmn         , & ! Output:  [real(r8) (:) ]
+         ! frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:) ]
+         ! frootn_xfer_to_froottn              =>    veg_nf%frootn_xfer_to_froottn         , & ! Output:  [real(r8) (:) ]
+         ! frootn_xfer_to_frootan              =>    veg_nf%frootn_xfer_to_frootan         , & ! Output:  [real(r8) (:) ]
+         ! frootn_xfer_to_frootmn              =>    veg_nf%frootn_xfer_to_frootmn         , & ! Output:  [real(r8) (:) ]
 
          livestemn_xfer_to_livestemn         =>    veg_nf%livestemn_xfer_to_livestemn   , & ! Output:  [real(r8) (:) ]
          deadstemn_xfer_to_deadstemn         =>    veg_nf%deadstemn_xfer_to_deadstemn   , & ! Output:  [real(r8) (:) ]
@@ -3079,10 +3137,10 @@ contains
 
          leafp_xfer_to_leafp                 =>    veg_pf%leafp_xfer_to_leafp           , & ! Output:  [real(r8) (:) ]
          !TAM
-         frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:) ]
-         frootp_xfer_to_froottp              =>    veg_pf%frootp_xfer_to_froottp         , & ! Output:  [real(r8) (:) ]
-         frootp_xfer_to_frootap              =>    veg_pf%frootp_xfer_to_frootap         , & ! Output:  [real(r8) (:) ]
-         frootp_xfer_to_frootmp              =>    veg_pf%frootp_xfer_to_frootmp         , & ! Output:  [real(r8) (:) ]
+         ! frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:) ]
+         ! frootp_xfer_to_froottp              =>    veg_pf%frootp_xfer_to_froottp         , & ! Output:  [real(r8) (:) ]
+         ! frootp_xfer_to_frootap              =>    veg_pf%frootp_xfer_to_frootap         , & ! Output:  [real(r8) (:) ]
+         ! frootp_xfer_to_frootmp              =>    veg_pf%frootp_xfer_to_frootmp         , & ! Output:  [real(r8) (:) ]
 
          livestemp_xfer_to_livestemp         =>    veg_pf%livestemp_xfer_to_livestemp   , & ! Output:  [real(r8) (:) ]
          deadstemp_xfer_to_deadstemp         =>    veg_pf%deadstemp_xfer_to_deadstemp   , & ! Output:  [real(r8) (:) ]
@@ -3453,12 +3511,66 @@ contains
 
          leafcn                =>    veg_vp%leafcn                           , & ! Input:  [real(r8) (:) ]  leaf C:N (gC/gN)
          lflitcn               =>    veg_vp%lflitcn                          , & ! Input:  [real(r8) (:) ]  leaf litter C:N (gC/gN)
-         !TAM
-         frootcn               =>    veg_vp%frootcn                          , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
+#if (defined TAM)
          froottcn              =>    veg_vp%froottcn                          , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
          frootacn              =>    veg_vp%frootacn                          , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
          frootmcn              =>    veg_vp%frootmcn                          , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
-
+         froottcp               =>    veg_vp%froottcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         frootacp               =>    veg_vp%frootacp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         frootmcp               =>    veg_vp%frootmcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         froottc               =>    veg_cs%froottc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         frootac               =>    veg_cs%frootac               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         frootmc               =>    veg_cs%frootmc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         cpool_to_froottc      =>    veg_cf%cpool_to_froottc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
+         cpool_to_frootac      =>    veg_cf%cpool_to_frootac       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
+         cpool_to_frootmc      =>    veg_cf%cpool_to_frootmc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
+         prev_froottc_to_litter =>   veg_cf%prev_froottc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
+         prev_frootac_to_litter =>   veg_cf%prev_frootac_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
+         prev_frootmc_to_litter =>   veg_cf%prev_frootmc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
+         froottc_to_litter     =>    veg_cf%froottc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
+         frootac_to_litter     =>    veg_cf%frootac_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
+         frootmc_to_litter     =>    veg_cf%frootmc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
+         froottn_to_litter     =>    veg_nf%froottn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
+         frootan_to_litter     =>    veg_nf%frootan_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
+         frootmn_to_litter     =>    veg_nf%frootmn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
+         froottp_to_litter     =>    veg_pf%froottp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
+         frootap_to_litter     =>    veg_pf%frootap_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
+         frootmp_to_litter     =>    veg_pf%frootmp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
+         prev_froottn_to_litter =>    veg_nf%prev_froottn_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
+         prev_frootan_to_litter =>    veg_nf%prev_frootan_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
+         prev_frootmn_to_litter =>    veg_nf%prev_frootmn_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
+         prev_froottp_to_litter =>    veg_pf%prev_froottp_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot P litterfall flux (gP/m2/s)
+         prev_frootap_to_litter =>    veg_pf%prev_frootap_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot P litterfall flux (gP/m2/s)
+         prev_frootmp_to_litter =>    veg_pf%prev_frootmp_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot P litterfall flux (gP/m2/s)
+         froottn                =>    veg_ns%froottn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
+         frootan                =>    veg_ns%frootan                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
+         frootmn                =>    veg_ns%frootmn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
+         froottp               =>    veg_ps%froottp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
+         frootap               =>    veg_ps%frootap               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
+         frootmp               =>    veg_ps%frootmp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
+         npool_to_froottn      =>    veg_nf%npool_to_froottn        , &
+         npool_to_frootan      =>    veg_nf%npool_to_frootan        , &
+         npool_to_frootmn      =>    veg_nf%npool_to_frootmn        , &
+         ppool_to_froottp      =>    veg_pf%ppool_to_froottp       , &
+         ppool_to_frootap      =>    veg_pf%ppool_to_frootap       , &
+         ppool_to_frootmp      =>    veg_pf%ppool_to_frootmp       , &
+#else
+         frootcn               =>    veg_vp%frootcn                          , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
+         frootcp               =>    veg_vp%frootcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         frootc                =>    veg_cs%frootc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         cpool_to_frootc       =>    veg_cf%cpool_to_frootc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
+         prev_frootc_to_litter =>    veg_cf%prev_frootc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
+         frootc_to_litter      =>    veg_cf%frootc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
+         frootn_to_litter      =>    veg_nf%frootn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
+         frootp_to_litter      =>    veg_pf%frootp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
+         prev_frootn_to_litter  =>    veg_nf%prev_frootn_to_litter    , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
+         prev_frootp_to_litter =>    veg_pf%prev_frootp_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot P litterfall flux (gP/m2/s)
+         frootn                =>    veg_ns%frootn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
+         frootp                =>    veg_ps%frootp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
+         npool_to_frootn       =>    veg_nf%npool_to_frootn         , &
+         ppool_to_frootp       =>    veg_pf%ppool_to_frootp        , &
+#endif         
+         
          livewdcn              =>    veg_vp%livewdcn                         , & ! Input:  [real(r8) (:) ]  live wood C:N (gC/gN)
          graincn               =>    veg_vp%graincn                          , & ! Input:  [real(r8) (:) ]  grain C:N (gC/gN)
          presharv              =>    veg_vp%presharv                         , & ! Input:  [real(r8) (:) ]  porportion of residue harvested
@@ -3466,10 +3578,10 @@ contains
          leafcp                =>    veg_vp%leafcp                           , & ! Input:  [real(r8) (:) ]  leaf C:P (gC/gP)
          lflitcp               =>    veg_vp%lflitcp                          , & ! Input:  [real(r8) (:) ]  leaf litter C:P (gC/gP)
          !TAM
-         frootcp               =>    veg_vp%frootcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
-         froottcp               =>    veg_vp%frootcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
-         frootacp               =>    veg_vp%frootcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
-         frootmcp               =>    veg_vp%frootcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         ! frootcp               =>    veg_vp%frootcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         ! froottcp               =>    veg_vp%frootcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         ! frootacp               =>    veg_vp%frootcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         ! frootmcp               =>    veg_vp%frootcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
 
          livewdcp              =>    veg_vp%livewdcp                         , & ! Input:  [real(r8) (:) ]  live wood C:P (gC/gP)
          graincp               =>    veg_vp%graincp                          , & ! Input:  [real(r8) (:) ]  grain C:P (gC/gP)
@@ -3479,10 +3591,10 @@ contains
 
          leafc                 =>    veg_cs%leafc                , & ! Input:  [real(r8) (:) ]  (gC/m2) leaf C
          !TAM
-         frootc                =>    veg_cs%frootc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
-         froottc               =>    veg_cs%frootc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
-         frootac               =>    veg_cs%frootc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
-         frootmc               =>    veg_cs%frootc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         ! frootc                =>    veg_cs%frootc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         ! froottc               =>    veg_cs%frootc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         ! frootac               =>    veg_cs%frootc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         ! frootmc               =>    veg_cs%frootc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
 
          grainc                =>    veg_cs%grainc               , & ! Input:  [real(r8) (:) ]  (gC/m2) grain C
          livestemc             =>    veg_cs%livestemc            , & ! Input:  [real(r8) (:) ]  (gC/m2) livestem C
@@ -3491,24 +3603,24 @@ contains
          cpool_to_livestemc    =>    veg_cf%cpool_to_livestemc    , & ! Input:  [real(r8) (:) ]  allocation to live stem C (gC/m2/s)
          cpool_to_leafc        =>    veg_cf%cpool_to_leafc        , & ! Input:  [real(r8) (:) ]  allocation to leaf C (gC/m2/s)
          !TAM
-         cpool_to_frootc       =>    veg_cf%cpool_to_frootc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
-         cpool_to_froottc      =>    veg_cf%cpool_to_froottc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
-         cpool_to_frootac      =>    veg_cf%cpool_to_frootac       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
-         cpool_to_frootmc      =>    veg_cf%cpool_to_frootmc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
+         ! cpool_to_frootc       =>    veg_cf%cpool_to_frootc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
+         ! cpool_to_froottc      =>    veg_cf%cpool_to_froottc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
+         ! cpool_to_frootac      =>    veg_cf%cpool_to_frootac       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
+         ! cpool_to_frootmc      =>    veg_cf%cpool_to_frootmc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
 
          prev_leafc_to_litter  =>    veg_cf%prev_leafc_to_litter  , & ! Output: [real(r8) (:) ]  previous timestep leaf C litterfall flux (gC/m2/s)
          !TAM
-         prev_frootc_to_litter =>    veg_cf%prev_frootc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
-         prev_froottc_to_litter =>   veg_cf%prev_froottc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
-         prev_frootac_to_litter =>   veg_cf%prev_frootac_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
-         prev_frootmc_to_litter =>   veg_cf%prev_frootmc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
+         ! prev_frootc_to_litter =>    veg_cf%prev_frootc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
+         ! prev_froottc_to_litter =>   veg_cf%prev_froottc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
+         ! prev_frootac_to_litter =>   veg_cf%prev_frootac_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
+         ! prev_frootmc_to_litter =>   veg_cf%prev_frootmc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
 
          leafc_to_litter       =>    veg_cf%leafc_to_litter       , & ! Output: [real(r8) (:) ]  leaf C litterfall (gC/m2/s)
          !TAM
-         frootc_to_litter      =>    veg_cf%frootc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
-         froottc_to_litter     =>    veg_cf%froottc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
-         frootac_to_litter     =>    veg_cf%frootac_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
-         frootmc_to_litter     =>    veg_cf%frootmc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
+         ! frootc_to_litter      =>    veg_cf%frootc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
+         ! froottc_to_litter     =>    veg_cf%froottc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
+         ! frootac_to_litter     =>    veg_cf%frootac_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
+         ! frootmc_to_litter     =>    veg_cf%frootmc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
 
          livestemc_to_litter   =>    veg_cf%livestemc_to_litter   , & ! Output: [real(r8) (:) ]  live stem C litterfall (gC/m2/s)
          grainc_to_food        =>    veg_cf%grainc_to_food        , & ! Output: [real(r8) (:) ]  grain C to food (gC/m2/s)
@@ -3518,62 +3630,62 @@ contains
          leafn_to_litter       =>    veg_nf%leafn_to_litter     , & ! Output: [real(r8) (:) ]  leaf N litterfall (gN/m2/s)
          leafn_to_retransn     =>    veg_nf%leafn_to_retransn   , & ! Output: [real(r8) (:) ]  leaf N to retranslocated N pool (gN/m2/s)
          !TAM
-         frootn_to_litter      =>    veg_nf%frootn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
-         froottn_to_litter     =>    veg_nf%froottn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
-         frootan_to_litter     =>    veg_nf%frootan_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
-         frootmn_to_litter     =>    veg_nf%frootmn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
+         ! frootn_to_litter      =>    veg_nf%frootn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
+         ! froottn_to_litter     =>    veg_nf%froottn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
+         ! frootan_to_litter     =>    veg_nf%frootan_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
+         ! frootmn_to_litter     =>    veg_nf%frootmn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
 
          livestemp_to_litter   =>    veg_pf%livestemp_to_litter , & ! Output: [real(r8) (:) ]  livestem P to litter (gP/m2/s)
          grainp_to_food        =>    veg_pf%grainp_to_food      , & ! Output: [real(r8) (:) ]  grain P to food (gP/m2/s)
          leafp_to_litter       =>    veg_pf%leafp_to_litter     , & ! Output: [real(r8) (:) ]  leaf P litterfall (gP/m2/s)
          leafp_to_retransp     =>    veg_pf%leafp_to_retransp   , & ! Output: [real(r8) (:) ]  leaf P to retranslocated P pool (gP/m2/s)
          !TAM
-         frootp_to_litter      =>    veg_pf%frootp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
-         froottp_to_litter     =>    veg_pf%froottp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
-         frootap_to_litter     =>    veg_pf%frootap_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
-         frootmp_to_litter     =>    veg_pf%frootmp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
+         ! frootp_to_litter      =>    veg_pf%frootp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
+         ! froottp_to_litter     =>    veg_pf%froottp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
+         ! frootap_to_litter     =>    veg_pf%frootap_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
+         ! frootmp_to_litter     =>    veg_pf%frootmp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
 
          prev_leafn_to_litter  =>    veg_nf%prev_leafn_to_litter    , & ! Output: [real(r8) (:) ]  previous timestep leaf N litterfall flux (gN/m2/s)
          !TAM
-         prev_frootn_to_litter  =>    veg_nf%prev_frootn_to_litter    , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
-         prev_froottn_to_litter =>    veg_nf%prev_froottn_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
-         prev_frootan_to_litter =>    veg_nf%prev_frootan_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
-         prev_frootmn_to_litter =>    veg_nf%prev_frootmn_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
+         ! prev_frootn_to_litter  =>    veg_nf%prev_frootn_to_litter    , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
+         ! prev_froottn_to_litter =>    veg_nf%prev_froottn_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
+         ! prev_frootan_to_litter =>    veg_nf%prev_frootan_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
+         ! prev_frootmn_to_litter =>    veg_nf%prev_frootmn_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
 
          prev_leafp_to_litter  =>    veg_pf%prev_leafp_to_litter  , & ! Output: [real(r8) (:) ]  previous timestep leaf P litterfall flux (gP/m2/s)
          !TAM
-         prev_frootp_to_litter =>    veg_pf%prev_frootp_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot P litterfall flux (gP/m2/s)
+         ! prev_frootp_to_litter =>    veg_pf%prev_frootp_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot P litterfall flux (gP/m2/s)
          
          leafn                 =>    veg_ns%leafn                  , & ! Input:  [real(r8) (:) ]  (gN/m2) leaf N
          !TAM
-         frootn                =>    veg_ns%frootn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
-         froottn                =>    veg_ns%froottn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
-         frootan                =>    veg_ns%frootan                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
-         frootmn                =>    veg_ns%frootmn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
+         ! frootn                =>    veg_ns%frootn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
+         ! froottn                =>    veg_ns%froottn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
+         ! frootan                =>    veg_ns%frootan                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
+         ! frootmn                =>    veg_ns%frootmn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
 
          livestemn             =>    veg_ns%livestemn              , & ! Input:  [real(r8) (:) ]  (gN/m2) livestem N
          leafp                 =>    veg_ps%leafp                , & ! Input:  [real(r8) (:) ]  (gP/m2) leaf P
          !TAM
-         frootp                =>    veg_ps%frootp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
-         froottp               =>    veg_ps%froottp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
-         frootap               =>    veg_ps%frootap               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
-         frootmp               =>    veg_ps%frootmp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
+         ! frootp                =>    veg_ps%frootp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
+         ! froottp               =>    veg_ps%froottp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
+         ! frootap               =>    veg_ps%frootap               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
+         ! frootmp               =>    veg_ps%frootmp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
 
          livestemp             =>    veg_ps%livestemp            , & ! Input:  [real(r8) (:) ]  (gP/m2) livestem P
          npool_to_leafn        =>    veg_nf%npool_to_leafn       , &
          !TAM
-         npool_to_frootn       =>    veg_nf%npool_to_frootn         , &
-         npool_to_froottn      =>    veg_nf%npool_to_froottn        , &
-         npool_to_frootan      =>    veg_nf%npool_to_frootan        , &
-         npool_to_frootmn      =>    veg_nf%npool_to_frootmn        , &
+         ! npool_to_frootn       =>    veg_nf%npool_to_frootn         , &
+         ! npool_to_froottn      =>    veg_nf%npool_to_froottn        , &
+         ! npool_to_frootan      =>    veg_nf%npool_to_frootan        , &
+         ! npool_to_frootmn      =>    veg_nf%npool_to_frootmn        , &
 
          npool_to_livestemn    =>    veg_nf%npool_to_livestemn      , &
          ppool_to_leafp        =>    veg_pf%ppool_to_leafp          , &
          !TAM
-         ppool_to_frootp       =>    veg_pf%ppool_to_frootp        , &
-         ppool_to_froottp      =>    veg_pf%ppool_to_froottp       , &
-         ppool_to_frootap      =>    veg_pf%ppool_to_frootap       , &
-         ppool_to_frootmp      =>    veg_pf%ppool_to_frootmp       , &
+         ! ppool_to_frootp       =>    veg_pf%ppool_to_frootp        , &
+         ! ppool_to_froottp      =>    veg_pf%ppool_to_froottp       , &
+         ! ppool_to_frootap      =>    veg_pf%ppool_to_frootap       , &
+         ! ppool_to_frootmp      =>    veg_pf%ppool_to_frootmp       , &
 
          ppool_to_livestemp    =>    veg_pf%ppool_to_livestemp    , &
          hrv_leafc_to_prod1c   =>    veg_cf%hrv_leafc_to_prod1c       , & ! Input:  [real(r8) (:)] crop leafc harvested
@@ -3755,67 +3867,94 @@ contains
 
          leafcn            =>    veg_vp%leafcn                         , & ! Input:  [real(r8) (:) ]  leaf C:N (gC/gN)
          lflitcn           =>    veg_vp%lflitcn                        , & ! Input:  [real(r8) (:) ]  leaf litter C:N (gC/gN)
-         !TAM
-         frootcn           =>    veg_vp%frootcn                        , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
+#if (defined TAM)
          froottcn          =>    veg_vp%froottcn                        , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
          frootacn          =>    veg_vp%frootacn                        , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
          frootmcn          =>    veg_vp%frootmcn                        , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
-
-         leafcp            =>    veg_vp%leafcp                         , & ! Input:  [real(r8) (:) ]  leaf C:P (gC/gP)
-         lflitcp           =>    veg_vp%lflitcp                        , & ! Input:  [real(r8) (:) ]  leaf litter C:P (gC/gP)
-         !TAM
-         frootcp           =>    veg_vp%frootcp                        , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
          froottcp           =>    veg_vp%froottcp                        , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
          frootacp           =>    veg_vp%frootacp                        , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
          frootmcp           =>    veg_vp%frootmcp                        , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
-
-         bglfr_leaf        =>    cnstate_vars%bglfr_leaf_patch         , & ! Input:  [real(r8) (:) ]  background leaf litterfall rate (1/s)
-         !TAM
-         bglfr_froot       =>    cnstate_vars%bglfr_froot_patch        , & ! Input:  [real(r8) (:) ]  background fine root litterfall rate (1/s)
          bglfr_froott      =>    cnstate_vars%bglfr_froott_patch        , & ! Input:  [real(r8) (:) ]  background fine root litterfall rate (1/s)
          bglfr_froota      =>    cnstate_vars%bglfr_froota_patch        , & ! Input:  [real(r8) (:) ]  background fine root litterfall rate (1/s)
          bglfr_frootm      =>    cnstate_vars%bglfr_frootm_patch        , & ! Input:  [real(r8) (:) ]  background fine root litterfall rate (1/s)
-
-         leafc             =>    veg_cs%leafc              , & ! Input:  [real(r8) (:) ]  (gC/m2) leaf C
-         !TAM
-         frootc            =>    veg_cs%frootc             , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
          froottc            =>    veg_cs%froottc             , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
          frootac            =>    veg_cs%frootac             , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
          frootmc            =>    veg_cs%frootmc             , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
-
-         leafc_to_litter   =>    veg_cf%leafc_to_litter     , & ! Output: [real(r8) (:) ]
-         !TAM
-         frootc_to_litter   =>    veg_cf%frootc_to_litter    , & ! Output: [real(r8) (:) ]
          froottc_to_litter  =>    veg_cf%froottc_to_litter    , & ! Output: [real(r8) (:) ]
          frootac_to_litter  =>    veg_cf%frootac_to_litter    , & ! Output: [real(r8) (:) ]
          frootmc_to_litter  =>    veg_cf%frootmc_to_litter    , & ! Output: [real(r8) (:) ]
+         froottn_to_litter  =>    veg_nf%froottn_to_litter  , & ! Output: [real(r8) (:) ]
+         frootan_to_litter  =>    veg_nf%frootan_to_litter  , & ! Output: [real(r8) (:) ]
+         frootmn_to_litter  =>    veg_nf%frootmn_to_litter  , & ! Output: [real(r8) (:) ]
+         froottp_to_litter  =>    veg_pf%froottp_to_litter  , & ! Output: [real(r8) (:) ]
+         frootap_to_litter  =>    veg_pf%frootap_to_litter  , & ! Output: [real(r8) (:) ]
+         frootmp_to_litter  =>    veg_pf%frootmp_to_litter  , & ! Output: [real(r8) (:) ]
+         froottn            =>    veg_ns%froottn             , &
+         frootan            =>    veg_ns%frootan             , &
+         frootmn            =>    veg_ns%frootmn             , &
+         froottp            =>    veg_ps%froottp             ,&
+         frootap            =>    veg_ps%frootap             ,&
+         frootmp            =>    veg_ps%frootmp             ,&
+#else
+         frootcn           =>    veg_vp%frootcn                        , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
+         frootcp           =>    veg_vp%frootcp                        , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         bglfr_froot       =>    cnstate_vars%bglfr_froot_patch        , & ! Input:  [real(r8) (:) ]  background fine root litterfall rate (1/s)
+         frootc            =>    veg_cs%frootc             , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         frootc_to_litter   =>    veg_cf%frootc_to_litter    , & ! Output: [real(r8) (:) ]
+         frootn_to_litter   =>    veg_nf%frootn_to_litter  , & ! Output: [real(r8) (:) ]
+         frootp_to_litter  =>    veg_pf%frootp_to_litter  , & ! Output: [real(r8) (:) ]
+         frootn            =>    veg_ns%frootn             , &
+         frootp            =>    veg_ps%frootp             ,&
+
+#endif  
+         
+         leafcp            =>    veg_vp%leafcp                         , & ! Input:  [real(r8) (:) ]  leaf C:P (gC/gP)
+         lflitcp           =>    veg_vp%lflitcp                        , & ! Input:  [real(r8) (:) ]  leaf litter C:P (gC/gP)
+         !TAM
+         ! frootcp           =>    veg_vp%frootcp                        , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         ! froottcp           =>    veg_vp%froottcp                        , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         ! frootacp           =>    veg_vp%frootacp                        , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         ! frootmcp           =>    veg_vp%frootmcp                        , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+
+         bglfr_leaf        =>    cnstate_vars%bglfr_leaf_patch         , & ! Input:  [real(r8) (:) ]  background leaf litterfall rate (1/s)
+         !TAM
+         ! bglfr_froot       =>    cnstate_vars%bglfr_froot_patch        , & ! Input:  [real(r8) (:) ]  background fine root litterfall rate (1/s)
+         ! bglfr_froott      =>    cnstate_vars%bglfr_froott_patch        , & ! Input:  [real(r8) (:) ]  background fine root litterfall rate (1/s)
+         ! bglfr_froota      =>    cnstate_vars%bglfr_froota_patch        , & ! Input:  [real(r8) (:) ]  background fine root litterfall rate (1/s)
+         ! bglfr_frootm      =>    cnstate_vars%bglfr_frootm_patch        , & ! Input:  [real(r8) (:) ]  background fine root litterfall rate (1/s)
+
+         leafc             =>    veg_cs%leafc              , & ! Input:  [real(r8) (:) ]  (gC/m2) leaf C
+         !TAM
+         ! frootc            =>    veg_cs%frootc             , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         ! froottc            =>    veg_cs%froottc             , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         ! frootac            =>    veg_cs%frootac             , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         ! frootmc            =>    veg_cs%frootmc             , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+
+         leafc_to_litter   =>    veg_cf%leafc_to_litter     , & ! Output: [real(r8) (:) ]
+         !TAM
+         ! frootc_to_litter   =>    veg_cf%frootc_to_litter    , & ! Output: [real(r8) (:) ]
+         ! froottc_to_litter  =>    veg_cf%froottc_to_litter    , & ! Output: [real(r8) (:) ]
+         ! frootac_to_litter  =>    veg_cf%frootac_to_litter    , & ! Output: [real(r8) (:) ]
+         ! frootmc_to_litter  =>    veg_cf%frootmc_to_litter    , & ! Output: [real(r8) (:) ]
 
          leafn_to_litter   =>    veg_nf%leafn_to_litter   , & ! Output: [real(r8) (:) ]
          leafn_to_retransn =>    veg_nf%leafn_to_retransn , & ! Output: [real(r8) (:) ]
          !TAM
-         frootn_to_litter   =>    veg_nf%frootn_to_litter  , & ! Output: [real(r8) (:) ]
-         froottn_to_litter  =>    veg_nf%froottn_to_litter  , & ! Output: [real(r8) (:) ]
-         frootan_to_litter  =>    veg_nf%frootan_to_litter  , & ! Output: [real(r8) (:) ]
-         frootmn_to_litter  =>    veg_nf%frootmn_to_litter  , & ! Output: [real(r8) (:) ]
+         ! frootn_to_litter   =>    veg_nf%frootn_to_litter  , & ! Output: [real(r8) (:) ]
+         ! froottn_to_litter  =>    veg_nf%froottn_to_litter  , & ! Output: [real(r8) (:) ]
+         ! frootan_to_litter  =>    veg_nf%frootan_to_litter  , & ! Output: [real(r8) (:) ]
+         ! frootmn_to_litter  =>    veg_nf%frootmn_to_litter  , & ! Output: [real(r8) (:) ]
 
          leafp_to_litter   =>    veg_pf%leafp_to_litter   , & ! Output: [real(r8) (:) ]
          leafp_to_retransp =>    veg_pf%leafp_to_retransp , & ! Output: [real(r8) (:) ]
          !TAM
-         frootp_to_litter  =>    veg_pf%frootp_to_litter  , & ! Output: [real(r8) (:) ]
-         froottp_to_litter  =>    veg_pf%froottp_to_litter  , & ! Output: [real(r8) (:) ]
-         frootap_to_litter  =>    veg_pf%frootap_to_litter  , & ! Output: [real(r8) (:) ]
-         frootmp_to_litter  =>    veg_pf%frootmp_to_litter  , & ! Output: [real(r8) (:) ]
+         ! frootp_to_litter  =>    veg_pf%frootp_to_litter  , & ! Output: [real(r8) (:) ]
+         ! froottp_to_litter  =>    veg_pf%froottp_to_litter  , & ! Output: [real(r8) (:) ]
+         ! frootap_to_litter  =>    veg_pf%frootap_to_litter  , & ! Output: [real(r8) (:) ]
+         ! frootmp_to_litter  =>    veg_pf%frootmp_to_litter  , & ! Output: [real(r8) (:) ]
 
          leafn             =>    veg_ns%leafn              , &
-         frootn            =>    veg_ns%frootn             , &
-         froottn            =>    veg_ns%froottn             , &
-         frootan            =>    veg_ns%frootan             , &
-         frootmn            =>    veg_ns%frootmn             , &
-         leafp             =>    veg_ps%leafp              , &
-         frootp            =>    veg_ps%frootp             ,&
-         froottp            =>    veg_ps%froottp             ,&
-         frootap            =>    veg_ps%frootap             ,&
-         frootmp            =>    veg_ps%frootmp             &
+         leafp             =>    veg_ps%leafp               &
          )
 
 
@@ -4101,21 +4240,31 @@ contains
          frm_flig                            =>    veg_vp%frm_flig                              , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
 
          leaf_prof                           =>    cnstate_vars%leaf_prof_patch                    , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of leaves
-         !TAM
-         froot_prof                          =>    cnstate_vars%froot_prof_patch                   , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
+#if (defined TAM)
          froott_prof                         =>    cnstate_vars%froott_prof_patch                  , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
          froota_prof                         =>    cnstate_vars%froota_prof_patch                  , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
          frootm_prof                         =>    cnstate_vars%frootm_prof_patch                  , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
-
-         croot_prof                          =>    cnstate_vars%croot_prof_patch                   , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of coarse roots                     
-
-         leafc_to_litter                     =>    veg_cf%leafc_to_litter           , & ! Input:  [real(r8) (:)   ]  leaf C litterfall (gC/m2/s)
-         !TAM
-         frootc_to_litter                    =>    veg_cf%frootc_to_litter          , & ! Input:  [real(r8) (:)   ]  fine root N litterfall (gN/m2/s)
          froottc_to_litter                   =>    veg_cf%froottc_to_litter          , & ! Input:  [real(r8) (:)   ]  fine root N litterfall (gN/m2/s)
          frootac_to_litter                   =>    veg_cf%frootac_to_litter          , & ! Input:  [real(r8) (:)   ]  fine root N litterfall (gN/m2/s)
          frootmc_to_litter                   =>    veg_cf%frootmc_to_litter          , & ! Input:  [real(r8) (:)   ]  fine root N litterfall (gN/m2/s)
+         froottn_to_litter                   =>    veg_nf%froottn_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root N litterfall (gN/m2/s)
+         frootan_to_litter                   =>    veg_nf%frootan_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root N litterfall (gN/m2/s)
+         frootmn_to_litter                   =>    veg_nf%frootmn_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root N litterfall (gN/m2/s)
+         froottp_to_litter                   =>    veg_pf%froottp_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root P litterfall (gP/m2/s)
+         frootap_to_litter                   =>    veg_pf%frootap_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root P litterfall (gP/m2/s)
+         frootmp_to_litter                   =>    veg_pf%frootmp_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root P litterfall (gP/m2/s)
 
+#else
+         froot_prof                          =>    cnstate_vars%froot_prof_patch                   , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
+         frootc_to_litter                    =>    veg_cf%frootc_to_litter          , & ! Input:  [real(r8) (:)   ]  fine root N litterfall (gN/m2/s)
+         frootn_to_litter                    =>    veg_nf%frootn_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root N litterfall (gN/m2/s)
+         frootp_to_litter                    =>    veg_pf%frootp_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root P litterfall (gP/m2/s)
+
+#endif         
+         
+         croot_prof                          =>    cnstate_vars%croot_prof_patch                   , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of coarse roots                     
+
+         leafc_to_litter                     =>    veg_cf%leafc_to_litter           , & ! Input:  [real(r8) (:)   ]  leaf C litterfall (gC/m2/s)
          livestemc_to_litter                 =>    veg_cf%livestemc_to_litter       , & ! Input:  [real(r8) (:)   ]  live stem C litterfall (gC/m2/s)
          livecrootc_to_litter                 =>    veg_cf%livecrootc_to_litter       , & ! Input:  [real(r8) (:)   ]  live coarse root/rhizome C litterfall (gC/m2/s)  
          ! grainc_to_food                      =>    veg_cf%grainc_to_food            , & ! Input:  [real(r8) (:)   ]  grain C to food (gC/m2/s)
@@ -4127,12 +4276,7 @@ contains
          livecrootn_to_litter                 =>  veg_nf%livecrootn_to_litter     , & ! Input:  [real(r8) (:)   ]  livecroot/rhizome N to litter (gN/m2/s)             
          ! grainn_to_food                      =>    veg_nf%grainn_to_food          , & ! Input:  [real(r8) (:)   ]  grain N to food (gN/m2/s)
          leafn_to_litter                     =>    veg_nf%leafn_to_litter         , & ! Input:  [real(r8) (:)   ]  leaf N litterfall (gN/m2/s)
-         !TAM
-         frootn_to_litter                    =>    veg_nf%frootn_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root N litterfall (gN/m2/s)
-         froottn_to_litter                   =>    veg_nf%froottn_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root N litterfall (gN/m2/s)
-         frootan_to_litter                   =>    veg_nf%frootan_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root N litterfall (gN/m2/s)
-         frootmn_to_litter                   =>    veg_nf%frootmn_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root N litterfall (gN/m2/s)
-
+         
          phenology_n_to_litr_met_n           =>    col_nf%phenology_n_to_litr_met_n , & ! Output: [real(r8) (:,:) ]  N fluxes associated with phenology (litterfall and crop) to litter metabolic pool (gN/m3/s)
          phenology_n_to_litr_cel_n           =>    col_nf%phenology_n_to_litr_cel_n , & ! Output: [real(r8) (:,:) ]  N fluxes associated with phenology (litterfall and crop) to litter cellulose pool (gN/m3/s)
          phenology_n_to_litr_lig_n           =>    col_nf%phenology_n_to_litr_lig_n , & ! Output: [real(r8) (:,:) ]  N fluxes associated with phenology (litterfall and crop) to litter lignin pool (gN/m3/s)
@@ -4141,12 +4285,6 @@ contains
          livecrootp_to_litter                =>    veg_pf%livecrootp_to_litter     , & ! Input:  [real(r8) (:)   ]  livecroot/rhizome P to litter (gP/m2/s)    
          ! grainp_to_food                      =>    veg_pf%grainp_to_food          , & ! Input:  [real(r8) (:)   ]  grain P to food (gP/m2/s)
          leafp_to_litter                     =>    veg_pf%leafp_to_litter         , & ! Input:  [real(r8) (:)   ]  leaf P litterfall (gP/m2/s)
-         !TAM
-         frootp_to_litter                    =>    veg_pf%frootp_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root P litterfall (gP/m2/s)
-         froottp_to_litter                   =>    veg_pf%froottp_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root P litterfall (gP/m2/s)
-         frootap_to_litter                   =>    veg_pf%frootap_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root P litterfall (gP/m2/s)
-         frootmp_to_litter                   =>    veg_pf%frootmp_to_litter        , & ! Input:  [real(r8) (:)   ]  fine root P litterfall (gP/m2/s)
-
          phenology_p_to_litr_met_p           =>    col_pf%phenology_p_to_litr_met_p , & ! Output: [real(r8) (:,:) ]  P fluxes associated with phenology (litterfall and crop) to litter metabolic pool (gP/m3/s)
          phenology_p_to_litr_cel_p           =>    col_pf%phenology_p_to_litr_cel_p , & ! Output: [real(r8) (:,:) ]  P fluxes associated with phenology (litterfall and crop) to litter cellulose pool (gP/m3/s)
          phenology_p_to_litr_lig_p           =>    col_pf%phenology_p_to_litr_lig_p   & ! Output: [real(r8) (:,:) ]  P fluxes associated with phenology (litterfall and crop) to litter lignin pool (gP/m3/s)

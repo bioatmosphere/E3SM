@@ -2124,9 +2124,9 @@ module VegetationDataType
        allocate(this%leafc_storage      (begp :endp))   ;  this%leafc_storage      (:)   = spval
        allocate(this%leafc_xfer         (begp :endp))   ;  this%leafc_xfer         (:)   = spval
 #if (defined TAM)
-       allocate(this%froottc            (begp :endp))   ;  this%frootc             (:)   = spval
-       allocate(this%frootac            (begp :endp))   ;  this%frootc             (:)   = spval
-       allocate(this%frootmc            (begp :endp))   ;  this%frootc             (:)   = spval
+       allocate(this%froottc            (begp :endp))   ;  this%froottc             (:)   = spval
+       allocate(this%frootac            (begp :endp))   ;  this%frootac             (:)   = spval
+       allocate(this%frootmc            (begp :endp))   ;  this%frootmc             (:)   = spval
 #else
        allocate(this%frootc             (begp :endp))   ;  this%frootc             (:)   = spval
 #endif      

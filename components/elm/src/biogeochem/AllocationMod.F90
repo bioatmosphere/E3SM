@@ -432,21 +432,21 @@ contains
          ivt                          => veg_pp%itype                                      , & ! Input:  [integer  (:) ]  pft vegetation type
 
          woody                        => veg_vp%woody                                      , & ! Input:  [real(r8) (:)   ]  binary flag for woody lifeform (1=woody, 0=not woody)
-         !TAM
+         !TAM: keeps froot_leaf
          froot_leaf                   => veg_vp%froot_leaf                                 , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
-         froott_leaf                  => veg_vp%froott_leaf                                , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
-         froota_leaf                  => veg_vp%froota_leaf                                , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
-         frootm_leaf                  => veg_vp%frootm_leaf                                , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
+         !froott_leaf                  => veg_vp%froott_leaf                                , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
+         !froota_leaf                  => veg_vp%froota_leaf                                , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
+         !frootm_leaf                  => veg_vp%frootm_leaf                                , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
          
          croot_stem                   => veg_vp%croot_stem                                 , & ! Input:  [real(r8) (:)   ]  allocation parameter: new coarse root C per new stem C (gC/gC)
          stem_leaf                    => veg_vp%stem_leaf                                  , & ! Input:  [real(r8) (:)   ]  allocation parameter: new stem c per new leaf C (gC/gC)
          flivewd                      => veg_vp%flivewd                                    , & ! Input:  [real(r8) (:)   ]  allocation parameter: fraction of new wood that is live (phloem and ray parenchyma) (no units)
          leafcn                       => veg_vp%leafcn                                     , & ! Input:  [real(r8) (:)   ]  leaf C:N (gC/gN)
          !TAM C/N
-         frootcn                      => veg_vp%frootcn                                    , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
-         froottcn                     => veg_vp%frootcn                                    , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
-         frootacn                     => veg_vp%frootcn                                    , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
-         frootmcn                     => veg_vp%frootcn                                    , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         !frootcn                      => veg_vp%frootcn                                    , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         !froottcn                     => veg_vp%froottcn                                    , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         !frootacn                     => veg_vp%frootacn                                    , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         !frootmcn                     => veg_vp%frootmcn                                    , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
          
          livewdcn                     => veg_vp%livewdcn                                   , & ! Input:  [real(r8) (:)   ]  live wood (phloem and ray parenchyma) C:N (gC/gN)
          deadwdcn                     => veg_vp%deadwdcn                                   , & ! Input:  [real(r8) (:)   ]  dead wood (xylem and heartwood) C:N (gC/gN)
@@ -471,10 +471,10 @@ contains
          xsmrpool                     => veg_cs%xsmrpool                       , & ! Input:  [real(r8) (:)   ]  (gC/m2) temporary photosynthate C pool
          leafc                        => veg_cs%leafc                          , & ! Input:  [real(r8) (:)   ]
          !TAM
-         frootc                       => veg_cs%frootc                         , & ! Input:  [real(r8) (:)   ]
-         froottc                      => veg_cs%froottc                        , & ! Input:  [real(r8) (:)   ]
-         frootac                      => veg_cs%frootac                        , & ! Input:  [real(r8) (:)   ]
-         frootmc                      => veg_cs%frootmc                        , & ! Input:  [real(r8) (:)   ]
+         !frootc                       => veg_cs%frootc                         , & ! Input:  [real(r8) (:)   ]
+         !froottc                      => veg_cs%froottc                        , & ! Input:  [real(r8) (:)   ]
+         !frootac                      => veg_cs%frootac                        , & ! Input:  [real(r8) (:)   ]
+         !frootmc                      => veg_cs%frootmc                        , & ! Input:  [real(r8) (:)   ]
 
          livestemc                    => veg_cs%livestemc                      , & ! Input:  [real(r8) (:)   ]
          plant_ndemand_col            => col_nf%plant_ndemand                 , & ! Output:  [real(r8) (:,:) ]
@@ -496,10 +496,10 @@ contains
          !!! add phosphorus
          leafcp                       => veg_vp%leafcp                                     , & ! Input:  [real(r8) (:)   ]  leaf C:P (gC/gP)
          !TAM C/P
-         frootcp                      => veg_vp%frootcp                                    , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
-         froottcp                     => veg_vp%froottcp                                   , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
-         frootacp                     => veg_vp%frootacp                                   , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
-         frootmcp                     => veg_vp%frootmcp                                   , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         !frootcp                      => veg_vp%frootcp                                    , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         !froottcp                     => veg_vp%froottcp                                   , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         !frootacp                     => veg_vp%frootacp                                   , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         !frootmcp                     => veg_vp%frootmcp                                   , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
 
          livewdcp                     => veg_vp%livewdcp                                   , & ! Input:  [real(r8) (:)   ]  live wood (phloem and ray parenchyma) C:P (gC/gP)
          deadwdcp                     => veg_vp%deadwdcp                                   , & ! Input:  [real(r8) (:)   ]  dead wood (xylem and heartwood) C:P (gC/gP)
@@ -515,10 +515,10 @@ contains
 
          leaf_mr                      => veg_cf%leaf_mr                         , & ! Input:  [real(r8) (:)   ]
          !TAM
-         froot_mr                     => veg_cf%froot_mr                        , & ! Input:  [real(r8) (:)   ]
-         froott_mr                    => veg_cf%froott_mr                       , & ! Input:  [real(r8) (:)   ]
-         froota_mr                    => veg_cf%froota_mr                       , & ! Input:  [real(r8) (:)   ]
-         frootm_mr                    => veg_cf%frootm_mr                       , & ! Input:  [real(r8) (:)   ]
+         !froot_mr                     => veg_cf%froot_mr                        , & ! Input:  [real(r8) (:)   ]
+         !froott_mr                    => veg_cf%froott_mr                       , & ! Input:  [real(r8) (:)   ]
+         !froota_mr                    => veg_cf%froota_mr                       , & ! Input:  [real(r8) (:)   ]
+         !frootm_mr                    => veg_cf%frootm_mr                       , & ! Input:  [real(r8) (:)   ]
 
          livestem_mr                  => veg_cf%livestem_mr                     , & ! Input:  [real(r8) (:)   ]
          livecroot_mr                 => veg_cf%livecroot_mr                    , & ! Input:  [real(r8) (:)   ]
@@ -532,20 +532,20 @@ contains
 
          leaf_curmr                   => veg_cf%leaf_curmr                      , &
          !TAM
-         froot_curmr                  => veg_cf%froot_curmr                     , & ! Output: [real(r8) (:)   ]
-         froott_curmr                 => veg_cf%froott_curmr                    , & ! Output: [real(r8) (:)   ]
-         froota_curmr                 => veg_cf%froota_curmr                    , & ! Output: [real(r8) (:)   ]
-         frootm_curmr                 => veg_cf%frootm_curmr                    , & ! Output: [real(r8) (:)   ]
+         !froot_curmr                  => veg_cf%froot_curmr                     , & ! Output: [real(r8) (:)   ]
+         !froott_curmr                 => veg_cf%froott_curmr                    , & ! Output: [real(r8) (:)   ]
+         !froota_curmr                 => veg_cf%froota_curmr                    , & ! Output: [real(r8) (:)   ]
+         !frootm_curmr                 => veg_cf%frootm_curmr                    , & ! Output: [real(r8) (:)   ]
 
          livestem_curmr               => veg_cf%livestem_curmr                  , & ! Output: [real(r8) (:)   ]
          livecroot_curmr              => veg_cf%livecroot_curmr                 , & ! Output: [real(r8) (:)   ]
          grain_curmr                  => veg_cf%grain_curmr                     , & ! Output: [real(r8) (:)   ]
          leaf_xsmr                    => veg_cf%leaf_xsmr                       , & ! Output: [real(r8) (:)   ]
          !TAM
-         froot_xsmr                   => veg_cf%froot_xsmr                      , & ! Output: [real(r8) (:)   ]
-         froott_xsmr                  => veg_cf%froott_xsmr                     , & ! Output: [real(r8) (:)   ]
-         froota_xsmr                  => veg_cf%froota_xsmr                     , & ! Output: [real(r8) (:)   ]
-         frootm_xsmr                  => veg_cf%frootm_xsmr                     , & ! Output: [real(r8) (:)   ]
+         !froot_xsmr                   => veg_cf%froot_xsmr                      , & ! Output: [real(r8) (:)   ]
+         !froott_xsmr                  => veg_cf%froott_xsmr                     , & ! Output: [real(r8) (:)   ]
+         !froota_xsmr                  => veg_cf%froota_xsmr                     , & ! Output: [real(r8) (:)   ]
+         !frootm_xsmr                  => veg_cf%frootm_xsmr                     , & ! Output: [real(r8) (:)   ]
 
          livestem_xsmr                => veg_cf%livestem_xsmr                   , & ! Output: [real(r8) (:)   ]
          livecroot_xsmr               => veg_cf%livecroot_xsmr                  , & ! Output: [real(r8) (:)   ]
@@ -559,13 +559,46 @@ contains
          retransn_to_npool            => veg_nf%retransn_to_npool             , & ! Output: [real(r8) (:)   ]  deployment of retranslocated N (gN/m2/s)
          leafn_to_retransn            => veg_nf%leafn_to_retransn             , & ! Output: [real(r8) (:)   ]
          !TAM
-         frootn_to_retransn           => veg_nf%frootn_to_retransn            , & ! Output: [real(r8) (:)   ]
+         !frootn_to_retransn           => veg_nf%frootn_to_retransn            , & ! Output: [real(r8) (:)   ]
+         !froottn_to_retransn           => veg_nf%froottn_to_retransn            , & ! Output: [real(r8) (:)   ]
+         !frootan_to_retransn           => veg_nf%frootan_to_retransn            , & ! Output: [real(r8) (:)   ]
+         !frootmn_to_retransn           => veg_nf%frootmn_to_retransn            , & ! Output: [real(r8) (:)   ]
+
+         livestemn_to_retransn        => veg_nf%livestemn_to_retransn         , & ! Output: [real(r8) (:)   ]
+#if (defined TAM)
+         froott_leaf                  => veg_vp%froott_leaf                   , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
+         froota_leaf                  => veg_vp%froota_leaf                   , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
+         frootm_leaf                  => veg_vp%frootm_leaf                   , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
+         froottcn                     => veg_vp%froottcn                      , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         frootacn                     => veg_vp%frootacn                      , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         frootmcn                     => veg_vp%frootmcn                      , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         froottc                      => veg_cs%froottc                        , & ! Input:  [real(r8) (:)   ]
+         frootac                      => veg_cs%frootac                        , & ! Input:  [real(r8) (:)   ]
+         frootmc                      => veg_cs%frootmc                        , & ! Input:  [real(r8) (:)   ]
+         froottcp                     => veg_vp%froottcp                       , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         frootacp                     => veg_vp%frootacp                       , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         frootmcp                     => veg_vp%frootmcp                       , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         froott_mr                    => veg_cf%froott_mr                       , & ! Input:  [real(r8) (:)   ]
+         froota_mr                    => veg_cf%froota_mr                       , & ! Input:  [real(r8) (:)   ]
+         frootm_mr                    => veg_cf%frootm_mr                       , & ! Input:  [real(r8) (:)   ]
+         froott_curmr                 => veg_cf%froott_curmr                    , & ! Output: [real(r8) (:)   ]
+         froota_curmr                 => veg_cf%froota_curmr                    , & ! Output: [real(r8) (:)   ]
+         frootm_curmr                 => veg_cf%frootm_curmr                    , & ! Output: [real(r8) (:)   ]
+         froott_xsmr                  => veg_cf%froott_xsmr                     , & ! Output: [real(r8) (:)   ]
+         froota_xsmr                  => veg_cf%froota_xsmr                     , & ! Output: [real(r8) (:)   ]
+         frootm_xsmr                  => veg_cf%frootm_xsmr                     , & ! Output: [real(r8) (:)   ]
          froottn_to_retransn           => veg_nf%froottn_to_retransn            , & ! Output: [real(r8) (:)   ]
          frootan_to_retransn           => veg_nf%frootan_to_retransn            , & ! Output: [real(r8) (:)   ]
          frootmn_to_retransn           => veg_nf%frootmn_to_retransn            , & ! Output: [real(r8) (:)   ]
-
-         livestemn_to_retransn        => veg_nf%livestemn_to_retransn         , & ! Output: [real(r8) (:)   ]
-
+#else
+         frootcn                      => veg_vp%frootcn                        , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         frootc                       => veg_cs%frootc                         , & ! Input:  [real(r8) (:)   ]
+         frootcp                      => veg_vp%frootcp                         , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         froot_mr                     => veg_cf%froot_mr                        , & ! Input:  [real(r8) (:)   ]
+         froot_curmr                  => veg_cf%froot_curmr                     , & ! Output: [real(r8) (:)   ]
+         froot_xsmr                   => veg_cf%froot_xsmr                      , & ! Output: [real(r8) (:)   ]
+         frootn_to_retransn           => veg_nf%frootn_to_retransn             , & ! Output: [real(r8) (:)   ]
+#endif
          !!! add phosphorus variables  - X. YANG
          retransp                     => veg_ps%retransp                   , & ! Input:  [real(r8) (:)   ]  (gP/m2) plant pool of retranslocated P
 
@@ -1147,12 +1180,14 @@ contains
         smin_no3_to_plant_patch      => veg_nf%smin_no3_to_plant             , &
         actual_immob_no3             => col_nf%actual_immob_no3                , &
         actual_immob_nh4             => col_nf%actual_immob_nh4                , &
-        !TAM
-        froot_prof                   => cnstate_vars%froot_prof_patch         , & ! fine root vertical profile Zeng, X. 2001. Global vegetation root distribution for land modeling. J. Hydrometeor. 2:525-530
+#if (defined TAM)
         froott_prof                  => cnstate_vars%froott_prof_patch         , & 
         froota_prof                  => cnstate_vars%froota_prof_patch         , & 
         frootm_prof                  => cnstate_vars%frootm_prof_patch         , & 
-
+#else
+        froot_prof                   => cnstate_vars%froot_prof_patch         , & ! fine root vertical profile Zeng, X. 2001. Global vegetation root distribution for land modeling. J. Hydrometeor. 2:525-530
+#endif       
+        
         frootc                       => veg_cs%frootc                         , & ! Input:  [real(r8) (:)   ]
         froottc                      => veg_cs%froottc                         , & ! Input:  [real(r8) (:)   ]
         frootac                      => veg_cs%frootac                         , & ! Input:  [real(r8) (:)   ]
@@ -2014,21 +2049,21 @@ contains
     associate(                                                                                 &
          ivt                          => veg_pp%itype                                    , & ! Input:  [integer  (:) ]  pft vegetation type
          woody                        => veg_vp%woody                                    , & ! Input:  [real(r8) (:)   ]  binary flag for woody lifeform (1=woody, 0=not woody)
-         !TAM
+         !TAM keeps froot_leaf
          froot_leaf                   => veg_vp%froot_leaf                               , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
-         froott_leaf                  => veg_vp%froott_leaf                              , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
-         froota_leaf                  => veg_vp%froota_leaf                              , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
-         frootm_leaf                  => veg_vp%frootm_leaf                              , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
+         ! froott_leaf                  => veg_vp%froott_leaf                              , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
+         ! froota_leaf                  => veg_vp%froota_leaf                              , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
+         ! frootm_leaf                  => veg_vp%frootm_leaf                              , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
          
          croot_stem                   => veg_vp%croot_stem                               , & ! Input:  [real(r8) (:)   ]  allocation parameter: new coarse root C per new stem C (gC/gC)
          stem_leaf                    => veg_vp%stem_leaf                                , & ! Input:  [real(r8) (:)   ]  allocation parameter: new stem c per new leaf C (gC/gC)
          flivewd                      => veg_vp%flivewd                                  , & ! Input:  [real(r8) (:)   ]  allocation parameter: fraction of new wood that is live (phloem and ray parenchyma) (no units)
          leafcn                       => veg_vp%leafcn                                   , & ! Input:  [real(r8) (:)   ]  leaf C:N (gC/gN)
          !TAM
-         frootcn                      => veg_vp%frootcn                                  , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
-         froottcn                     => veg_vp%froottcn                                  , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
-         frootacn                     => veg_vp%frootacn                                  , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
-         frootmcn                     => veg_vp%frootmcn                                  , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         ! frootcn                      => veg_vp%frootcn                                  , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         ! froottcn                     => veg_vp%froottcn                                  , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         ! frootacn                     => veg_vp%frootacn                                  , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         ! frootmcn                     => veg_vp%frootmcn                                  , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
          
          livewdcn                     => veg_vp%livewdcn                                 , & ! Input:  [real(r8) (:)   ]  live wood (phloem and ray parenchyma) C:N (gC/gN)
          deadwdcn                     => veg_vp%deadwdcn                                 , & ! Input:  [real(r8) (:)   ]  dead wood (xylem and heartwood) C:N (gC/gN)
@@ -2041,10 +2076,10 @@ contains
          !!! add phosphorus
          leafcp                       => veg_vp%leafcp                                   , & ! Input:  [real(r8) (:)   ]  leaf C:P (gC/gP)
          !TAM
-         frootcp                      => veg_vp%frootcp                                  , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
-         froottcp                     => veg_vp%froottcp                                  , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
-         frootacp                     => veg_vp%frootacp                                  , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
-         frootmcp                     => veg_vp%frootmcp                                  , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         ! frootcp                      => veg_vp%frootcp                                  , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         ! froottcp                     => veg_vp%froottcp                                  , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         ! frootacp                     => veg_vp%frootacp                                  , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         ! frootmcp                     => veg_vp%frootmcp                                  , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
          
          livewdcp                     => veg_vp%livewdcp                                 , & ! Input:  [real(r8) (:)   ]  live wood (phloem and ray parenchyma) C:P (gC/gP)
          deadwdcp                     => veg_vp%deadwdcp                                 , & ! Input:  [real(r8) (:)   ]  dead wood (xylem and heartwood) C:P (gC/gP)
@@ -2063,10 +2098,10 @@ contains
          cpool_to_leafc               => veg_cf%cpool_to_leafc                , & ! Output: [real(r8) (:)   ]
          cpool_to_leafc_storage       => veg_cf%cpool_to_leafc_storage        , & ! Output: [real(r8) (:)   ]
          !TAM
-         cpool_to_frootc              => veg_cf%cpool_to_frootc               , & ! Output: [real(r8) (:)   ]
-         cpool_to_froottc             => veg_cf%cpool_to_froottc              , & ! Output: [real(r8) (:)   ] TAM's T pool C
-         cpool_to_frootac             => veg_cf%cpool_to_frootac              , & ! Output: [real(r8) (:)   ] TAM's A pool C
-         cpool_to_frootmc             => veg_cf%cpool_to_frootmc              , & ! Output: [real(r8) (:)   ] TAM's M pool C
+         ! cpool_to_frootc              => veg_cf%cpool_to_frootc               , & ! Output: [real(r8) (:)   ]
+         ! cpool_to_froottc             => veg_cf%cpool_to_froottc              , & ! Output: [real(r8) (:)   ] TAM's T pool C
+         ! cpool_to_frootac             => veg_cf%cpool_to_frootac              , & ! Output: [real(r8) (:)   ] TAM's A pool C
+         ! cpool_to_frootmc             => veg_cf%cpool_to_frootmc              , & ! Output: [real(r8) (:)   ] TAM's M pool C
          
          cpool_to_frootc_storage      => veg_cf%cpool_to_frootc_storage       , & ! Output: [real(r8) (:)   ] TAM holds a single storage pool
          cpool_to_livestemc           => veg_cf%cpool_to_livestemc            , & ! Output: [real(r8) (:)   ]
@@ -2092,10 +2127,10 @@ contains
          npool_to_leafn               => veg_nf%npool_to_leafn              , & ! Output: [real(r8) (:)   ]  allocation to leaf N (gN/m2/s)
          npool_to_leafn_storage       => veg_nf%npool_to_leafn_storage      , & ! Output: [real(r8) (:)   ]  allocation to leaf N storage (gN/m2/s)
          !TAM
-         npool_to_frootn              => veg_nf%npool_to_frootn             , & ! Output: [real(r8) (:)   ]  allocation to fine root N (gN/m2/s)
-         npool_to_froottn             => veg_nf%npool_to_froottn            , & ! Output: [real(r8) (:)   ]  allocation to fine root T N (gN/m2/s)
-         npool_to_frootan             => veg_nf%npool_to_frootan            , & ! Output: [real(r8) (:)   ]  allocation to fine root A N (gN/m2/s)
-         npool_to_frootmn             => veg_nf%npool_to_frootmn            , & ! Output: [real(r8) (:)   ]  allocation to fine root M N (gN/m2/s)
+         ! npool_to_frootn              => veg_nf%npool_to_frootn             , & ! Output: [real(r8) (:)   ]  allocation to fine root N (gN/m2/s)
+         ! npool_to_froottn             => veg_nf%npool_to_froottn            , & ! Output: [real(r8) (:)   ]  allocation to fine root T N (gN/m2/s)
+         ! npool_to_frootan             => veg_nf%npool_to_frootan            , & ! Output: [real(r8) (:)   ]  allocation to fine root A N (gN/m2/s)
+         ! npool_to_frootmn             => veg_nf%npool_to_frootmn            , & ! Output: [real(r8) (:)   ]  allocation to fine root M N (gN/m2/s)
          
          npool_to_frootn_storage      => veg_nf%npool_to_frootn_storage     , & ! Output: [real(r8) (:)   ]  allocation to fine root N storage (gN/m2/s)
          npool_to_livestemn           => veg_nf%npool_to_livestemn          , & ! Output: [real(r8) (:)   ]
@@ -2119,10 +2154,10 @@ contains
          ppool_to_leafp               => veg_pf%ppool_to_leafp              , & ! Output: [real(r8) (:)   ]  allocation to leaf P (gP/m2/s)
          ppool_to_leafp_storage       => veg_pf%ppool_to_leafp_storage      , & ! Output: [real(r8) (:)   ]  allocation to leaf P storage (gP/m2/s)
          !TAM
-         ppool_to_frootp              => veg_pf%ppool_to_frootp             , & ! Output: [real(r8) (:)   ]  allocation to fine root P (gP/m2/s)
-         ppool_to_froottp             => veg_pf%ppool_to_froottp            , & ! Output: [real(r8) (:)   ]  allocation to fine root T P (gP/m2/s)
-         ppool_to_frootap             => veg_pf%ppool_to_frootap            , & ! Output: [real(r8) (:)   ]  allocation to fine root A P (gP/m2/s)
-         ppool_to_frootmp             => veg_pf%ppool_to_frootmp            , & ! Output: [real(r8) (:)   ]  allocation to fine root M P (gP/m2/s)
+         ! ppool_to_frootp              => veg_pf%ppool_to_frootp             , & ! Output: [real(r8) (:)   ]  allocation to fine root P (gP/m2/s)
+         ! ppool_to_froottp             => veg_pf%ppool_to_froottp            , & ! Output: [real(r8) (:)   ]  allocation to fine root T P (gP/m2/s)
+         ! ppool_to_frootap             => veg_pf%ppool_to_frootap            , & ! Output: [real(r8) (:)   ]  allocation to fine root A P (gP/m2/s)
+         ! ppool_to_frootmp             => veg_pf%ppool_to_frootmp            , & ! Output: [real(r8) (:)   ]  allocation to fine root M P (gP/m2/s)
          
          ppool_to_frootp_storage      => veg_pf%ppool_to_frootp_storage     , & ! Output: [real(r8) (:)   ]  allocation to fine root P storage (gP/m2/s)
          ppool_to_livestemp           => veg_pf%ppool_to_livestemp          , & ! Output: [real(r8) (:)   ]
@@ -2172,17 +2207,17 @@ contains
          cpool_to_xsmrpool            => veg_cf%cpool_to_xsmrpool               , &
          w_scalar                     => col_cf%w_scalar                          , &
          !TAM
-         froot_prof                   => cnstate_vars%froot_prof_patch          , &
-         froott_prof                   => cnstate_vars%froott_prof_patch          , &
-         froota_prof                   => cnstate_vars%froota_prof_patch          , &
-         frootm_prof                   => cnstate_vars%frootm_prof_patch          , &
+         ! froot_prof                   => cnstate_vars%froot_prof_patch          , &
+         ! froott_prof                   => cnstate_vars%froott_prof_patch          , &
+         ! froota_prof                   => cnstate_vars%froota_prof_patch          , &
+         ! frootm_prof                   => cnstate_vars%frootm_prof_patch          , &
 
          leaf_mr                      => veg_cf%leaf_mr                         , &
          !TAM
-         froot_mr                     => veg_cf%froot_mr                        , &
-         froott_mr                     => veg_cf%froot_mr                        , &
-         froota_mr                     => veg_cf%froot_mr                        , &
-         frootm_mr                     => veg_cf%froot_mr                        , &
+         ! froot_mr                     => veg_cf%froot_mr                        , &
+         ! froott_mr                     => veg_cf%froot_mr                        , &
+         ! froota_mr                     => veg_cf%froot_mr                        , &
+         ! frootm_mr                     => veg_cf%froot_mr                        , &
 
          livestem_mr                  => veg_cf%livestem_mr                     , &
          livecroot_mr                 => veg_cf%livecroot_mr                    , &
@@ -2191,20 +2226,20 @@ contains
          xsmrpool_recover             => veg_cf%xsmrpool_recover                , &
          leaf_curmr                   => veg_cf%leaf_curmr                      , &
          !TAM
-         froot_curmr                  => veg_cf%froot_curmr                     , &
-         froott_curmr                  => veg_cf%froott_curmr                     , &
-         froota_curmr                  => veg_cf%froota_curmr                     , &
-         frootm_curmr                  => veg_cf%frootm_curmr                     , &
+         ! froot_curmr                  => veg_cf%froot_curmr                     , &
+         ! froott_curmr                  => veg_cf%froott_curmr                     , &
+         ! froota_curmr                  => veg_cf%froota_curmr                     , &
+         ! frootm_curmr                  => veg_cf%frootm_curmr                     , &
 
          livestem_curmr               => veg_cf%livestem_curmr                  , &
          livecroot_curmr              => veg_cf%livecroot_curmr                 , &
          grain_curmr                  => veg_cf%grain_curmr                     , &
          leaf_xsmr                    => veg_cf%leaf_xsmr                       , &
          ! TAM
-         froot_xsmr                   => veg_cf%froot_xsmr                      , &
-         froott_xsmr                  => veg_cf%froott_xsmr                     , & !input
-         froota_xsmr                  => veg_cf%froota_xsmr                     , & !input
-         frootm_xsmr                  => veg_cf%frootm_xsmr                     , & !input
+         ! froot_xsmr                   => veg_cf%froot_xsmr                      , &
+         ! froott_xsmr                  => veg_cf%froott_xsmr                     , & !input
+         ! froota_xsmr                  => veg_cf%froota_xsmr                     , & !input
+         ! frootm_xsmr                  => veg_cf%frootm_xsmr                     , & !input
 
          livestem_xsmr                => veg_cf%livestem_xsmr                   , &
          livecroot_xsmr               => veg_cf%livecroot_xsmr                  , &
@@ -2212,11 +2247,56 @@ contains
          allocation_leaf              => veg_cf%allocation_leaf                 , &
          allocation_stem              => veg_cf%allocation_stem                 , &
          !TAM
-         allocation_froot             => veg_cf%allocation_froot                , &
+         !allocation_froot             => veg_cf%allocation_froot                , &
+         !allocation_froott             => veg_cf%allocation_froott               , &
+         !allocation_froota             => veg_cf%allocation_froota                , &
+         !allocation_frootm             => veg_cf%allocation_frootm                , &
+#if (defined TAM)
+         froott_leaf                  => veg_vp%froott_leaf                              , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
+         froota_leaf                  => veg_vp%froota_leaf                              , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
+         frootm_leaf                  => veg_vp%frootm_leaf                              , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
+         froottcn                     => veg_vp%froottcn                                  , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         frootacn                     => veg_vp%frootacn                                  , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         frootmcn                     => veg_vp%frootmcn                                  , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         froottcp                     => veg_vp%froottcp                                  , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         frootacp                     => veg_vp%frootacp                                  , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         frootmcp                     => veg_vp%frootmcp                                  , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         cpool_to_froottc             => veg_cf%cpool_to_froottc              , & ! Output: [real(r8) (:)   ] TAM's T pool C
+         cpool_to_frootac             => veg_cf%cpool_to_frootac              , & ! Output: [real(r8) (:)   ] TAM's A pool C
+         cpool_to_frootmc             => veg_cf%cpool_to_frootmc              , & ! Output: [real(r8) (:)   ] TAM's M pool C
+         npool_to_froottn             => veg_nf%npool_to_froottn            , & ! Output: [real(r8) (:)   ]  allocation to fine root T N (gN/m2/s)
+         npool_to_frootan             => veg_nf%npool_to_frootan            , & ! Output: [real(r8) (:)   ]  allocation to fine root A N (gN/m2/s)
+         npool_to_frootmn             => veg_nf%npool_to_frootmn            , & ! Output: [real(r8) (:)   ]  allocation to fine root M N (gN/m2/s)
+         ppool_to_froottp             => veg_pf%ppool_to_froottp            , & ! Output: [real(r8) (:)   ]  allocation to fine root T P (gP/m2/s)
+         ppool_to_frootap             => veg_pf%ppool_to_frootap            , & ! Output: [real(r8) (:)   ]  allocation to fine root A P (gP/m2/s)
+         ppool_to_frootmp             => veg_pf%ppool_to_frootmp            , & ! Output: [real(r8) (:)   ]  allocation to fine root M P (gP/m2/s)
+         froott_prof                   => cnstate_vars%froott_prof_patch          , &
+         froota_prof                   => cnstate_vars%froota_prof_patch          , &
+         frootm_prof                   => cnstate_vars%frootm_prof_patch          , &
+         froott_mr                     => veg_cf%froott_mr                        , &
+         froota_mr                     => veg_cf%froota_mr                        , &
+         frootm_mr                     => veg_cf%frootm_mr                        , &
+         froott_curmr                  => veg_cf%froott_curmr                     , &
+         froota_curmr                  => veg_cf%froota_curmr                     , &
+         frootm_curmr                  => veg_cf%frootm_curmr                     , &
+         froott_xsmr                  => veg_cf%froott_xsmr                     , & !input
+         froota_xsmr                  => veg_cf%froota_xsmr                     , & !input
+         frootm_xsmr                  => veg_cf%frootm_xsmr                     , & !input
          allocation_froott             => veg_cf%allocation_froott               , &
          allocation_froota             => veg_cf%allocation_froota                , &
          allocation_frootm             => veg_cf%allocation_frootm                , &
-
+#else
+         frootcn                      => veg_vp%frootcn                         , & ! Input:  [real(r8) (:)   ]  fine root C:N (gC/gN)
+         frootcp                      => veg_vp%frootcp                        , & ! Input:  [real(r8) (:)   ]  fine root C:P (gC/gP)
+         cpool_to_frootc              => veg_cf%cpool_to_frootc               , & ! Output: [real(r8) (:)   ]
+         npool_to_frootn              => veg_nf%npool_to_frootn             , & ! Output: [real(r8) (:)   ]  allocation to fine root N (gN/m2/s)
+         ppool_to_frootp              => veg_pf%ppool_to_frootp             , & ! Output: [real(r8) (:)   ]  allocation to fine root P (gP/m2/s)
+         froot_prof                   => cnstate_vars%froot_prof_patch          , &
+         froot_mr                     => veg_cf%froot_mr                        , &
+         froot_curmr                  => veg_cf%froot_curmr                     , &
+         froot_xsmr                   => veg_cf%froot_xsmr                      , &      
+         allocation_froot             => veg_cf%allocation_froot                , &
+#endif
          xsmrpool_turnover            => veg_cf%xsmrpool_turnover               , &
          nsc_rtime                    => veg_vp%nsc_rtime                       , &
          supplement_to_plantn         => veg_nf%supplement_to_plantn            , &

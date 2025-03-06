@@ -298,7 +298,16 @@ contains
     allocate(this%fr_flab       (0:numpft))        ; this%fr_flab      (:)   =spval
     allocate(this%fr_fcel       (0:numpft))        ; this%fr_fcel      (:)   =spval
     allocate(this%fr_flig       (0:numpft))        ; this%fr_flig      (:)   =spval
-    
+    allocate(this%frt_flab       (0:numpft))        ; this%frt_flab      (:)   =spval
+    allocate(this%frt_fcel       (0:numpft))        ; this%frt_fcel      (:)   =spval
+    allocate(this%frt_flig       (0:numpft))        ; this%frt_flig      (:)   =spval
+    allocate(this%fra_flab       (0:numpft))        ; this%fra_flab      (:)   =spval
+    allocate(this%fra_fcel       (0:numpft))        ; this%fra_fcel      (:)   =spval
+    allocate(this%fra_flig       (0:numpft))        ; this%fra_flig      (:)   =spval
+    allocate(this%frm_flab       (0:numpft))        ; this%frm_flab      (:)   =spval
+    allocate(this%frm_fcel       (0:numpft))        ; this%frm_fcel      (:)   =spval
+    allocate(this%frm_flig       (0:numpft))        ; this%frm_flig      (:)   =spval
+
     allocate(this%frt_flab       (0:numpft))        ; this%frt_flab      (:)   =spval
     allocate(this%frt_fcel       (0:numpft))        ; this%frt_fcel      (:)   =spval
     allocate(this%frt_flig       (0:numpft))        ; this%frt_flig      (:)   =spval
@@ -446,11 +455,14 @@ contains
        this%fnitr(m)        = fnitr(m)
        this%woody(m)        = woody(m)
        this%lflitcn(m)      = lflitcn(m)
-       this%frootcn(m)      = frootcn(m)
+       !TAM
+       !this%frootcn(m)      = frootcn(m)
        this%livewdcn(m)     = livewdcn(m)
        this%deadwdcn(m)     = deadwdcn(m)
        this%graincn(m)      = graincn(m)
+       !TAM: keeps this parameter
        this%froot_leaf(m)   = froot_leaf(m)
+       
        this%stem_leaf(m)    = stem_leaf(m)
        this%croot_stem(m)   = croot_stem(m)
        this%flivewd(m)      = flivewd(m)
@@ -458,11 +470,13 @@ contains
        this%lf_flab(m)      = lf_flab(m)
        this%lf_fcel(m)      = lf_fcel(m)
        this%lf_flig(m)      = lf_flig(m)
-       this%fr_flab(m)      = fr_flab(m)
-       this%fr_fcel(m)      = fr_fcel(m)
-       this%fr_flig(m)      = fr_flig(m)
+       !TAM
+       !  this%fr_flab(m)      = fr_flab(m)
+       !  this%fr_fcel(m)      = fr_fcel(m)
+       !  this%fr_flig(m)      = fr_flig(m)
        this%leaf_long(m)    = leaf_long(m)
-       this%froot_long(m)   = froot_long(m)
+       !TAM
+       !this%froot_long(m)   = froot_long(m)
        this%rhizome_long(m) = rhizome_long(m)
        this%evergreen(m)    = evergreen(m)
        this%stress_decid(m) = stress_decid(m)
@@ -480,7 +494,8 @@ contains
 
        this%leafcp(m)       = leafcp(m)
        this%lflitcp(m)      = lflitcp(m)
-       this%frootcp(m)      = frootcp(m)
+       !TAM
+       !this%frootcp(m)      = frootcp(m)
        this%livewdcp(m)     = livewdcp(m)
        this%deadwdcp(m)     = deadwdcp(m)
        this%graincp(m)      = graincp(m)
@@ -530,6 +545,13 @@ contains
        this%froott_long     = froott_long(m)
        this%froota_long     = froota_long(m)
        this%frootm_long     = frootm_long(m)
+#else
+      this%frootcn(m)      = frootcn(m)
+      this%frootcp(m)      = frootcp(m)
+      this%froot_long(m)   = froot_long(m)
+      this%fr_flab(m)      = fr_flab(m)
+      this%fr_fcel(m)      = fr_fcel(m)
+      this%fr_flig(m)      = fr_flig(m)
 #endif
 
 #if (defined HUM_HOL)

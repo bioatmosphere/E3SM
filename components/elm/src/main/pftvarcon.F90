@@ -535,23 +535,45 @@ contains
     allocate( flnr          (0:mxpft) )        
     allocate( woody         (0:mxpft) )       
     allocate( lflitcn       (0:mxpft) )
-    !TAM      
-    allocate( frootcn       (0:mxpft) )
+    !TAM keeps froot_leaf
+    allocate( froot_leaf    (0:mxpft) ) 
+#if (defined TAM)
     allocate( froottcn      (0:mxpft) )
     allocate( frootacn      (0:mxpft) )
     allocate( frootmcn      (0:mxpft) )
-
+    allocate( froottcp      (0:mxpft) )
+    allocate( frootacp      (0:mxpft) )
+    allocate( frootmcp      (0:mxpft) )
+    allocate( froott_leaf   (0:mxpft) )
+    allocate( froota_leaf   (0:mxpft) )
+    allocate( frootm_leaf   (0:mxpft) )     
+    allocate( frt_flab      (0:mxpft) )      
+    allocate( frt_fcel      (0:mxpft) )      
+    allocate( frt_flig      (0:mxpft) )
+    allocate( fra_flab      (0:mxpft) )      
+    allocate( fra_fcel      (0:mxpft) )      
+    allocate( fra_flig      (0:mxpft) )
+    allocate( frm_flab      (0:mxpft) )      
+    allocate( frm_fcel      (0:mxpft) )      
+    allocate( frm_flig      (0:mxpft) )
+    allocate( froott_long   (0:mxpft) )
+    allocate( froota_long   (0:mxpft) )
+    allocate( frootm_long   (0:mxpft) )
+#else
+    allocate( frootcn       (0:mxpft) )
+    allocate( frootcp       (0:mxpft) )
+    allocate( fr_flab       (0:mxpft) )      
+    allocate( fr_fcel       (0:mxpft) )      
+    allocate( fr_flig       (0:mxpft) )
+    allocate( froot_long    (0:mxpft) )
+#endif
     allocate( livewdcn      (0:mxpft) )     
     allocate( deadwdcn      (0:mxpft) )     
 
     ! add phosphorus 
     allocate( leafcp        (0:mxpft) )      
     allocate( lflitcp       (0:mxpft) )
-    ! TAM      
-    allocate( frootcp       (0:mxpft) )
-    allocate( froottcp      (0:mxpft) )
-    allocate( frootacp      (0:mxpft) )
-    allocate( frootmcp      (0:mxpft) )
+    
 
     allocate( livewdcp      (0:mxpft) )     
     allocate( deadwdcp      (0:mxpft) )     
@@ -594,12 +616,6 @@ contains
     allocate( minplanttemp  (0:mxpft) ) 
     allocate( senestemp     (0:mxpft) )
     allocate( min_days_senes (0:mxpft) )
-    !TAM
-    allocate( froot_leaf    (0:mxpft) ) 
-    allocate( froott_leaf   (0:mxpft) )
-    allocate( froota_leaf   (0:mxpft) )
-    allocate( frootm_leaf   (0:mxpft) )
-
     allocate( stem_leaf     (0:mxpft) )    
     allocate( croot_stem    (0:mxpft) )   
     allocate( flivewd       (0:mxpft) )      
@@ -607,27 +623,7 @@ contains
     allocate( lf_flab       (0:mxpft) )      
     allocate( lf_fcel       (0:mxpft) )      
     allocate( lf_flig       (0:mxpft) )
-    !TAM      
-    allocate( fr_flab       (0:mxpft) )      
-    allocate( fr_fcel       (0:mxpft) )      
-    allocate( fr_flig       (0:mxpft) )
-    allocate( frt_flab      (0:mxpft) )      
-    allocate( frt_fcel      (0:mxpft) )      
-    allocate( frt_flig      (0:mxpft) )
-    allocate( fra_flab      (0:mxpft) )      
-    allocate( fra_fcel      (0:mxpft) )      
-    allocate( fra_flig      (0:mxpft) )
-    allocate( frm_flab      (0:mxpft) )      
-    allocate( frm_fcel      (0:mxpft) )      
-    allocate( frm_flig      (0:mxpft) )
-
     allocate( leaf_long     (0:mxpft) ) 
-    ! TAM  
-    allocate( froot_long    (0:mxpft) )
-    allocate( froott_long   (0:mxpft) )
-    allocate( froota_long   (0:mxpft) )
-    allocate( frootm_long   (0:mxpft) )
-
     allocate( rhizome_long  (0:mxpft) )
     allocate( evergreen     (0:mxpft) )    
     allocate( stress_decid  (0:mxpft) ) 
@@ -873,6 +869,7 @@ contains
     !TAM: keeps this variable
     call ncd_io('froot_leaf',froot_leaf(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
     if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+    
     call ncd_io('stem_leaf',stem_leaf(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
     if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
     call ncd_io('croot_stem',croot_stem(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)

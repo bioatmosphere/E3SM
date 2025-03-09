@@ -105,7 +105,7 @@ contains
          pdep_prof            => cnstate_vars%pdep_prof_col                , & ! Input:  [real(r8)  (:,:) ]  (1/m) profile for P depostition additions          
          
          leaf_prof            => cnstate_vars%leaf_prof_patch              , & ! Output:  [real(r8) (:,:) ]  (1/m) profile of leaves
-#if (defined TAM)
+#if defined(TAM)
          froott_prof          => cnstate_vars%froott_prof_patch            , & ! Output:  [real(r8) (:,:) ]  (1/m) profile of fine roots
          froota_prof          => cnstate_vars%froota_prof_patch            , & ! Output:  [real(r8) (:,:) ]  (1/m) profile of fine roots
          frootm_prof          => cnstate_vars%frootm_prof_patch            , & ! Output:  [real(r8) (:,:) ]  (1/m) profile of fine roots
@@ -131,7 +131,7 @@ contains
 
          ! initialize profiles to zero
          leaf_prof(begp:endp, :)      = 0._r8
-#if (defined TAM)
+#if defined(TAM)
          froott_prof(begp:endp, :)    = 0._r8
          froota_prof(begp:endp, :)    = 0._r8
          frootm_prof(begp:endp, :)    = 0._r8
@@ -214,7 +214,7 @@ contains
                ! this is equivalnet to integrating over all soil layers outside of permafrost regions
                do j = 1, min(max(altmax_lastyear_indx(c), 1), nlevdecomp)
                   !TAM: assuming that the root fraction is the same for all root types
-#if (defined TAM)
+#if defined(TAM)
                   froott_prof(p,j) = cinput_rootfr(p,j) / rootfr_tot
                   froota_prof(p,j) = cinput_rootfr(p,j) / rootfr_tot
                   frootm_prof(p,j) = cinput_rootfr(p,j) / rootfr_tot
@@ -236,7 +236,7 @@ contains
                   end if
                end do
             else ! if fully frozen, or no roots, put everything in the top layer
-#if (defined TAM)
+#if defined(TAM)
                froott_prof(p,1) = 1./dzsoi_decomp(1)
                froota_prof(p,1) = 1./dzsoi_decomp(1)
                frootm_prof(p,1) = 1./dzsoi_decomp(1)
@@ -310,7 +310,7 @@ contains
 
       else ! for one layer decomposition model, set profiles to unity
          leaf_prof(begp:endp, :) = 1._r8
-#if (defined TAM)
+#if defined(TAM)
          froott_prof(begp:endp, :) = 1._r8
          froota_prof(begp:endp, :) = 1._r8
          frootm_prof(begp:endp, :) = 1._r8
@@ -358,15 +358,18 @@ contains
 
       do fp = 1,num_soilp
          p = filter_soilp(fp)
+#if defined(TAM)
          froott_prof_sum = 0.
          froota_prof_sum = 0.
          frootm_prof_sum = 0.
+#else
          froot_prof_sum = 0.
+#endif
          croot_prof_sum = 0.
          leaf_prof_sum = 0.
          stem_prof_sum = 0.
          do j = 1, nlevdecomp
-#if (defined TAM)
+#if defined(TAM)
             froott_prof_sum = froott_prof_sum + froott_prof(p,j) *  dzsoi_decomp(j)
             froota_prof_sum = froota_prof_sum + froota_prof(p,j) *  dzsoi_decomp(j)
             frootm_prof_sum = frootm_prof_sum + frootm_prof(p,j) *  dzsoi_decomp(j)

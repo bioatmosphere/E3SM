@@ -565,7 +565,7 @@ contains
          !frootmn_to_retransn           => veg_nf%frootmn_to_retransn            , & ! Output: [real(r8) (:)   ]
 
          livestemn_to_retransn        => veg_nf%livestemn_to_retransn         , & ! Output: [real(r8) (:)   ]
-#if (defined TAM)
+#if defined(TAM)
          froott_leaf                  => veg_vp%froott_leaf                   , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
          froota_leaf                  => veg_vp%froota_leaf                   , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
          frootm_leaf                  => veg_vp%frootm_leaf                   , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
@@ -655,7 +655,7 @@ contains
 
          ! get the time step total maintenance respiration
          ! These fluxes should already be in gC/m2/s
-#if (defined TAM)
+#if defined(TAM)
          !TAM: 3 respiration terms
          mr = leaf_mr(p) + froott_mr(p) + froota_mr(p) + frootm_mr(p)
 #else
@@ -682,7 +682,7 @@ contains
 
          leaf_curmr(p) = leaf_mr(p) * curmr_ratio
          leaf_xsmr(p) = leaf_mr(p) - leaf_curmr(p)
-#if (defined TAM)
+#if defined(TAM)
          ! T
          froott_curmr(p) = froott_mr(p) * curmr_ratio
          froott_xsmr(p)  = froott_mr(p) - froott_curmr(p)
@@ -741,7 +741,7 @@ contains
          !TAM (Bin Wang):
          ! f1 is kept while introducing 3 additional vars
          f1 = froot_leaf(ivt(p))
-#if (defined TAM)
+#if defined(TAM)
          f1t= froott_leaf(ivt(p))
          f1a= froota_leaf(ivt(p))
          f1m= frootm_leaf(ivt(p))
@@ -775,7 +775,7 @@ contains
          cplw = livewdcp(ivt(p))
          cpdw = deadwdcp(ivt(p))
 
-#if (defined TAM)
+#if defined(TAM)
          cnfrt = froottcn(ivt(p))
          cnfra = frootacn(ivt(p))
          cnfrm = frootmcn(ivt(p))
@@ -1180,7 +1180,7 @@ contains
         smin_no3_to_plant_patch      => veg_nf%smin_no3_to_plant             , &
         actual_immob_no3             => col_nf%actual_immob_no3                , &
         actual_immob_nh4             => col_nf%actual_immob_nh4                , &
-#if (defined TAM)
+#if defined(TAM)
         froott_prof                  => cnstate_vars%froott_prof_patch         , & 
         froota_prof                  => cnstate_vars%froota_prof_patch         , & 
         frootm_prof                  => cnstate_vars%frootm_prof_patch         , & 
@@ -2251,7 +2251,7 @@ contains
          !allocation_froott             => veg_cf%allocation_froott               , &
          !allocation_froota             => veg_cf%allocation_froota                , &
          !allocation_frootm             => veg_cf%allocation_frootm                , &
-#if (defined TAM)
+#if defined(TAM)
          froott_leaf                  => veg_vp%froott_leaf                              , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
          froota_leaf                  => veg_vp%froota_leaf                              , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
          frootm_leaf                  => veg_vp%frootm_leaf                              , & ! Input:  [real(r8) (:)   ]  allocation parameter: new fine root C per new leaf C (gC/gC)
@@ -2347,7 +2347,7 @@ contains
          if ( nu_com .eq. 'RD') then
              ! set some local allocation variables
              f1  = froot_leaf(ivt(p))
-#if (defined TAM) 
+#if defined(TAM) 
              !TAM: f1t+f1a+f1m = 1.0
              f1t = froott_leaf(ivt(p))
              f1a = froota_leaf(ivt(p))
@@ -2378,7 +2378,7 @@ contains
              g1 = grperc(ivt(p))
              g2 = grpnow(ivt(p))
              cnl = leafcn(ivt(p))
-#if (defined TAM)
+#if defined(TAM)
              cnfrt = froottcn(ivt(p))
              cnfra = frootacn(ivt(p))
              cnfrm = frootmcn(ivt(p))
@@ -2860,7 +2860,7 @@ contains
 
          cpool_to_leafc(p)          = nlc * fcur
          cpool_to_leafc_storage(p)  = nlc * (1._r8 - fcur)
-#if (defined TAM)
+#if defined(TAM)
          ! TAM remains having a single storage pool!!!
          cpool_to_froottc(p)        = nlc * f1*f1t * fcur
          cpool_to_frootac(p)        = nlc * f1*f1a * fcur
@@ -2925,7 +2925,7 @@ contains
 
          npool_to_leafn(p)          = (nlc / cnl) * fcur
          npool_to_leafn_storage(p)  = (nlc / cnl) * (1._r8 - fcur)
-#if (defined TAM)
+#if defined(TAM)
          !TAM YES
          npool_to_froottn(p)        = (nlc * f1*f1t / cnfrt) * fcur ! TAM's T pool
          npool_to_frootan(p)        = (nlc * f1*f1a / cnfra) * fcur ! ...   A pool
@@ -2980,7 +2980,7 @@ contains
 
          ppool_to_leafp(p)          = (nlc / cpl) * fcur
          ppool_to_leafp_storage(p)  = (nlc / cpl) * (1._r8 - fcur)
-#if (defined TAM)
+#if defined(TAM)
          !TAM YES
          ppool_to_froottp(p)        = (nlc * f1*f1t / cpfrt) * fcur ! TAM's T pool
          ppool_to_frootap(p)        = (nlc * f1*f1a / cpfra) * fcur ! ...   A pool

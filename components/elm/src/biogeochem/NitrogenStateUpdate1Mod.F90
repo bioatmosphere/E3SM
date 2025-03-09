@@ -136,7 +136,7 @@ contains
     ! !LOCAL VARIABLES:
     integer :: c,p,j,l,k ! indices
     integer :: fp,fc     ! lake filter indices
-    real(r8), parameter :: frootc_nfix_thc = 10._r8  !threshold fine root carbon for nitrogen fixation gC/m2
+    real(r8), parameter :: frootc_nfix_thc = 10._r8  !threshold fine root carbon for nitrogen fixation gC/m2; not used
 
     integer:: kyr                     ! current year
     integer:: kmo                     ! month of year  (1, ..., 12)
@@ -302,7 +302,7 @@ contains
               veg_ns%leafn(p)       = veg_ns%leafn(p)       + veg_nf%leafn_xfer_to_leafn(p)*dt
               veg_ns%leafn_xfer(p)  = veg_ns%leafn_xfer(p)  - veg_nf%leafn_xfer_to_leafn(p)*dt
               !TAM
-#if defined (TAM)
+#if defined(TAM)
               veg_ns%froottn(p)      = veg_ns%froottn(p)      + veg_nf%frootn_xfer_to_froottn(p)*dt
               veg_ns%frootan(p)      = veg_ns%frootan(p)      + veg_nf%frootn_xfer_to_frootan(p)*dt
               veg_ns%frootmn(p)      = veg_ns%frootmn(p)      + veg_nf%frootn_xfer_to_frootmn(p)*dt
@@ -337,7 +337,14 @@ contains
 
               ! phenology: litterfall and retranslocation fluxes
               veg_ns%leafn(p)    = veg_ns%leafn(p)    - veg_nf%leafn_to_litter(p)*dt
+#if defined(TAM)
+               veg_ns%froottn(p)   = veg_ns%froottn(p)   - veg_nf%froottn_to_litter(p)*dt
+               veg_ns%frootan(p)   = veg_ns%frootan(p)   - veg_nf%frootan_to_litter(p)*dt
+               veg_ns%frootmn(p)   = veg_ns%frootmn(p)   - veg_nf%frootmn_to_litter(p)*dt
+
+#else
               veg_ns%frootn(p)   = veg_ns%frootn(p)   - veg_nf%frootn_to_litter(p)*dt
+#endif
               veg_ns%leafn(p)    = veg_ns%leafn(p)    - veg_nf%leafn_to_retransn(p)*dt
               veg_ns%retransn(p) = veg_ns%retransn(p) + veg_nf%leafn_to_retransn(p)*dt
 
@@ -357,11 +364,10 @@ contains
                   veg_ns%retransn(p)   = veg_ns%retransn(p)   + veg_nf%livecrootn_to_retransn(p)*dt      
               end if
               if (ivt(p) >= npcropmin) then ! Beth adds retrans from froot
-#if defined (TAM)
+#if defined(TAM)
                   veg_ns%froottn(p)     = veg_ns%froottn(p)     - veg_nf%froottn_to_retransn(p)*dt
                   veg_ns%frootan(p)     = veg_ns%frootan(p)     - veg_nf%frootan_to_retransn(p)*dt
                   veg_ns%frootmn(p)     = veg_ns%frootmn(p)     - veg_nf%frootmn_to_retransn(p)*dt
-
 #else
                   veg_ns%frootn(p)     = veg_ns%frootn(p)     - veg_nf%frootn_to_retransn(p)*dt
 #endif
@@ -391,7 +397,7 @@ contains
               veg_ns%npool(p)           = veg_ns%npool(p)          - veg_nf%npool_to_leafn_storage(p)*dt
               veg_ns%leafn_storage(p)   = veg_ns%leafn_storage(p)  + veg_nf%npool_to_leafn_storage(p)*dt
               !TAM
-#if defined (TAM)
+#if defined(TAM)
               veg_ns%npool(p)           = veg_ns%npool(p)   - &       
                      veg_nf%npool_to_froottn(p)*dt  - &
                      veg_nf%npool_to_frootan(p)*dt  - &

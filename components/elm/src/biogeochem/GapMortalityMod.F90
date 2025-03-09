@@ -163,7 +163,6 @@ contains
          veg_pf%m_froottp_to_litter(p)              = veg_ps%froottp(p)              * m
          veg_pf%m_frootap_to_litter(p)              = veg_ps%frootap(p)              * m
          veg_pf%m_frootmp_to_litter(p)              = veg_ps%frootmp(p)              * m
-
 #else
          veg_cf%m_frootc_to_litter(p)              = veg_cs%frootc(p)              * m
          veg_nf%m_frootn_to_litter(p)              = veg_ns%frootn(p)              * m
@@ -326,7 +325,7 @@ contains
          lf_flab                             =>    veg_vp%lf_flab                          , & ! Input:  [real(r8) (:)   ]  leaf litter labile fraction
          lf_fcel                             =>    veg_vp%lf_fcel                          , & ! Input:  [real(r8) (:)   ]  leaf litter cellulose fraction
          lf_flig                             =>    veg_vp%lf_flig                          , & ! Input:  [real(r8) (:)   ]  leaf litter lignin fraction
-#if (defined TAM)
+#if defined(TAM)
          frt_flab                             =>    veg_vp%frt_flab                          , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
          frt_fcel                             =>    veg_vp%frt_fcel                          , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
          frt_flig                             =>    veg_vp%frt_flig                          , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction

@@ -590,12 +590,14 @@ contains
     real(r8):: dt             ! radiation time step (seconds)
 
     real(r8) :: leafp_to_litter_col(bounds%begc:bounds%endc)
-    !TAM
-    real(r8) :: frootp_to_litter_col(bounds%begc:bounds%endc)
+#if defined(TAM)
     real(r8) :: froottp_to_litter_col(bounds%begc:bounds%endc)
     real(r8) :: frootap_to_litter_col(bounds%begc:bounds%endc)
     real(r8) :: frootmp_to_litter_col(bounds%begc:bounds%endc)
+#else
+    real(r8) :: frootp_to_litter_col(bounds%begc:bounds%endc)
 
+#endif
     real(r8):: flux_mineralization_col(bounds%begc:bounds%endc)   !  local temperary variable
 
     integer:: kyr                     ! current year
@@ -639,7 +641,7 @@ contains
          totlitp                   => col_ps%totlitp                  , & ! Input:  [real(r8) (:)]  (gP/m2) total column phosphorus, incl veg
          sminp                     => col_ps%sminp                    , & ! Input:  [real(r8) (:)]  (gP/m2) total column phosphorus, incl veg
          leafp_to_litter           => veg_pf%leafp_to_litter         , & ! Input:  [real(r8) (:)]  soil mineral P pool loss to leaching (gP/m2/s)
-#if (defined TAM)
+#if defined(TAM)
          froottp_to_litter          => veg_pf%froottp_to_litter        , & ! Input:  [real(r8) (:)]  soil mineral P pool loss to leaching (gP/m2/s)
          frootap_to_litter          => veg_pf%frootap_to_litter        , & ! Input:  [real(r8) (:)]  soil mineral P pool loss to leaching (gP/m2/s)
          frootmp_to_litter          => veg_pf%frootmp_to_litter        , & ! Input:  [real(r8) (:)]  soil mineral P pool loss to leaching (gP/m2/s)

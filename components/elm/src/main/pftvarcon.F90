@@ -129,10 +129,22 @@ module pftvarcon
   real(r8), allocatable :: froott_long(:)  !fine root longevity(yrs)
   real(r8), allocatable :: froota_long(:)  !fine root longevity(yrs)
   real(r8), allocatable :: frootm_long(:)  !fine root longevity(yrs)
+  real(r8), allocatable :: frt_flab(:)      !fine root litter labile fraction
+  real(r8), allocatable :: frt_fcel(:)      !fine root litter cellulose fraction
+  real(r8), allocatable :: frt_flig(:)      !fine root litter lignin fraction
+  real(r8), allocatable :: fra_flab(:)      !fine root litter labile fraction
+  real(r8), allocatable :: fra_fcel(:)      !fine root litter cellulose fraction
+  real(r8), allocatable :: fra_flig(:)      !fine root litter lignin fraction
+  real(r8), allocatable :: frm_flab(:)      !fine root litter labile fraction
+  real(r8), allocatable :: frm_fcel(:)      !fine root litter cellulose fraction
+  real(r8), allocatable :: frm_flig(:)      !fine root litter lignin fraction
 #else
   real(r8), allocatable :: frootcn(:)     !fine root C:N (gC/gN)
   real(r8), allocatable :: frootcp(:)     !fine root C:P (gC/gP)
   real(r8), allocatable :: froot_long(:)   !fine root longevity(yrs)
+  real(r8), allocatable :: fr_flab(:)      !fine root litter labile fraction
+  real(r8), allocatable :: fr_fcel(:)      !fine root litter cellulose fraction
+  real(r8), allocatable :: fr_flig(:)      !fine root litter lignin fraction
 #endif
   
 
@@ -199,19 +211,6 @@ module pftvarcon
   real(r8), allocatable :: lf_flab(:)      !leaf litter labile fraction
   real(r8), allocatable :: lf_fcel(:)      !leaf litter cellulose fraction
   real(r8), allocatable :: lf_flig(:)      !leaf litter lignin fraction
-  !TAM
-  real(r8), allocatable :: fr_flab(:)      !fine root litter labile fraction
-  real(r8), allocatable :: fr_fcel(:)      !fine root litter cellulose fraction
-  real(r8), allocatable :: fr_flig(:)      !fine root litter lignin fraction
-  real(r8), allocatable :: frt_flab(:)      !fine root litter labile fraction
-  real(r8), allocatable :: frt_fcel(:)      !fine root litter cellulose fraction
-  real(r8), allocatable :: frt_flig(:)      !fine root litter lignin fraction
-  real(r8), allocatable :: fra_flab(:)      !fine root litter labile fraction
-  real(r8), allocatable :: fra_fcel(:)      !fine root litter cellulose fraction
-  real(r8), allocatable :: fra_flig(:)      !fine root litter lignin fraction
-  real(r8), allocatable :: frm_flab(:)      !fine root litter labile fraction
-  real(r8), allocatable :: frm_fcel(:)      !fine root litter cellulose fraction
-  real(r8), allocatable :: frm_flig(:)      !fine root litter lignin fraction
 
   real(r8), allocatable :: leaf_long(:)    !leaf longevity (yrs)
   

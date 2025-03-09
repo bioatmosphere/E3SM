@@ -156,7 +156,7 @@ contains
 
             ! froot C and N
             ! TAM
-#if defined (TAM)
+#if defined(TAM)
             !TAM's T
             if (abs(veg_cs%froottc(p)) < ccrit) then
                pc = pc + veg_cs%froottc(p)

@@ -78,12 +78,13 @@ contains
     integer  :: alt_ind
     integer  :: nlevbed
     ! debugging temp variables
-    !TAM
-    real(r8) :: froot_prof_sum
+#if defined(TAM)
     real(r8) :: froott_prof_sum
     real(r8) :: froota_prof_sum
     real(r8) :: frootm_prof_sum
-
+#else
+    real(r8) :: froot_prof_sum
+#endif
     real(r8) :: croot_prof_sum
     real(r8) :: leaf_prof_sum
     real(r8) :: stem_prof_sum

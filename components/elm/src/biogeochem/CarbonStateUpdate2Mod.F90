@@ -187,7 +187,7 @@ contains
          ! patch-level carbon fluxes from harvest mortality
          ! displayed pools
          veg_cs%leafc(p)               = veg_cs%leafc(p)              - veg_cf%hrv_leafc_to_litter(p)              * dt
-#if defined (TAM)
+#if defined(TAM)
          veg_cs%froottc(p)              = veg_cs%froottc(p)             - veg_cf%hrv_froottc_to_litter(p)          * dt
          veg_cs%frootac(p)              = veg_cs%frootac(p)             - veg_cf%hrv_frootac_to_litter(p)          * dt
          veg_cs%frootmc(p)              = veg_cs%frootmc(p)             - veg_cf%hrv_frootmc_to_litter(p)          * dt

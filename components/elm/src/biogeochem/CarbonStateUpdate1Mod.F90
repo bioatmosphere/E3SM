@@ -99,12 +99,27 @@ contains
 
           do j = 1,nlevdecomp
 
+#if defined(TAM)
+             col_cs%decomp_cpools_vr(c,j,i_met_lit) = col_cs%decomp_cpools_vr(c,j,i_met_lit) + &
+                  col_cf%dwt_froottc_to_litr_met_c(c,j) * dt + &
+                  col_cf%dwt_frootac_to_litr_met_c(c,j) * dt + &
+                  col_cf%dwt_frootmc_to_litr_met_c(c,j) * dt
+             col_cs%decomp_cpools_vr(c,j,i_cel_lit) = col_cs%decomp_cpools_vr(c,j,i_cel_lit) + &
+                  col_cf%dwt_froottc_to_litr_cel_c(c,j) * dt + &
+                  col_cf%dwt_frootac_to_litr_cel_c(c,j) * dt + &
+                  col_cf%dwt_frootmc_to_litr_cel_c(c,j) * dt
+             col_cs%decomp_cpools_vr(c,j,i_lig_lit) = col_cs%decomp_cpools_vr(c,j,i_lig_lit) + &
+                  col_cf%dwt_froottc_to_litr_lig_c(c,j) * dt + &
+                  col_cf%dwt_frootac_to_litr_lig_c(c,j) * dt + &
+                  col_cf%dwt_frootmc_to_litr_lig_c(c,j) * dt
+#else
              col_cs%decomp_cpools_vr(c,j,i_met_lit) = col_cs%decomp_cpools_vr(c,j,i_met_lit) + &
                   col_cf%dwt_frootc_to_litr_met_c(c,j) * dt
              col_cs%decomp_cpools_vr(c,j,i_cel_lit) = col_cs%decomp_cpools_vr(c,j,i_cel_lit) + &
                   col_cf%dwt_frootc_to_litr_cel_c(c,j) * dt
              col_cs%decomp_cpools_vr(c,j,i_lig_lit) = col_cs%decomp_cpools_vr(c,j,i_lig_lit) + &
                   col_cf%dwt_frootc_to_litr_lig_c(c,j) * dt
+#endif
              col_cs%decomp_cpools_vr(c,j,i_cwd) = col_cs%decomp_cpools_vr(c,j,i_cwd) + &
                   ( col_cf%dwt_livecrootc_to_cwdc(c,j) + col_cf%dwt_deadcrootc_to_cwdc(c,j) ) * dt
 
@@ -278,9 +293,10 @@ contains
          veg_cs%frootac(p)         = veg_cs%frootac(p)      + veg_cf%frootc_xfer_to_frootac(p)*dt
          veg_cs%frootmc(p)         = veg_cs%frootmc(p)      + veg_cf%frootc_xfer_to_frootmc(p)*dt
 
-         veg_cs%frootc_xfer(p)     = veg_cs%frootc_xfer(p) - veg_cf%frootc_xfer_to_froottc(p)*dt &
-               - veg_cf%frootc_xfer_to_frootac(p)*dt &
-               - veg_cf%frootc_xfer_to_frootmc(p)*dt
+         veg_cs%frootc_xfer(p)     = veg_cs%frootc_xfer(p) - & 
+               veg_cf%frootc_xfer_to_froottc(p)*dt - &
+               veg_cf%frootc_xfer_to_frootac(p)*dt - &
+               veg_cf%frootc_xfer_to_frootmc(p)*dt
 #else
          veg_cs%frootc(p)          = veg_cs%frootc(p)      + veg_cf%frootc_xfer_to_frootc(p)*dt
          veg_cs%frootc_xfer(p)     = veg_cs%frootc_xfer(p) - veg_cf%frootc_xfer_to_frootc(p)*dt
@@ -334,9 +350,10 @@ contains
          veg_cs%cpool(p) = veg_cs%cpool(p) - veg_cf%leaf_curmr(p)*dt
          !TAM
 #if defined(TAM)
-         veg_cs%cpool(p) = veg_cs%cpool(p) - veg_cf%froott_curmr(p)*dt &
-               - veg_cf%froota_curmr(p)*dt &
-               - veg_cf%frootm_curmr(p)*dt
+         veg_cs%cpool(p) = veg_cs%cpool(p) - &
+               veg_cf%froott_curmr(p)*dt - &
+               veg_cf%froota_curmr(p)*dt - &
+               veg_cf%frootm_curmr(p)*dt
 #else
          veg_cs%cpool(p) = veg_cs%cpool(p) - veg_cf%froot_curmr(p)*dt
 #endif
@@ -390,10 +407,9 @@ contains
                  veg_cf%cpool_to_frootc(p)*dt        - &
                  veg_cf%cpool_to_froota(p)*dt        - &
                  veg_cf%cpool_to_frootm(p)*dt
-         veg_cs%frootc(p)          = veg_cs%frootc(p) + &      
-                 veg_cf%cpool_to_frootc(p)*dt         + &
-                 veg_cf%cpool_to_froota(p)*dt         + &
-                 veg_cf%cpool_to_frootm(p)*dt
+         veg_cs%froottc(p)          = veg_cs%froottc(p) + veg_cf%cpool_to_froottc(p)*dt
+         veg_cs%frootac(p)          = veg_cs%frootac(p) + veg_cf%cpool_to_frootac(p)*dt
+         veg_cs%frootac(p)          = veg_cs%frootac(p) + veg_cf%cpool_to_frootmc(p)*dt
 
 #else
          veg_cs%cpool(p)           = veg_cs%cpool(p)          - veg_cf%cpool_to_frootc(p)*dt

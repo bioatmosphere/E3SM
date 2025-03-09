@@ -110,7 +110,7 @@ contains
          ! displayed pools
          veg_cs%leafc(p)              = veg_cs%leafc(p)               - veg_cf%m_leafc_to_fire(p)            * dt
          veg_cs%leafc(p)              = veg_cs%leafc(p)               - veg_cf%m_leafc_to_litter_fire(p)     * dt
-#if defined (TAM)
+#if defined(TAM)
          veg_cs%froottc(p)            = veg_cs%froottc(p)              - veg_cf%m_froottc_to_fire(p)         * dt
          veg_cs%froottc(p)            = veg_cs%froottc(p)              - veg_cf%m_froottc_to_litter_fire(p)  * dt
          veg_cs%frootac(p)            = veg_cs%frootac(p)              - veg_cf%m_frootac_to_fire(p)         * dt

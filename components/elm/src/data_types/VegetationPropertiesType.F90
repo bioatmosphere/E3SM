@@ -233,11 +233,13 @@ contains
     use pftvarcon , only : lmrha, vcmaxhd, jmaxhd, tpuhd, lmrse, qe, theta_cj
     use pftvarcon , only : bbbopt, mbbopt, nstor, br_xr, br_mr_pft, q10_mr_pft, tc_stress, lmrhd, crit_gdd1, crit_gdd2
     use pftvarcon , only : sal_threshold, KM_salinity, osm_inhib, sal_opt, sal_tol, floodf
+#if defined(TAM)
     !TAM: 21 new in total (Bin Wang, 2025/01)
     use pftvarcon , only : froott_leaf, froota_leaf, frootm_leaf
     use pftvarcon,  only : froottcn, frootacn, frootmcn, froottcp, frootacp, frootmcp
     use pftvarcon , only : frt_flab, frt_fcel, frt_flig, fra_flab, fra_fcel, fra_flig, frm_flab, frm_fcel, frm_flig
     use pftvarcon , only : froott_long, froota_long, frootm_long
+#endif
     !
     !----------------------F.-M. Yuan (2018-03-23): user-defined parameter file ---------------------------------------------------------------------
     use pftvarcon , only : nonvascular, nfixer
@@ -272,21 +274,43 @@ contains
     allocate(this%flnr          (0:numpft))        ; this%flnr         (:)   =spval
     allocate(this%woody         (0:numpft))        ; this%woody        (:)   =spval
     allocate(this%lflitcn       (0:numpft))        ; this%lflitcn      (:)   =spval
-    allocate(this%frootcn       (0:numpft))        ; this%frootcn      (:)   =spval
-    !TAM
+    
+#if defined(TAM)
     allocate(this%froottcn      (0:numpft))        ; this%froottcn      (:)   =spval
     allocate(this%frootacn      (0:numpft))        ; this%frootacn      (:)   =spval
     allocate(this%frootmcn      (0:numpft))        ; this%frootmcn      (:)   =spval
+    allocate(this%froott_leaf   (0:numpft))        ; this%froott_leaf  (:)   =spval
+    allocate(this%froota_leaf   (0:numpft))        ; this%froota_leaf  (:)   =spval
+    allocate(this%frootm_leaf   (0:numpft))        ; this%frootm_leaf  (:)   =spval
+    allocate(this%frt_flab       (0:numpft))        ; this%frt_flab      (:)   =spval
+    allocate(this%frt_fcel       (0:numpft))        ; this%frt_fcel      (:)   =spval
+    allocate(this%frt_flig       (0:numpft))        ; this%frt_flig      (:)   =spval
+    allocate(this%fra_flab       (0:numpft))        ; this%fra_flab      (:)   =spval
+    allocate(this%fra_fcel       (0:numpft))        ; this%fra_fcel      (:)   =spval
+    allocate(this%fra_flig       (0:numpft))        ; this%fra_flig      (:)   =spval
+    allocate(this%frm_flab       (0:numpft))        ; this%frm_flab      (:)   =spval
+    allocate(this%frm_fcel       (0:numpft))        ; this%frm_fcel      (:)   =spval
+    allocate(this%frm_flig       (0:numpft))        ; this%frm_flig      (:)   =spval
+    allocate(this%froott_long    (0:numpft))        ; this%froott_long   (:)   =spval
+    allocate(this%froota_long    (0:numpft))        ; this%froota_long   (:)   =spval
+    allocate(this%frootm_long    (0:numpft))        ; this%frootm_long   (:)   =spval
+    allocate(this%froottcp       (0:numpft))        ; this%froottcp      (:)   =spval
+    allocate(this%frootacp       (0:numpft))        ; this%frootacp      (:)   =spval
+    allocate(this%frootmcp       (0:numpft))        ; this%frootmcp      (:)   =spval
+#else
+    allocate(this%frootcn       (0:numpft))        ; this%frootcn      (:)   =spval
+    allocate(this%froot_leaf    (0:numpft))        ; this%froot_leaf   (:)   =spval
+    allocate(this%fr_flab       (0:numpft))        ; this%fr_flab      (:)   =spval
+    allocate(this%fr_fcel       (0:numpft))        ; this%fr_fcel      (:)   =spval
+    allocate(this%fr_flig       (0:numpft))        ; this%fr_flig      (:)   =spval
+    allocate(this%froot_long    (0:numpft))        ; this%froot_long   (:)   =spval
+    allocate(this%frootcp       (0:numpft))        ; this%frootcp      (:)   =spval
+
+#endif
 
     allocate(this%livewdcn      (0:numpft))        ; this%livewdcn     (:)   =spval
     allocate(this%deadwdcn      (0:numpft))        ; this%deadwdcn     (:)   =spval
     allocate(this%graincn       (0:numpft))        ; this%graincn      (:)   =spval
-    !TAM
-    allocate(this%froot_leaf    (0:numpft))        ; this%froot_leaf   (:)   =spval
-    allocate(this%froott_leaf   (0:numpft))        ; this%froott_leaf  (:)   =spval
-    allocate(this%froota_leaf   (0:numpft))        ; this%froota_leaf  (:)   =spval
-    allocate(this%frootm_leaf   (0:numpft))        ; this%frootm_leaf  (:)   =spval
-
     allocate(this%stem_leaf     (0:numpft))        ; this%stem_leaf    (:)   =spval
     allocate(this%croot_stem    (0:numpft))        ; this%croot_stem   (:)   =spval
     allocate(this%flivewd       (0:numpft))        ; this%flivewd      (:)   =spval
@@ -294,37 +318,7 @@ contains
     allocate(this%lf_flab       (0:numpft))        ; this%lf_flab      (:)   =spval
     allocate(this%lf_fcel       (0:numpft))        ; this%lf_fcel      (:)   =spval
     allocate(this%lf_flig       (0:numpft))        ; this%lf_flig      (:)   =spval
-    !TAM
-    allocate(this%fr_flab       (0:numpft))        ; this%fr_flab      (:)   =spval
-    allocate(this%fr_fcel       (0:numpft))        ; this%fr_fcel      (:)   =spval
-    allocate(this%fr_flig       (0:numpft))        ; this%fr_flig      (:)   =spval
-    allocate(this%frt_flab       (0:numpft))        ; this%frt_flab      (:)   =spval
-    allocate(this%frt_fcel       (0:numpft))        ; this%frt_fcel      (:)   =spval
-    allocate(this%frt_flig       (0:numpft))        ; this%frt_flig      (:)   =spval
-    allocate(this%fra_flab       (0:numpft))        ; this%fra_flab      (:)   =spval
-    allocate(this%fra_fcel       (0:numpft))        ; this%fra_fcel      (:)   =spval
-    allocate(this%fra_flig       (0:numpft))        ; this%fra_flig      (:)   =spval
-    allocate(this%frm_flab       (0:numpft))        ; this%frm_flab      (:)   =spval
-    allocate(this%frm_fcel       (0:numpft))        ; this%frm_fcel      (:)   =spval
-    allocate(this%frm_flig       (0:numpft))        ; this%frm_flig      (:)   =spval
-
-    allocate(this%frt_flab       (0:numpft))        ; this%frt_flab      (:)   =spval
-    allocate(this%frt_fcel       (0:numpft))        ; this%frt_fcel      (:)   =spval
-    allocate(this%frt_flig       (0:numpft))        ; this%frt_flig      (:)   =spval
-    allocate(this%fra_flab       (0:numpft))        ; this%fra_flab      (:)   =spval
-    allocate(this%fra_fcel       (0:numpft))        ; this%fra_fcel      (:)   =spval
-    allocate(this%fra_flig       (0:numpft))        ; this%fra_flig      (:)   =spval
-    allocate(this%frm_flab       (0:numpft))        ; this%frm_flab      (:)   =spval
-    allocate(this%frm_fcel       (0:numpft))        ; this%frm_fcel      (:)   =spval
-    allocate(this%frm_flig       (0:numpft))        ; this%frm_flig      (:)   =spval
-
     allocate(this%leaf_long     (0:numpft))        ; this%leaf_long    (:)   =spval
-    allocate(this%froot_long    (0:numpft))        ; this%froot_long   (:)   =spval
-    !TAM
-    allocate(this%froott_long    (0:numpft))        ; this%froott_long   (:)   =spval
-    allocate(this%froota_long    (0:numpft))        ; this%froota_long   (:)   =spval
-    allocate(this%frootm_long    (0:numpft))        ; this%frootm_long   (:)   =spval
-
     allocate(this%evergreen     (0:numpft))        ; this%evergreen    (:)   =spval
     allocate(this%stress_decid  (0:numpft))        ; this%stress_decid (:)   =spval
     allocate(this%season_decid  (0:numpft))        ; this%season_decid (:)   =spval
@@ -340,23 +334,13 @@ contains
     allocate(this%convfact      (0:numpft))        ; this%convfact     (:)   =spval
     allocate(this%fyield        (0:numpft))        ; this%fyield       (:)   =spval    
     allocate(this%rhizome_long  (0:numpft))        ; this%rhizome_long (:)   =spval
-
-
     allocate(this%leafcp        (0:numpft))        ; this%leafcp       (:)   =spval
     allocate(this%lflitcp       (0:numpft))        ; this%lflitcp      (:)   =spval
-    !TAM
-    allocate(this%frootcp       (0:numpft))        ; this%frootcp      (:)   =spval
-    allocate(this%froottcp       (0:numpft))        ; this%froottcp      (:)   =spval
-    allocate(this%frootacp       (0:numpft))        ; this%frootacp      (:)   =spval
-    allocate(this%frootmcp       (0:numpft))        ; this%frootmcp      (:)   =spval
-
     allocate(this%livewdcp      (0:numpft))        ; this%livewdcp     (:)   =spval
     allocate(this%deadwdcp      (0:numpft))        ; this%deadwdcp     (:)   =spval
     allocate(this%graincp       (0:numpft))        ; this%graincp      (:)   =spval
-   
     allocate(this%Nfix_NPP_c1   (0:numpft))        ; this%Nfix_NPP_c1   (:)   =spval
     allocate(this%Nfix_NPP_c2   (0:numpft))        ; this%Nfix_NPP_c2   (:)   =spval
-
     allocate( this%alpha_nfix    (0:numpft))                     ; this%alpha_nfix    (:)        =spval
     allocate( this%alpha_ptase   (0:numpft))                     ; this%alpha_ptase   (:)        =spval
     allocate( this%ccost_nfix    (0:numpft))                     ; this%ccost_nfix    (:)        =spval
@@ -519,7 +503,7 @@ contains
        this%mbbopt(m)       = mbbopt(m)
        this%nstor(m)        = nstor(m)
        this%br_xr(m)        = br_xr(m)
-#if (defined TAM)
+#if defined(TAM)
        !TAM-induced 21 variables:
        !froott_leaf, froota_leaf, frootm_leaf, froottcn, frootacn, frootmcn, froottcp, frootacp, frootmcp
        !frt_flab, frt_fcel, frt_flig, fra_flab, fra_fcel, fra_flig, frm_flab, frm_fcel, frm_flig

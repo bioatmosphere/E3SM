@@ -250,7 +250,7 @@ contains
 
     allocate(this%idop_patch          (begp:endp))                   ; this%idop_patch          (:)   = huge(1)
     allocate(this%leaf_prof_patch     (begp:endp,1:nlevdecomp_full)) ; this%leaf_prof_patch     (:,:) = spval
-#if (defined TAM)
+#if defined(TAM)
     allocate(this%froott_prof_patch   (begp:endp,1:nlevdecomp_full)) ; this%froott_prof_patch   (:,:) = spval
     allocate(this%froota_prof_patch   (begp:endp,1:nlevdecomp_full)) ; this%froota_prof_patch   (:,:) = spval
     allocate(this%frootm_prof_patch   (begp:endp,1:nlevdecomp_full)) ; this%frootm_prof_patch   (:,:) = spval
@@ -336,12 +336,6 @@ contains
     allocate(this%lgsf_patch                  (begp:endp)) ;    this%lgsf_patch                  (:) = spval
     allocate(this%bglfr_patch                 (begp:endp)) ;    this%bglfr_patch                 (:) = spval
     allocate(this%bglfr_leaf_patch            (begp:endp)) ;    this%bglfr_leaf_patch            (:) = spval
-    !TAM
-!     allocate(this%bglfr_froot_patch           (begp:endp)) ;    this%bglfr_froot_patch           (:) = spval
-!     allocate(this%bglfr_froott_patch          (begp:endp)) ;    this%bglfr_froott_patch          (:) = spval
-!     allocate(this%bglfr_froota_patch          (begp:endp)) ;    this%bglfr_froota_patch          (:) = spval
-!     allocate(this%bglfr_frootm_patch          (begp:endp)) ;    this%bglfr_frootm_patch          (:) = spval
-
     allocate(this%bgtr_patch                  (begp:endp)) ;    this%bgtr_patch                  (:) = spval
     allocate(this%alloc_pnow_patch            (begp:endp)) ;    this%alloc_pnow_patch            (:) = spval
     allocate(this%c_allometry_patch           (begp:endp)) ;    this%c_allometry_patch           (:) = spval
@@ -426,8 +420,8 @@ contains
     call hist_addfld_decomp (fname='CROOT_PROF', units='1/m',  type2d='levdcmp', &
          avgflag='A', long_name='profile for litter C and N inputs from coarse roots', &
          ptr_patch=this%croot_prof_patch, default='inactive')
-#if (defined TAM)
-     this%froott_prof_patch(begp:endp,:) = spval
+#if defined(TAM)
+    this%froott_prof_patch(begp:endp,:) = spval
     call hist_addfld_decomp (fname='FROOTT_PROF', units='1/m',  type2d='levdcmp', &
           avgflag='A', long_name='profile for litter C and N inputs from fine t roots', &
           ptr_patch=this%froott_prof_patch, default='inactive')
@@ -1163,7 +1157,7 @@ contains
           this%lgsf_patch(p)                  = spval
           this%bglfr_patch(p)                 = spval
           this%bglfr_leaf_patch(p)            = spval
-#if (defined TAM)
+#if defined(TAM)
           this%bglfr_froott_patch(p)          = spval
           this%bglfr_froota_patch(p)          = spval
           this%bglfr_frootm_patch(p)          = spval
@@ -1216,7 +1210,7 @@ contains
           this%lgsf_patch(p)           = 0._r8
           this%bglfr_patch(p)          = 0._r8
           this%bglfr_leaf_patch(p)     = 0._r8
-#if (defined TAM)
+#if defined(TAM)
           this%bglfr_froott_patch(p)   = 0._r8
           this%bglfr_froota_patch(p)   = 0._r8
           this%bglfr_frootm_patch(p)   = 0._r8
@@ -1356,12 +1350,7 @@ contains
          dim1name='pft', &
          long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%bglfr_leaf_patch) 
-    !TAM
-    call restartvar(ncid=ncid, flag=flag, varname='bglfr_froot', xtype=ncd_double,  &
-         dim1name='pft', &
-         long_name='', units='', &
-         interpinic_flag='interp', readvar=readvar, data=this%bglfr_froot_patch)
-
+#if defined(TAM)
      call restartvar(ncid=ncid, flag=flag, varname='bglfr_froott', xtype=ncd_double,  &
          dim1name='pft', &
          long_name='', units='', &
@@ -1374,6 +1363,12 @@ contains
          dim1name='pft', &
          long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%bglfr_frootm_patch)
+#else
+    call restartvar(ncid=ncid, flag=flag, varname='bglfr_froot', xtype=ncd_double,  &
+         dim1name='pft', &
+         long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%bglfr_froot_patch)
+#endif
 
     call restartvar(ncid=ncid, flag=flag, varname='bgtr', xtype=ncd_double,  &
          dim1name='pft', &

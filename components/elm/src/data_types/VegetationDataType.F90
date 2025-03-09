@@ -9243,7 +9243,7 @@ module VegetationDataType
             this%livecrootc_xfer_to_livecrootc(p)     + &
             this%cpool_to_deadcrootc(p)               + &
             this%deadcrootc_xfer_to_deadcrootc(p)
-#if (defined TAM)
+#if defined(TAM)
        this%bgnpp(p) = this%bgnpp(p) + &
             this%cpool_to_froottc(p)                   + &
             this%cpool_to_frootac(p)                   + &
@@ -9376,7 +9376,7 @@ module VegetationDataType
           this%woodc_alloc(i)                         = value_patch
           this%woodc_loss(i)                          = value_patch
           this%xsmrpool_turnover(i)                   = value_patch
-#if (defined TAM)
+#if defined(TAM)
      this%frootc_xfer_to_froottc(i)               = value_patch
      this%frootc_xfer_to_frootac(i)               = value_patch
      this%frootc_xfer_to_frootmc(i)               = value_patch
@@ -9705,7 +9705,7 @@ module VegetationDataType
     allocate(this%fire_nloss_litter                   (begp:endp)) ; this%fire_nloss_litter                   (:) = spval
     allocate(this%hrv_nloss_litter                    (begp:endp)) ; this%hrv_nloss_litter                    (:) = spval
     allocate(this%sen_nloss_litter                    (begp:endp)) ; this%sen_nloss_litter                    (:) = spval
-#if (defined TAM)
+#if defined(TAM)
     allocate(this%m_froottn_to_litter                  (begp:endp)) ; this%m_froottn_to_litter                (:) = spval
     allocate(this%m_frootan_to_litter                  (begp:endp)) ; this%m_frootan_to_litter                (:) = spval
     allocate(this%m_frootmn_to_litter                  (begp:endp)) ; this%m_frootmn_to_litter                (:) = spval
@@ -9754,7 +9754,7 @@ module VegetationDataType
     call hist_addfld1d (fname='M_LEAFN_TO_LITTER', units='gN/m^2/s', &
          avgflag='A', long_name='leaf N mortality', &
          ptr_patch=this%m_leafn_to_litter, default='inactive')
-#if (defined TAM)
+#if defined(TAM)
 
      this%m_froottn_to_litter(begp:endp) = spval
      call hist_addfld1d (fname='M_FROOTTN_TO_LITTER', units='gN/m^2/s', &
@@ -10430,7 +10430,7 @@ module VegetationDataType
        l = veg_pp%landunit(p)
 
        this%prev_leafn_to_litter(p)  = 0._r8
-#if (defined TAM)
+#if defined(TAM)
        this%prev_froottn_to_litter(p) = 0._r8
        this%prev_frootan_to_litter(p) = 0._r8
        this%prev_frootmn_to_litter(p) = 0._r8
@@ -10636,7 +10636,7 @@ module VegetationDataType
        this%sen_nloss_litter(i)                    = value_patch
        this%crop_seedn_to_leaf(i)                  = value_patch
        this%livestemn_to_litter(i)                 = value_patch
-#if (defined TAM)
+#if defined(TAM)
      this%hrv_froottn_to_litter(i)                = value_patch
      this%hrv_frootan_to_litter(i)                = value_patch
      this%hrv_frootmn_to_litter(i)                = value_patch
@@ -10740,7 +10740,7 @@ module VegetationDataType
             this%m_deadcrootn_xfer_to_fire(p)     + &
             this%m_retransn_to_fire(p)            + &
             this%m_npool_to_fire(p)
-#if (defined TAM)
+#if defined(TAM)
      this%fire_nloss(p) = &
             this%fire_nloss(p) + &
             this%m_froottn_to_fire(p) + &
@@ -10774,7 +10774,7 @@ module VegetationDataType
            this%m_deadcrootn_xfer_to_litter(p)    + &
            this%m_retransn_to_litter(p)           + &
            this%m_npool_to_litter(p)
-#if (defined TAM)
+#if defined(TAM)
      this%gap_nloss_litter(p) = &
            this%gap_nloss_litter(p) + &
            this%m_froottn_to_litter(p) + &
@@ -10807,7 +10807,7 @@ module VegetationDataType
            this%m_deadstemn_xfer_to_litter_fire(p)       + &
            this%m_livecrootn_xfer_to_litter_fire(p)      + &
            this%m_deadcrootn_xfer_to_litter_fire(p)
-#if (defined TAM)
+#if defined(TAM)
      this%fire_nloss_litter(p) = &
            this%fire_nloss_litter(p) + &
            this%m_froottn_to_litter_fire(p) + &
@@ -10838,7 +10838,7 @@ module VegetationDataType
            this%hrv_deadcrootn_to_litter(p)        + &
            this%hrv_deadcrootn_storage_to_litter(p)+ &
            this%hrv_deadcrootn_xfer_to_litter(p)
-#if (defined TAM)
+#if defined(TAM)
      this%hrv_nloss_litter(p) = &
            this%hrv_nloss_litter(p) + &
            this%hrv_froottn_to_litter(p) + &
@@ -10860,7 +10860,7 @@ module VegetationDataType
              this%leafn_to_litter(p)                + &
              !this%frootn_to_litter(p)               + &
              this%livecrootn_to_litter(p)
-#if (defined TAM)
+#if defined(TAM)
      this%sen_nloss_litter(p) = &
              this%sen_nloss_litter(p) + &
              this%froottn_to_litter(p) + &
@@ -11078,7 +11078,7 @@ module VegetationDataType
     allocate(this%fire_ploss_litter                   (begp:endp)) ; this%fire_ploss_litter                   (:) = spval
     allocate(this%hrv_ploss_litter                    (begp:endp)) ; this%hrv_ploss_litter                    (:) = spval
     allocate(this%sen_ploss_litter                    (begp:endp)) ; this%sen_ploss_litter                    (:) = spval
-#if (defined TAM)
+#if defined(TAM)
     allocate(this%m_froottp_to_litter                  (begp:endp)) ; this%m_froottp_to_litter                  (:) = spval
     allocate(this%m_frootap_to_litter                  (begp:endp)) ; this%m_frootap_to_litter                  (:) = spval
     allocate(this%m_frootmp_to_litter                  (begp:endp)) ; this%m_frootmp_to_litter                  (:) = spval
@@ -11129,7 +11129,7 @@ module VegetationDataType
     call hist_addfld1d (fname='M_LEAFP_TO_LITTER', units='gP/m^2/s', &
          avgflag='A', long_name='leaf P mortality', &
          ptr_patch=this%m_leafp_to_litter, default='inactive')
-#if (defined TAM)
+#if defined(TAM)
      this%m_froottp_to_litter(begp:endp) = spval
      call hist_addfld1d (fname='M_FROOTTP_TO_LITTER', units='gP/m^2/s', &
          avgflag='A', long_name='fine root t P mortality', &
@@ -11729,7 +11729,7 @@ module VegetationDataType
        l = veg_pp%landunit(p)
 
        this%prev_leafp_to_litter (p)  = 0._r8
-#if (defined TAM)
+#if defined(TAM)
        this%prev_froottp_to_litter(p)  = 0._r8
        this%prev_frootap_to_litter(p)  = 0._r8
        this%prev_frootmp_to_litter(p)  = 0._r8
@@ -11934,7 +11934,7 @@ module VegetationDataType
        this%hrv_ploss_litter(i)                    = value_patch
        this%sen_ploss_litter(i)                    = value_patch
        this%livestemp_to_litter(i)                 = value_patch
-#if (defined TAM)
+#if defined(TAM)
      this%hrv_froottp_to_litter(i)                = value_patch
      this%hrv_frootap_to_litter(i)                = value_patch
      this%hrv_frootmp_to_litter(i)                = value_patch
@@ -12035,7 +12035,7 @@ module VegetationDataType
             this%m_deadcrootp_xfer_to_fire(p)     + &
             this%m_retransp_to_fire(p)            + &
             this%m_ppool_to_fire(p)
-#if (defined TAM)
+#if defined(TAM)
        this%fire_ploss(p) = &
           this%fire_ploss(p) + &
           this%m_froottp_to_fire(p) = &
@@ -12068,7 +12068,7 @@ module VegetationDataType
            this%m_deadcrootp_xfer_to_litter(p)    + &
            this%m_retransp_to_litter(p)           + &
            this%m_ppool_to_litter(p)
-#if (defined TAM)
+#if defined(TAM)
      this%gap_ploss_litter(p) = &
            this%gap_ploss_litter(p) + &
            this%m_froottp_to_litter(p) + &
@@ -12101,7 +12101,7 @@ module VegetationDataType
            this%m_deadstemp_xfer_to_litter_fire(p)       + &
            this%m_livecrootp_xfer_to_litter_fire(p)      + &
            this%m_deadcrootp_xfer_to_litter_fire(p)
-#if (defined TAM)
+#if defined(TAM)
      this%fire_ploss_litter(p) = &
            this%fire_ploss_litter(p) + &
            this%m_froottp_to_litter_fire(p) + &
@@ -12133,7 +12133,7 @@ module VegetationDataType
            this%hrv_deadcrootp_to_litter(p)       + &
            this%hrv_deadcrootp_storage_to_litter(p)+ &
            this%hrv_deadcrootp_xfer_to_litter(p)
-#if (defined TAM)
+#if defined(TAM)
      this%hrv_ploss_litter(p) = &
            this%hrv_ploss_litter(p) + &
            this%hrv_froottp_to_litter(p) + &
@@ -12155,7 +12155,7 @@ module VegetationDataType
              this%leafp_to_litter(p)                + &
              !this%frootp_to_litter(p)               + &
              this%livecrootp_to_litter(p)
-#if (defined TAM)
+#if defined(TAM)
      this%sen_ploss_litter(p) = &
              this%sen_ploss_litter(p) + &
              this%froottp_to_litter(p) + &

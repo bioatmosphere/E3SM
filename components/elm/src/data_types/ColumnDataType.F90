@@ -2170,7 +2170,7 @@ contains
     allocate(this%deadstemc            (begc:endc))     ; this%deadstemc            (:)     = spval
     allocate(this%fuelc                (begc:endc))     ; this%fuelc                (:)     = spval
     allocate(this%fuelc_crop           (begc:endc))     ; this%fuelc_crop           (:)     = spval
-#if (defined TAM)
+#if defined(TAM)
     allocate(this%froottc              (begc:endc))     ; this%froottc              (:)     = spval
     allocate(this%frootac              (begc:endc))     ; this%frootac              (:)     = spval
     allocate(this%frootmc              (begc:endc))     ; this%frootmc              (:)     = spval
@@ -6271,7 +6271,7 @@ contains
     allocate(this%hrv_deadstemc_to_prod10c          (begc:endc))                  ; this%hrv_deadstemc_to_prod10c     (:)   = spval
     allocate(this%hrv_deadstemc_to_prod100c         (begc:endc))                  ; this%hrv_deadstemc_to_prod100c    (:)   = spval
     allocate(this%hrv_cropc_to_prod1c               (begc:endc))                  ; this%hrv_cropc_to_prod1c          (:)   = spval
-#if (defined TAM)
+#if defined(TAM)
     allocate(this%dwt_froottc_to_litr_met_c          (begc:endc,1:nlevdecomp_full)); this%dwt_froottc_to_litr_met_c     (:,:) = spval
     allocate(this%dwt_froottc_to_litr_cel_c          (begc:endc,1:nlevdecomp_full)); this%dwt_froottc_to_litr_cel_c     (:,:) = spval
     allocate(this%dwt_froottc_to_litr_lig_c          (begc:endc,1:nlevdecomp_full)); this%dwt_froottc_to_litr_lig_c     (:,:) = spval
@@ -6807,7 +6807,7 @@ contains
         call hist_addfld1d (fname='PROD1C_LOSS', units='gC/m^2/s', &
              avgflag='A', long_name='loss from 1-yr crop product pool', &
               ptr_col=this%prod1c_loss, default='inactive')
-#if (defined TAM)
+#if defined(TAM)
          this%dwt_froottc_to_litr_met_c(begc:endc,:) = spval
         call hist_addfld_decomp (fname='DWT_FROOTTC_TO_LITR_MET_C', units='gC/m^2/s',  type2d='levdcmp', &
              avgflag='A', long_name='fine root t to litter due to landcover change', &
@@ -8257,7 +8257,7 @@ contains
 
     do j = 1, nlevdecomp_full
        do c = bounds%begc,bounds%endc
-#if (defined TAM)
+#if defined(TAM)
           this%dwt_froottc_to_litr_met_c(c,j)    = 0._r8
           this%dwt_frootac_to_litr_met_c(c,j)    = 0._r8
           this%dwt_frootmc_to_litr_met_c(c,j)    = 0._r8
@@ -8401,7 +8401,7 @@ contains
                         + this%gap_mortality_c_to_litr_met_c(c,j)        &
                         + this%harvest_c_to_litr_met_c(c,j)              &
                         + this%m_c_to_litr_met_fire(c,j)
-#if defined (TAM)
+#if defined(TAM)
                 this%externalc_to_decomp_cpools(c,j,l) =                 &
                     this%externalc_to_decomp_cpools(c,j,l)               &
                         + this%dwt_froottc_to_litr_met_c(c,j)            &
@@ -8420,7 +8420,7 @@ contains
                         + this%gap_mortality_c_to_litr_cel_c(c,j)        &
                         + this%harvest_c_to_litr_cel_c(c,j)              &
                         + this%m_c_to_litr_cel_fire(c,j)
-#if defined (TAM)
+#if defined(TAM)
                 this%externalc_to_decomp_cpools(c,j,l) =                 &
                     this%externalc_to_decomp_cpools(c,j,l)               &
                         + this%dwt_froottc_to_litr_cel_c(c,j)            &
@@ -8439,7 +8439,7 @@ contains
                         + this%gap_mortality_c_to_litr_lig_c(c,j)        &
                         + this%harvest_c_to_litr_lig_c(c,j)              &
                         + this%m_c_to_litr_lig_fire(c,j)
-#if defined (TAM)
+#if defined(TAM)
                 this%externalc_to_decomp_cpools(c,j,l) =                 &
                     this%externalc_to_decomp_cpools(c,j,l)               &
                         + this%dwt_froottc_to_litr_lig_c(c,j)            &
@@ -8572,7 +8572,7 @@ contains
     allocate(this%dwt_crop_productn_gain          (begc:endc))                   ; this%dwt_crop_productn_gain         (:)   = spval
     allocate(this%dwt_nloss                       (begc:endc))                   ; this%dwt_nloss                      (:)   = spval
     allocate(this%wood_harvestn                   (begc:endc))                   ; this%wood_harvestn                  (:)   = spval
-#if (defined TAM)
+#if defined(TAM)
     allocate(this%dwt_froottn_to_litr_met_n        (begc:endc,1:nlevdecomp_full)) ; this%dwt_froottn_to_litr_met_n       (:,:) = spval
     allocate(this%dwt_froottn_to_litr_cel_n        (begc:endc,1:nlevdecomp_full)) ; this%dwt_froottn_to_litr_cel_n       (:,:) = spval
     allocate(this%dwt_froottn_to_litr_lig_n        (begc:endc,1:nlevdecomp_full)) ; this%dwt_froottn_to_litr_lig_n       (:,:) = spval
@@ -9312,7 +9312,7 @@ contains
      call hist_addfld1d (fname='PRODUCT_NLOSS', units='gN/m^2/s', &
           avgflag='A', long_name='total N loss from wood product pools', &
            ptr_col=this%product_nloss, default='inactive')
-#if (defined TAM)
+#if defined(TAM)
     this%dwt_froottn_to_litr_met_n(begc:endc,:) = spval
            call hist_addfld_decomp (fname='DWT_FROOTTN_TO_LITR_MET_N', units='gN/m^2/s',  type2d='levdcmp', &
                 avgflag='A', long_name='fine root t to litter due to landcover change', &
@@ -9987,7 +9987,7 @@ contains
 
     do j = 1, nlevdecomp_full
        do c = bounds%begc,bounds%endc
-#if defined (TAM)
+#if defined(TAM)
           this%dwt_froottn_to_litr_met_n(c,j) = 0._r8
           this%dwt_frootan_to_litr_met_n(c,j) = 0._r8
           this%dwt_frootmn_to_litr_met_n(c,j) = 0._r8
@@ -10427,7 +10427,7 @@ contains
                      + this%gap_mortality_n_to_litr_met_n(c,j)        &
                      + this%harvest_n_to_litr_met_n(c,j)              &
                      + this%m_n_to_litr_met_fire(c,j)
-#if defined (TAM)
+#if defined(TAM)
                 this%externaln_to_decomp_npools(c,j,l) =              &
                     this%externaln_to_decomp_npools(c,j,l)            &
                     + this%dwt_froottn_to_litr_met_n(c,j)             &
@@ -10447,7 +10447,7 @@ contains
                      + this%gap_mortality_n_to_litr_cel_n(c,j)        &
                      + this%harvest_n_to_litr_cel_n(c,j)              &
                      + this%m_n_to_litr_cel_fire(c,j)
-#if defined (TAM)
+#if defined(TAM)
                 this%externaln_to_decomp_npools(c,j,l) =              &
                     this%externaln_to_decomp_npools(c,j,l)            &
                      + this%dwt_froottn_to_litr_cel_n(c,j)            &
@@ -10466,7 +10466,7 @@ contains
                      + this%gap_mortality_n_to_litr_lig_n(c,j)        &
                      + this%harvest_n_to_litr_lig_n(c,j)              &
                      + this%m_n_to_litr_lig_fire(c,j)
-#if defined (TAM)
+#if defined(TAM)
                 this%externaln_to_decomp_npools(c,j,l) =              &
                     this%externaln_to_decomp_npools(c,j,l)            &
                     + this%dwt_froottn_to_litr_lig_n(c,j)             &
@@ -10625,7 +10625,7 @@ contains
     allocate(this%dwt_crop_productp_gain           (begc:endc))                   ; this%dwt_crop_productp_gain        (:)   = spval
     allocate(this%dwt_ploss                        (begc:endc))                   ; this%dwt_ploss                     (:)   = spval
     allocate(this%wood_harvestp                    (begc:endc))                   ; this%wood_harvestp                 (:)   = spval
-#if (defined TAM)
+#if defined(TAM)
     allocate(this%dwt_froottp_to_litr_met_p         (begc:endc,1:nlevdecomp_full)) ; this%dwt_froottp_to_litr_met_p      (:,:) = spval
     allocate(this%dwt_froottp_to_litr_cel_p         (begc:endc,1:nlevdecomp_full)) ; this%dwt_froottp_to_litr_cel_p      (:,:) = spval
     allocate(this%dwt_froottp_to_litr_lig_p         (begc:endc,1:nlevdecomp_full)) ; this%dwt_froottp_to_litr_lig_p      (:,:) = spval
@@ -11202,7 +11202,7 @@ contains
      call hist_addfld1d (fname='PRODUCT_PLOSS', units='gP/m^2/s', &
           avgflag='A', long_name='total P loss from wood product pools', &
            ptr_col=this%product_ploss, default='inactive')
-#if (defined TAM)
+#if defined(TAM)
       this%dwt_froottp_to_litr_met_p(begc:endc,:) = spval
      call hist_addfld_decomp (fname='DWT_FROOTTP_TO_LITR_MET_P', units='gP/m^2/s',  type2d='levdcmp', &
           avgflag='A', long_name='fine root t to litter due to landcover change', &
@@ -11612,7 +11612,7 @@ contains
 
     do j = 1, nlevdecomp_full
        do c = bounds%begc,bounds%endc
-#if defined (TAM)
+#if defined(TAM)
           this%dwt_froottp_to_litr_met_p(c,j) = 0._r8
           this%dwt_froottp_to_litr_met_p(c,j) = 0._r8
           this%dwt_froottp_to_litr_met_p(c,j) = 0._r8
@@ -12026,7 +12026,7 @@ contains
                      !+ this%dwt_frootp_to_litr_met_p(c,j)             &
                      + this%gap_mortality_p_to_litr_met_p(c,j)        &
                      + this%harvest_p_to_litr_met_p(c,j)
-#if defined (TAM)
+#if defined(TAM)
                 this%externalp_to_decomp_ppools(c,j,l) =              &
                     this%externalp_to_decomp_ppools(c,j,l)            &
                     + this%dwt_froottp_to_litr_met_p(c,j)             &
@@ -12044,7 +12044,7 @@ contains
                      !+ this%dwt_frootp_to_litr_cel_p(c,j)             &
                      + this%gap_mortality_p_to_litr_cel_p(c,j)        &
                      + this%harvest_p_to_litr_cel_p(c,j)
-#if defined (TAM)
+#if defined(TAM)
                 this%externalp_to_decomp_ppools(c,j,l) =              &
                     this%externalp_to_decomp_ppools(c,j,l)            &
                      + this%dwt_froottp_to_litr_cel_p(c,j)            &
@@ -12062,7 +12062,7 @@ contains
                      !+ this%dwt_frootp_to_litr_lig_p(c,j)             &
                      + this%gap_mortality_p_to_litr_lig_p(c,j)        &
                      + this%harvest_p_to_litr_lig_p(c,j)
-#if defined (TAM)
+#if defined(TAM)
                 this%externalp_to_decomp_ppools(c,j,l) =              &
                     this%externalp_to_decomp_ppools(c,j,l)            &
                      + this%dwt_froottp_to_litr_lig_p(c,j)            &

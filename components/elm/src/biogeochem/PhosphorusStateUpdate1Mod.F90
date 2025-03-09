@@ -79,7 +79,7 @@ contains
 
             do j = 1,nlevdecomp
 
-#if defined (TAM)
+#if defined(TAM)
                col_ps%decomp_ppools_vr(c,j,i_met_lit) = col_ps%decomp_ppools_vr(c,j,i_met_lit) + &
                     col_pf%dwt_froottp_to_litr_met_p(c,j) * dt + &
                     col_pf%dwt_frootap_to_litr_met_p(c,j) * dt + &
@@ -257,7 +257,7 @@ contains
               veg_ps%leafp(p)       = veg_ps%leafp(p)       + veg_pf%leafp_xfer_to_leafp(p)*dt
               veg_ps%leafp_xfer(p)  = veg_ps%leafp_xfer(p)  - veg_pf%leafp_xfer_to_leafp(p)*dt
               !TAM
-#if defined (TAM)
+#if defined(TAM)
                veg_ps%froottp(p)      = veg_ps%froottp(p)      + veg_pf%frootp_xfer_to_froottp(p)*dt
                veg_ps%frootap(p)      = veg_ps%frootap(p)      + veg_pf%frootp_xfer_to_frootap(p)*dt
                veg_ps%frootmp(p)      = veg_ps%frootmp(p)      + veg_pf%frootp_xfer_to_frootmp(p)*dt
@@ -316,7 +316,7 @@ contains
                   veg_ps%retransp(p)   = veg_ps%retransp(p)   + veg_pf%livecrootp_to_retransp(p)*dt
                end if
               if (ivt(p) >= npcropmin) then ! Beth adds retrans from froot
-#if defined (TAM)
+#if defined(TAM)
                   veg_ps%froottp(p)     = veg_ps%froottp(p)     - veg_pf%froottp_to_retransp(p)*dt
                   veg_ps%frootap(p)     = veg_ps%frootap(p)     - veg_pf%frootap_to_retransp(p)*dt
                   veg_ps%frootmp(p)     = veg_ps%frootmp(p)     - veg_pf%frootmp_to_retransp(p)*dt
@@ -354,7 +354,7 @@ contains
               veg_ps%ppool(p)           = veg_ps%ppool(p)          - veg_pf%ppool_to_leafp_storage(p)*dt
               veg_ps%leafp_storage(p)   = veg_ps%leafp_storage(p)  + veg_pf%ppool_to_leafp_storage(p)*dt
               !TAM
-#if defined (TAM)
+#if defined(TAM)
               veg_ps%ppool(p)           = veg_ps%ppool(p)          - veg_pf%ppool_to_froottp(p)*dt - &
                                                                      veg_pf%ppool_to_frootap(p)*dt - &
                                                                      veg_pf%ppool_to_frootmp(p)*dt

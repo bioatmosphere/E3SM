@@ -115,11 +115,26 @@ module pftvarcon
   real(r8), allocatable :: flnr(:)        !fraction of leaf N in Rubisco [no units]
   real(r8), allocatable :: woody(:)       !woody lifeform flag (0 or 1 or 2-shrub)
   real(r8), allocatable :: lflitcn(:)     !leaf litter C:N (gC/gN)
-  !TAM
-  real(r8), allocatable :: frootcn(:)     !fine root C:N (gC/gN)
+  real(r8), allocatable :: froot_leaf(:)   !allocation parameter: new fine root C per new leaf C (gC/gC) 
+#if defined(TAM)
   real(r8), allocatable :: froottcn(:)    !fine root C:N (gC/gN)
   real(r8), allocatable :: frootacn(:)    !fine root C:N (gC/gN)
   real(r8), allocatable :: frootmcn(:)    !fine root C:N (gC/gN)
+  real(r8), allocatable :: froottcp(:)    !fine root C:P (gC/gP)
+  real(r8), allocatable :: frootacp(:)    !fine root C:P (gC/gP)
+  real(r8), allocatable :: frootmcp(:)    !fine root C:P (gC/gP)
+  real(r8), allocatable :: froott_leaf(:)  !allocation parameter: new fine root C per new leaf C (gC/gC) 
+  real(r8), allocatable :: froota_leaf(:)  !allocation parameter: new fine root C per new leaf C (gC/gC) 
+  real(r8), allocatable :: frootm_leaf(:)  !allocation parameter: new fine root C per new leaf C (gC/gC) 
+  real(r8), allocatable :: froott_long(:)  !fine root longevity(yrs)
+  real(r8), allocatable :: froota_long(:)  !fine root longevity(yrs)
+  real(r8), allocatable :: frootm_long(:)  !fine root longevity(yrs)
+#else
+  real(r8), allocatable :: frootcn(:)     !fine root C:N (gC/gN)
+  real(r8), allocatable :: frootcp(:)     !fine root C:P (gC/gP)
+  real(r8), allocatable :: froot_long(:)   !fine root longevity(yrs)
+#endif
+  
 
   real(r8), allocatable :: livewdcn(:)    !live wood (phloem and ray parenchyma) C:N (gC/gN)
   real(r8), allocatable :: deadwdcn(:)    !dead wood (xylem and heartwood) C:N (gC/gN)
@@ -130,12 +145,6 @@ module pftvarcon
   ! add pft dependent parameters for phosphorus -X.YANG
   real(r8), allocatable :: leafcp(:)      !leaf C:P [gC/gP]
   real(r8), allocatable :: lflitcp(:)     !leaf litter C:P (gC/gP)
-  !TAM
-  real(r8), allocatable :: frootcp(:)     !fine root C:P (gC/gP)
-  real(r8), allocatable :: froottcp(:)    !fine root C:P (gC/gP)
-  real(r8), allocatable :: frootacp(:)    !fine root C:P (gC/gP)
-  real(r8), allocatable :: frootmcp(:)    !fine root C:P (gC/gP)
-
   real(r8), allocatable :: livewdcp(:)    !live wood (phloem and ray parenchyma) C:P (gC/gP)
   real(r8), allocatable :: deadwdcp(:)    !dead wood (xylem and heartwood) C:P (gC/gP)
 
@@ -182,11 +191,6 @@ module pftvarcon
   real(r8), allocatable :: minplanttemp(:) !mininum planting temperature used in Phenology (K)
   real(r8), allocatable :: senestemp(:)    !senescence temperature for perennial crops used in Phenology (K)
   real(r8), allocatable :: min_days_senes(:)   !minimum leaf age to allow for leaf senescence
-  !TAM
-  real(r8), allocatable :: froot_leaf(:)   !allocation parameter: new fine root C per new leaf C (gC/gC) 
-  real(r8), allocatable :: froott_leaf(:)  !allocation parameter: new fine root C per new leaf C (gC/gC) 
-  real(r8), allocatable :: froota_leaf(:)  !allocation parameter: new fine root C per new leaf C (gC/gC) 
-  real(r8), allocatable :: frootm_leaf(:)  !allocation parameter: new fine root C per new leaf C (gC/gC) 
 
   real(r8), allocatable :: stem_leaf(:)    !allocation parameter: new stem c per new leaf C (gC/gC)
   real(r8), allocatable :: croot_stem(:)   !allocation parameter: new coarse root C per new stem C (gC/gC)
@@ -210,11 +214,6 @@ module pftvarcon
   real(r8), allocatable :: frm_flig(:)      !fine root litter lignin fraction
 
   real(r8), allocatable :: leaf_long(:)    !leaf longevity (yrs)
-  !TAM
-  real(r8), allocatable :: froot_long(:)   !fine root longevity(yrs)
-  real(r8), allocatable :: froott_long(:)  !fine root longevity(yrs)
-  real(r8), allocatable :: froota_long(:)  !fine root longevity(yrs)
-  real(r8), allocatable :: frootm_long(:)  !fine root longevity(yrs)
   
   real(r8), allocatable :: rhizome_long(:) !nonwoody rhizome longevity(yrs)
   real(r8), allocatable :: evergreen(:)    !binary flag for evergreen leaf habit (0 or 1)
@@ -537,7 +536,7 @@ contains
     allocate( lflitcn       (0:mxpft) )
     !TAM keeps froot_leaf
     allocate( froot_leaf    (0:mxpft) ) 
-#if (defined TAM)
+#if defined(TAM)
     allocate( froottcn      (0:mxpft) )
     allocate( frootacn      (0:mxpft) )
     allocate( frootmcn      (0:mxpft) )
@@ -569,25 +568,18 @@ contains
 #endif
     allocate( livewdcn      (0:mxpft) )     
     allocate( deadwdcn      (0:mxpft) )     
-
     ! add phosphorus 
     allocate( leafcp        (0:mxpft) )      
     allocate( lflitcp       (0:mxpft) )
-    
-
     allocate( livewdcp      (0:mxpft) )     
     allocate( deadwdcp      (0:mxpft) )     
-
     allocate( Nfix_NPP_c1   (0:mxpft) )
     allocate( Nfix_NPP_c2   (0:mxpft) )
-
     allocate( grperc        (0:mxpft) )       
     allocate( grpnow        (0:mxpft) )       
     allocate( rootprof_beta (0:mxpft) )
-
     allocate( mergetoelmpft (0:mxpft) )
     allocate( is_pft_known_to_model  (0:mxpft) )
-
     allocate( graincn       (0:mxpft) )      
     allocate( graincp       (0:mxpft) )      
     allocate( mxtmp         (0:mxpft) )        
@@ -937,7 +929,7 @@ contains
        if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
     end if
 
-#if (defined TAM)
+#if defined(TAM)
     ! TAM parameters for each PFT; 21 in total
     call ncd_io('froottcn',froottcn(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
     if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))

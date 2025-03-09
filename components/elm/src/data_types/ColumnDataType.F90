@@ -191,11 +191,14 @@ module ColumnDataType
     real(r8), pointer :: fuelc_crop           (:)    => null() ! fuel avalability factor for Reg.A (0-1)
     real(r8), pointer :: decomp_cpools_vr     (:,:,:)=> null() ! (gC/m3) vertically-resolved decomposing (litter, cwd, soil) c pools
     real(r8), pointer :: ctrunc_vr            (:,:)  => null() ! (gC/m3) vertically-resolved column-level sink for C truncation
-    !TAM
-    real(r8), pointer :: frootc               (:)    => null() ! (gC/m2) column-level C pool for fine root
+#if defined(TAM)
     real(r8), pointer :: froottc              (:)    => null() ! (gC/m2) column-level C pool for fine root
     real(r8), pointer :: frootac              (:)    => null() ! (gC/m2) column-level C pool for fine root
     real(r8), pointer :: frootmc              (:)    => null() ! (gC/m2) column-level C pool for fine root
+#else
+    real(r8), pointer :: frootc               (:)    => null() ! (gC/m2) column-level C pool for fine root
+#endif
+    
 
     real(r8), pointer :: seedc                (:)    => null() ! (gC/m2) column-level pool for seeding new Patches
     real(r8), pointer :: prod1c               (:)    => null() ! (gC/m2) crop product C pool, 1-year lifespan
@@ -619,11 +622,7 @@ module ColumnDataType
     real(r8), pointer :: hrv_deadstemc_to_prod100c             (:)     => null() ! dead stem C harvest mortality to 100-year product pool (gC/m2/s)
     real(r8), pointer :: hrv_cropc_to_prod1c                   (:)     => null() ! crop C harvest mortality to 1-year product pool (gC/m2/s)
     ! dynamic LULCC fluxes: land cover change
-    !TAM
-    real(r8), pointer :: dwt_frootc_to_litr_met_c              (:,:)   => null() ! (gC/m3/s) fine root to litter due to landcover change
-    real(r8), pointer :: dwt_frootc_to_litr_cel_c              (:,:)   => null() ! (gC/m3/s) fine root to litter due to landcover change
-    real(r8), pointer :: dwt_frootc_to_litr_lig_c              (:,:)   => null() ! (gC/m3/s) fine root to litter due to landcover change
-    
+#if defined(TAM)
     real(r8), pointer :: dwt_froottc_to_litr_met_c              (:,:)   => null() ! (gC/m3/s) fine root to litter due to landcover change
     real(r8), pointer :: dwt_froottc_to_litr_cel_c              (:,:)   => null() ! (gC/m3/s) fine root to litter due to landcover change
     real(r8), pointer :: dwt_froottc_to_litr_lig_c              (:,:)   => null() ! (gC/m3/s) fine root to litter due to landcover change
@@ -633,6 +632,12 @@ module ColumnDataType
     real(r8), pointer :: dwt_frootmc_to_litr_met_c              (:,:)   => null() ! (gC/m3/s) fine root to litter due to landcover change
     real(r8), pointer :: dwt_frootmc_to_litr_cel_c              (:,:)   => null() ! (gC/m3/s) fine root to litter due to landcover change
     real(r8), pointer :: dwt_frootmc_to_litr_lig_c              (:,:)   => null() ! (gC/m3/s) fine root to litter due to landcover change
+#else
+    real(r8), pointer :: dwt_frootc_to_litr_met_c              (:,:)   => null() ! (gC/m3/s) fine root to litter due to landcover change
+    real(r8), pointer :: dwt_frootc_to_litr_cel_c              (:,:)   => null() ! (gC/m3/s) fine root to litter due to landcover change
+    real(r8), pointer :: dwt_frootc_to_litr_lig_c              (:,:)   => null() ! (gC/m3/s) fine root to litter due to landcover change
+#endif
+    
     
     real(r8), pointer :: dwt_livecrootc_to_cwdc                (:,:)   => null() ! (gC/m3/s) live coarse root to CWD due to landcover change
     real(r8), pointer :: dwt_deadcrootc_to_cwdc                (:,:)   => null() ! (gC/m3/s) dead coarse root to CWD due to landcover change
@@ -854,10 +859,7 @@ module ColumnDataType
     real(r8), pointer :: dwt_prod10n_gain                      (:)     => null() ! (gN/m2/s) addition to 10-yr wood product pool
     real(r8), pointer :: dwt_prod100n_gain                     (:)     => null() ! (gN/m2/s) addition to 100-yr wood product pool
     real(r8), pointer :: dwt_crop_productn_gain                (:)     => null() ! (gN/m2/s) addition to crop product pool
-    !TAM
-    real(r8), pointer :: dwt_frootn_to_litr_met_n              (:,:)   => null() ! (gN/m3/s) fine root to litter due to landcover change
-    real(r8), pointer :: dwt_frootn_to_litr_cel_n              (:,:)   => null() ! (gN/m3/s) fine root to litter due to landcover change
-    real(r8), pointer :: dwt_frootn_to_litr_lig_n              (:,:)   => null() ! (gN/m3/s) fine root to litter due to landcover change
+#if defined(TAM)
     real(r8), pointer :: dwt_froottn_to_litr_met_n              (:,:)   => null() ! (gN/m3/s) fine root to litter due to landcover change
     real(r8), pointer :: dwt_froottn_to_litr_cel_n              (:,:)   => null() ! (gN/m3/s) fine root to litter due to landcover change
     real(r8), pointer :: dwt_froottn_to_litr_lig_n              (:,:)   => null() ! (gN/m3/s) fine root to litter due to landcover change
@@ -867,6 +869,11 @@ module ColumnDataType
     real(r8), pointer :: dwt_frootmn_to_litr_met_n              (:,:)   => null() ! (gN/m3/s) fine root to litter due to landcover change
     real(r8), pointer :: dwt_frootmn_to_litr_cel_n              (:,:)   => null() ! (gN/m3/s) fine root to litter due to landcover change
     real(r8), pointer :: dwt_frootmn_to_litr_lig_n              (:,:)   => null() ! (gN/m3/s) fine root to litter due to landcover change
+#else
+    real(r8), pointer :: dwt_frootn_to_litr_met_n              (:,:)   => null() ! (gN/m3/s) fine root to litter due to landcover change
+    real(r8), pointer :: dwt_frootn_to_litr_cel_n              (:,:)   => null() ! (gN/m3/s) fine root to litter due to landcover change
+    real(r8), pointer :: dwt_frootn_to_litr_lig_n              (:,:)   => null() ! (gN/m3/s) fine root to litter due to landcover change
+#endif      
 
     real(r8), pointer :: dwt_livecrootn_to_cwdn                (:,:)   => null() ! (gN/m3/s) live coarse root to CWD due to landcover change
     real(r8), pointer :: dwt_deadcrootn_to_cwdn                (:,:)   => null() ! (gN/m3/s) dead coarse root to CWD due to landcover change
@@ -1046,10 +1053,7 @@ module ColumnDataType
     real(r8), pointer :: dwt_prod10p_gain                      (:)     => null() ! (gP/m2/s) addition to 10-yr wood product pool
     real(r8), pointer :: dwt_prod100p_gain                     (:)     => null() ! (gP/m2/s) addition to 100-yr wood product pool
     real(r8), pointer :: dwt_crop_productp_gain                (:)     => null() ! (gP/m2/s) addition to crop product pool
-    !TAM
-    real(r8), pointer :: dwt_frootp_to_litr_met_p              (:,:)   => null() ! (gP/m3/s) fine root to litter due to landcover change
-    real(r8), pointer :: dwt_frootp_to_litr_cel_p              (:,:)   => null() ! (gP/m3/s) fine root to litter due to landcover change
-    real(r8), pointer :: dwt_frootp_to_litr_lig_p              (:,:)   => null() ! (gP/m3/s) fine root to litter due to landcover change
+#if defined(TAM)
     real(r8), pointer :: dwt_froottp_to_litr_met_p              (:,:)   => null() ! (gP/m3/s) fine root to litter due to landcover change
     real(r8), pointer :: dwt_froottp_to_litr_cel_p              (:,:)   => null() ! (gP/m3/s) fine root to litter due to landcover change
     real(r8), pointer :: dwt_froottp_to_litr_lig_p              (:,:)   => null() ! (gP/m3/s) fine root to litter due to landcover change
@@ -1059,6 +1063,12 @@ module ColumnDataType
     real(r8), pointer :: dwt_frootmp_to_litr_met_p              (:,:)   => null() ! (gP/m3/s) fine root to litter due to landcover change
     real(r8), pointer :: dwt_frootmp_to_litr_cel_p              (:,:)   => null() ! (gP/m3/s) fine root to litter due to landcover change
     real(r8), pointer :: dwt_frootmp_to_litr_lig_p              (:,:)   => null() ! (gP/m3/s) fine root to litter due to landcover change
+#else
+    real(r8), pointer :: dwt_frootp_to_litr_met_p              (:,:)   => null() ! (gP/m3/s) fine root to litter due to landcover change
+    real(r8), pointer :: dwt_frootp_to_litr_cel_p              (:,:)   => null() ! (gP/m3/s) fine root to litter due to landcover change
+    real(r8), pointer :: dwt_frootp_to_litr_lig_p              (:,:)   => null() ! (gP/m3/s) fine root to litter due to landcover change
+#endif    
+    
     
     real(r8), pointer :: dwt_livecrootp_to_cwdp                (:,:)   => null() ! (gP/m3/s) live coarse root to CWD due to landcover change
     real(r8), pointer :: dwt_deadcrootp_to_cwdp                (:,:)   => null() ! (gP/m3/s) dead coarse root to CWD due to landcover change

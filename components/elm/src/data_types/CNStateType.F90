@@ -54,11 +54,18 @@ module CNStateType
 
      integer  , pointer :: idop_patch                  (:)     ! patch date of planting
      real(r8) , pointer :: leaf_prof_patch             (:,:)   ! patch (1/m) profile of leaves (vertical profiles for calculating fluxes)
-     !TAM
-     real(r8) , pointer :: froot_prof_patch            (:,:)   ! patch (1/m) profile of fine roots (vertical profiles for calculating fluxes)
+#if defined(TAM)
      real(r8) , pointer :: froott_prof_patch           (:,:)   ! patch (1/m) profile of fine roots (vertical profiles for calculating fluxes)
      real(r8) , pointer :: froota_prof_patch           (:,:)   ! patch (1/m) profile of fine roots (vertical profiles for calculating fluxes)
      real(r8) , pointer :: frootm_prof_patch           (:,:)   ! patch (1/m) profile of fine roots (vertical profiles for calculating fluxes)
+     real(r8), pointer :: bglfr_froott_patch           (:)     ! patch background fine root litterfall rate (1/s)
+     real(r8), pointer :: bglfr_froota_patch           (:)     ! patch background fine root litterfall rate (1/s)
+     real(r8), pointer :: bglfr_frootm_patch           (:)     ! patch background fine root litterfall rate (1/s)
+#else
+     real(r8) , pointer :: froot_prof_patch            (:,:)   ! patch (1/m) profile of fine roots (vertical profiles for calculating fluxes)
+     real(r8), pointer :: bglfr_froot_patch            (:)     ! patch background fine root litterfall rate (1/s)
+#endif
+     
 
      real(r8) , pointer :: croot_prof_patch            (:,:)   ! patch (1/m) profile of coarse roots (vertical profiles for calculating fluxes)
      real(r8) , pointer :: stem_prof_patch             (:,:)   ! patch (1/m) profile of stems (vertical profiles for calculating fluxes)
@@ -132,11 +139,6 @@ module CNStateType
      real(r8), pointer :: lgsf_patch                   (:)     ! patch long growing season factor [0-1]
      real(r8), pointer :: bglfr_patch                  (:)     ! patch background litterfall rate (1/s)
      real(r8), pointer :: bglfr_leaf_patch             (:)     ! patch background leaf litterfall rate (1/s)
-     !TAM
-     real(r8), pointer :: bglfr_froot_patch            (:)     ! patch background fine root litterfall rate (1/s)
-     real(r8), pointer :: bglfr_froott_patch           (:)     ! patch background fine root litterfall rate (1/s)
-     real(r8), pointer :: bglfr_froota_patch           (:)     ! patch background fine root litterfall rate (1/s)
-     real(r8), pointer :: bglfr_frootm_patch           (:)     ! patch background fine root litterfall rate (1/s)
 
      real(r8), pointer :: bgtr_patch                   (:)     ! patch background transfer growth rate (1/s)
      real(r8), pointer :: alloc_pnow_patch             (:)     ! patch fraction of current allocation to display as new growth (DIM)

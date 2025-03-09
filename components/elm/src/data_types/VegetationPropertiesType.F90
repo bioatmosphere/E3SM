@@ -45,34 +45,14 @@ module VegetationPropertiesType
      real(r8), pointer :: flnr          (:) => null()  ! fraction of leaf N in the Rubisco enzyme (gN Rubisco / gN leaf)
      real(r8), pointer :: woody         (:) => null()  ! binary flag for woody lifeform (1=woody, 0=not woody)
      real(r8), pointer :: lflitcn       (:) => null()  ! leaf litter C:N (gC/gN)
-     !TAM
-     real(r8), pointer :: frootcn       (:) => null()  ! fine root C:N (gC/gN)
+     real(r8), pointer :: froot_leaf    (:) => null()  ! allocation parameter: new fine root C per new leaf C (gC/gC)
+#if defined(TAM)
      real(r8), pointer :: froottcn      (:) => null()  ! fine root C:N (gC/gN)
      real(r8), pointer :: frootacn      (:) => null()  ! fine root C:N (gC/gN)
      real(r8), pointer :: frootmcn      (:) => null()  ! fine root C:N (gC/gN)
-
-     real(r8), pointer :: livewdcn      (:) => null()  ! live wood (phloem and ray parenchyma) C:N (gC/gN)
-     real(r8), pointer :: deadwdcn      (:) => null()  ! dead wood (xylem and heartwood) C:N (gC/gN)
-     real(r8), pointer :: graincn       (:) => null()  ! grain C:N (gC/gN) for prognostic crop model
-     !TAM
-     real(r8), pointer :: froot_leaf    (:) => null()  ! allocation parameter: new fine root C per new leaf C (gC/gC)
      real(r8), pointer :: froott_leaf   (:) => null()  ! allocation parameter: new fine root C per new leaf C (gC/gC)
      real(r8), pointer :: froota_leaf   (:) => null()  ! allocation parameter: new fine root C per new leaf C (gC/gC)
      real(r8), pointer :: frootm_leaf   (:) => null()  ! allocation parameter: new fine root C per new leaf C (gC/gC)
-
-     real(r8), pointer :: stem_leaf     (:) => null()  ! allocation parameter: new stem c per new leaf C (gC/gC)
-     real(r8), pointer :: croot_stem    (:) => null()  ! allocation parameter: new coarse root C per new stem C (gC/gC)
-     real(r8), pointer :: flivewd       (:) => null()  ! allocation parameter: fraction of new wood that is live
-                                                       ! (phloem and ray parenchyma) (no units)
-     real(r8), pointer :: fcur          (:) => null()  ! allocation parameter: fraction of allocation that goes
-                                                       ! to currently displayed growth, remainder to storage
-     real(r8), pointer :: lf_flab       (:) => null()  ! leaf litter labile fraction
-     real(r8), pointer :: lf_fcel       (:) => null()  ! leaf litter cellulose fraction
-     real(r8), pointer :: lf_flig       (:) => null()  ! leaf litter lignin fraction
-     !TAM
-     real(r8), pointer :: fr_flab       (:) => null()  ! fine root litter labile fraction
-     real(r8), pointer :: fr_fcel       (:) => null()  ! fine root litter cellulose fraction
-     real(r8), pointer :: fr_flig       (:) => null()  ! fine root litter lignin fraction
      real(r8), pointer :: frt_flab       (:) => null()  ! fine root litter labile fraction
      real(r8), pointer :: frt_fcel       (:) => null()  ! fine root litter cellulose fraction
      real(r8), pointer :: frt_flig       (:) => null()  ! fine root litter lignin fraction
@@ -82,13 +62,37 @@ module VegetationPropertiesType
      real(r8), pointer :: frm_flab       (:) => null()  ! fine root litter labile fraction
      real(r8), pointer :: frm_fcel       (:) => null()  ! fine root litter cellulose fraction
      real(r8), pointer :: frm_flig       (:) => null()  ! fine root litter lignin fraction
-
-     real(r8), pointer :: leaf_long     (:) => null()  ! leaf longevity (yrs)
-     !TAM
-     real(r8), pointer :: froot_long    (:) => null()  ! fine root longevity (yrs)
      real(r8), pointer :: froott_long    (:) => null()  ! fine root longevity (yrs)
      real(r8), pointer :: froota_long    (:) => null()  ! fine root longevity (yrs)
      real(r8), pointer :: frootm_long    (:) => null()  ! fine root longevity (yrs)
+     real(r8), pointer :: froottcp      (:) => null()  ! fine root C:P (gC/gP)
+     real(r8), pointer :: frootacp      (:) => null()  ! fine root C:P (gC/gP)
+     real(r8), pointer :: frootmcp      (:) => null()  ! fine root C:P (gC/gP)
+#else
+     real(r8), pointer :: frootcn       (:) => null()  ! fine root C:N (gC/gN)
+     real(r8), pointer :: fr_flab       (:) => null()  ! fine root litter labile fraction
+     real(r8), pointer :: fr_fcel       (:) => null()  ! fine root litter cellulose fraction
+     real(r8), pointer :: fr_flig       (:) => null()  ! fine root litter lignin fraction
+     real(r8), pointer :: froot_long    (:) => null()  ! fine root longevity (yrs)
+     real(r8), pointer :: frootcp       (:) => null()  ! fine root C:P (gC/gP)
+#endif  
+
+     real(r8), pointer :: livewdcn      (:) => null()  ! live wood (phloem and ray parenchyma) C:N (gC/gN)
+     real(r8), pointer :: deadwdcn      (:) => null()  ! dead wood (xylem and heartwood) C:N (gC/gN)
+     real(r8), pointer :: graincn       (:) => null()  ! grain C:N (gC/gN) for prognostic crop model
+     
+
+     real(r8), pointer :: stem_leaf     (:) => null()  ! allocation parameter: new stem c per new leaf C (gC/gC)
+     real(r8), pointer :: croot_stem    (:) => null()  ! allocation parameter: new coarse root C per new stem C (gC/gC)
+     real(r8), pointer :: flivewd       (:) => null()  ! allocation parameter: fraction of new wood that is live
+                                                       ! (phloem and ray parenchyma) (no units)
+     real(r8), pointer :: fcur          (:) => null()  ! allocation parameter: fraction of allocation that goes
+                                                       ! to currently displayed growth, remainder to storage
+     real(r8), pointer :: lf_flab       (:) => null()  ! leaf litter labile fraction
+     real(r8), pointer :: lf_fcel       (:) => null()  ! leaf litter cellulose fraction
+     real(r8), pointer :: lf_flig       (:) => null()  ! leaf litter lignin fraction  
+
+     real(r8), pointer :: leaf_long     (:) => null()  ! leaf longevity (yrs)
 
      real(r8), pointer :: rhizome_long  (:) => null()  ! nonwoody rhizome longevity (yrs)
      real(r8), pointer :: evergreen     (:) => null()  ! binary flag for evergreen leaf habit (0 or 1)
@@ -115,11 +119,6 @@ module VegetationPropertiesType
 
      real(r8), pointer :: leafcp        (:) => null()  ! leaf C:P (gC/gP)
      real(r8), pointer :: lflitcp       (:) => null()  ! leaf litter C:P (gC/gP)
-     !TAM
-     real(r8), pointer :: frootcp       (:) => null()  ! fine root C:P (gC/gP)
-     real(r8), pointer :: froottcp      (:) => null()  ! fine root C:P (gC/gP)
-     real(r8), pointer :: frootacp      (:) => null()  ! fine root C:P (gC/gP)
-     real(r8), pointer :: frootmcp      (:) => null()  ! fine root C:P (gC/gP)
 
      real(r8), pointer :: livewdcp      (:) => null()  ! live wood (phloem and ray parenchyma) C:P (gC/gP)
      real(r8), pointer :: deadwdcp      (:) => null()  ! dead wood (xylem and heartwood) C:P (gC/gP)
@@ -274,7 +273,8 @@ contains
     allocate(this%flnr          (0:numpft))        ; this%flnr         (:)   =spval
     allocate(this%woody         (0:numpft))        ; this%woody        (:)   =spval
     allocate(this%lflitcn       (0:numpft))        ; this%lflitcn      (:)   =spval
-    
+    !NOTE: TAM keeps froot_leaf
+    allocate(this%froot_leaf    (0:numpft))        ; this%froot_leaf   (:)   =spval
 #if defined(TAM)
     allocate(this%froottcn      (0:numpft))        ; this%froottcn      (:)   =spval
     allocate(this%frootacn      (0:numpft))        ; this%frootacn      (:)   =spval
@@ -299,15 +299,13 @@ contains
     allocate(this%frootmcp       (0:numpft))        ; this%frootmcp      (:)   =spval
 #else
     allocate(this%frootcn       (0:numpft))        ; this%frootcn      (:)   =spval
-    allocate(this%froot_leaf    (0:numpft))        ; this%froot_leaf   (:)   =spval
+    !allocate(this%froot_leaf    (0:numpft))        ; this%froot_leaf   (:)   =spval
     allocate(this%fr_flab       (0:numpft))        ; this%fr_flab      (:)   =spval
     allocate(this%fr_fcel       (0:numpft))        ; this%fr_fcel      (:)   =spval
     allocate(this%fr_flig       (0:numpft))        ; this%fr_flig      (:)   =spval
     allocate(this%froot_long    (0:numpft))        ; this%froot_long   (:)   =spval
     allocate(this%frootcp       (0:numpft))        ; this%frootcp      (:)   =spval
-
 #endif
-
     allocate(this%livewdcn      (0:numpft))        ; this%livewdcn     (:)   =spval
     allocate(this%deadwdcn      (0:numpft))        ; this%deadwdcn     (:)   =spval
     allocate(this%graincn       (0:numpft))        ; this%graincn      (:)   =spval

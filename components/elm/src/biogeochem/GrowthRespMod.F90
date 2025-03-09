@@ -55,7 +55,7 @@ contains
 
          cpool_to_leafc                =>    veg_cf%cpool_to_leafc                , & ! Input:  [real(r8) (:)]
          cpool_to_leafc_storage        =>    veg_cf%cpool_to_leafc_storage        , & ! Input:  [real(r8) (:)]
-#if (defined TAM)
+#if defined(TAM)
          cpool_to_froottc              =>    veg_cf%cpool_to_froottc              , & ! Input:  [real(r8) (:)]
          cpool_to_frootac              =>    veg_cf%cpool_to_frootac              , & ! Input:  [real(r8) (:)]
          cpool_to_frootmc              =>    veg_cf%cpool_to_frootmc              , & ! Input:  [real(r8) (:)]
@@ -148,7 +148,7 @@ contains
               grpnow(ivt(p))
          transfer_leaf_gr(p)       = leafc_xfer_to_leafc(p) * grperc(ivt(p)) * &
               (1._r8 - grpnow(ivt(p)))
-#if (defined TAM)
+#if defined(TAM)
          cpool_froott_gr(p)        = cpool_to_froottc(p) * grperc(ivt(p))
          cpool_froota_gr(p)        = cpool_to_frootac(p) * grperc(ivt(p))
          cpool_frootm_gr(p)        = cpool_to_frootmc(p) * grperc(ivt(p))

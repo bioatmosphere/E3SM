@@ -165,7 +165,7 @@ contains
          grain_mr       =>    veg_cf%grain_mr        , & ! Output: [real(r8) (:)   ]
          xr             =>    veg_cf%xr              , & ! Output: [real(r8) (:)   ]  (gC/m2) respiration of excess C
          totvegc        =>    veg_cs%totvegc         , &
-#if (defined TAM)
+#if defined(TAM)
          froott_mr      =>    veg_cf%froott_mr        , & ! Output: [real(r8) (:)   ]
          froota_mr      =>    veg_cf%froota_mr        , & ! Output: [real(r8) (:)   ]
          frootm_mr      =>    veg_cf%frootm_mr        , & ! Output: [real(r8) (:)   ]
@@ -288,7 +288,7 @@ contains
             br_mr = br_mr_pft(ivt(p))
 #endif
 
-#if (defined TAM)
+#if defined(TAM)
             froott_mr(p) = froott_mr(p) + froottn(p)*br_mr*tcsoi(c,j)*rootfr(p,j)
             froota_mr(p) = froota_mr(p) + frootan(p)*br_mr*tcsoi(c,j)*rootfr(p,j)
             frootm_mr(p) = frootm_mr(p) + frootmn(p)*br_mr*tcsoi(c,j)*rootfr(p,j)

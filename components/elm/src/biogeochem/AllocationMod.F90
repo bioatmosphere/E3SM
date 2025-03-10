@@ -936,7 +936,7 @@ contains
 
          if (woody(ivt(p)) >= 1.0_r8) then
             c_allometry(p) = (1._r8+g1)*(1._r8+f1+f3*(1._r8+f2))
-#if (defined TAM)
+#if defined(TAM)
             n_allometry(p) = 1._r8/cnl + f1*(f1t/cnfrt + f1a/cnfra + f1m/cnfrm) + &
                (f3*f4*(1._r8+f2))/cnlw + (f3*(1._r8-f4)*(1._r8+f2))/cndw
             p_allometry(p) = 1._r8/cpl + f1*(f1t/cpfrt + f1a/cpfra + f1m/cpfrm) + &
@@ -1184,14 +1184,13 @@ contains
         froott_prof                  => cnstate_vars%froott_prof_patch         , & 
         froota_prof                  => cnstate_vars%froota_prof_patch         , & 
         frootm_prof                  => cnstate_vars%frootm_prof_patch         , & 
-#else
-        froot_prof                   => cnstate_vars%froot_prof_patch         , & ! fine root vertical profile Zeng, X. 2001. Global vegetation root distribution for land modeling. J. Hydrometeor. 2:525-530
-#endif       
-        
-        frootc                       => veg_cs%frootc                         , & ! Input:  [real(r8) (:)   ]
         froottc                      => veg_cs%froottc                         , & ! Input:  [real(r8) (:)   ]
         frootac                      => veg_cs%frootac                         , & ! Input:  [real(r8) (:)   ]
         frootmc                      => veg_cs%frootmc                         , & ! Input:  [real(r8) (:)   ]
+#else
+        froot_prof                   => cnstate_vars%froot_prof_patch         , & ! fine root vertical profile Zeng, X. 2001. Global vegetation root distribution for land modeling. J. Hydrometeor. 2:525-530
+        frootc                       => veg_cs%frootc                         , & ! Input:  [real(r8) (:)   ]
+#endif       
 
         leafc                        => veg_cs%leafc                          , & ! Input:  [real(r8) (:)   ]
         leafcn                       => veg_vp%leafcn                                     , & ! Input:  [real(r8) (:)   ]  leaf C:N (gC/gN)

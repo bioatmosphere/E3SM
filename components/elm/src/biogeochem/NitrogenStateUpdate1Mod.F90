@@ -82,7 +82,7 @@ contains
             col_ns%prod1n(c) = col_ns%prod1n(c) + col_nf%dwt_crop_productn_gain(c)*dt
 
             do j = 1,nlevdecomp
-#if defined (TAM)
+#if defined(TAM)
                col_ns%decomp_npools_vr(c,j,i_met_lit) = col_ns%decomp_npools_vr(c,j,i_met_lit) + &
                     col_nf%dwt_froottn_to_litr_met_n(c,j) * dt + &
                     col_nf%dwt_frootan_to_litr_met_n(c,j) * dt + &
@@ -368,10 +368,14 @@ contains
                   veg_ns%froottn(p)     = veg_ns%froottn(p)     - veg_nf%froottn_to_retransn(p)*dt
                   veg_ns%frootan(p)     = veg_ns%frootan(p)     - veg_nf%frootan_to_retransn(p)*dt
                   veg_ns%frootmn(p)     = veg_ns%frootmn(p)     - veg_nf%frootmn_to_retransn(p)*dt
+                  veg_ns%retransn(p)   = veg_ns%retransn(p)   + veg_nf%froottn_to_retransn(p)*dt + &
+                                                                veg_nf%frootan_to_retransn(p)*dt + &
+                                                                veg_nf%frootmn_to_retransn(p)*dt
 #else
                   veg_ns%frootn(p)     = veg_ns%frootn(p)     - veg_nf%frootn_to_retransn(p)*dt
-#endif
                   veg_ns%retransn(p)   = veg_ns%retransn(p)   + veg_nf%frootn_to_retransn(p)*dt
+#endif
+                  
                   veg_ns%livestemn(p)  = veg_ns%livestemn(p)  - veg_nf%livestemn_to_litter(p)*dt
                   veg_ns%livestemn(p)  = veg_ns%livestemn(p)  - veg_nf%livestemn_to_retransn(p)*dt
                   veg_ns%retransn(p)   = veg_ns%retransn(p)   + veg_nf%livestemn_to_retransn(p)*dt

@@ -261,10 +261,13 @@ contains
                veg_ps%froottp(p)      = veg_ps%froottp(p)      + veg_pf%frootp_xfer_to_froottp(p)*dt
                veg_ps%frootap(p)      = veg_ps%frootap(p)      + veg_pf%frootp_xfer_to_frootap(p)*dt
                veg_ps%frootmp(p)      = veg_ps%frootmp(p)      + veg_pf%frootp_xfer_to_frootmp(p)*dt
+               veg_ps%frootp_xfer(p) = veg_ps%frootp_xfer(p) - veg_pf%frootp_xfer_to_froottp(p)*dt - &
+                                                               veg_pf%frootp_xfer_to_frootap(p)*dt - &
+                                                               veg_pf%frootp_xfer_to_frootmp(p)*dt
 #else
               veg_ps%frootp(p)      = veg_ps%frootp(p)      + veg_pf%frootp_xfer_to_frootp(p)*dt
-#endif
               veg_ps%frootp_xfer(p) = veg_ps%frootp_xfer(p) - veg_pf%frootp_xfer_to_frootp(p)*dt
+#endif  
 
               ! B Sulman: Allow graminoid rhizomes
               veg_ps%livecrootp(p)      = veg_ps%livecrootp(p)      + veg_pf%livecrootp_xfer_to_livecrootp(p)*dt

@@ -596,7 +596,6 @@ contains
     real(r8) :: frootmp_to_litter_col(bounds%begc:bounds%endc)
 #else
     real(r8) :: frootp_to_litter_col(bounds%begc:bounds%endc)
-
 #endif
     real(r8):: flux_mineralization_col(bounds%begc:bounds%endc)   !  local temperary variable
 
@@ -663,7 +662,7 @@ contains
               leafp_to_litter(bounds%begp:bounds%endp), &
               leafp_to_litter_col(bounds%begc:bounds%endc))
          !TAM
-#if defined (TAM)
+#if defined(TAM)
          call p2c(bounds,num_soilc,filter_soilc, &
               froottp_to_litter(bounds%begp:bounds%endp), &
               froottp_to_litter_col(bounds%begc:bounds%endc))
@@ -677,7 +676,7 @@ contains
          call p2c(bounds,num_soilc,filter_soilc, &
               frootp_to_litter(bounds%begp:bounds%endp), &
               frootp_to_litter_col(bounds%begc:bounds%endc))
- #endif        
+#endif        
       end if
 
       !! immobilization/mineralization in litter-to-SOM and SOM-to-SOM fluxes

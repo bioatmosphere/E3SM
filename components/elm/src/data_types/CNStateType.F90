@@ -423,6 +423,7 @@ contains
          avgflag='A', long_name='profile for litter C and N inputs from coarse roots', &
          ptr_patch=this%croot_prof_patch, default='inactive')
 #if defined(TAM)
+    !T
     this%froott_prof_patch(begp:endp,:) = spval
     call hist_addfld_decomp (fname='FROOTT_PROF', units='1/m',  type2d='levdcmp', &
           avgflag='A', long_name='profile for litter C and N inputs from fine t roots', &
@@ -459,7 +460,7 @@ contains
          avgflag='A', long_name='profile for litter C and N inputs from fine roots', &
          ptr_patch=this%froot_prof_patch, default='inactive')
 
-     his%bglfr_froot_patch(begp:endp) = spval
+    this%bglfr_froot_patch(begp:endp) = spval
     call hist_addfld1d (fname='BGLFR_FROOT', units='1/s', &
          avgflag='A', long_name='background fine root litterfall rate', &
          ptr_patch=this%bglfr_froot_patch, default='inactive')

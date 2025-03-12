@@ -2956,21 +2956,38 @@ contains
 
 
          leafc_xfer_to_leafc                 =>    veg_cf%leafc_xfer_to_leafc             , & ! Output:  [real(r8) (:) ]
+#if defined(TAM)
+         frootc_xfer_to_froottc               =>    veg_cf%frootc_xfer_to_froottc           , & ! Output:  [real(r8) (:) ]
+         frootn_xfer_to_froottn               =>    veg_nf%frootn_xfer_to_froottn         , & ! Output:  [real(r8) (:) ]
+         frootp_xfer_to_froottp               =>    veg_pf%frootp_xfer_to_froottp         , & ! Output:  [real(r8) (:) ]
+
+         frootc_xfer_to_frootac               =>    veg_cf%frootc_xfer_to_frootac           , & ! Output:  [real(r8) (:) ]
+         frootn_xfer_to_frootan               =>    veg_nf%frootn_xfer_to_frootan         , & ! Output:  [real(r8) (:) ]
+         frootp_xfer_to_frootap               =>    veg_pf%frootp_xfer_to_frootap         , & ! Output:  [real(r8) (:) ]
+
+         frootc_xfer_to_frootmc               =>    veg_cf%frootc_xfer_to_frootmc           , & ! Output:  [real(r8) (:) ]
+         frootn_xfer_to_frootmn               =>    veg_nf%frootn_xfer_to_frootmn         , & ! Output:  [real(r8) (:) ]
+         frootp_xfer_to_frootmp               =>    veg_pf%frootp_xfer_to_frootmp         , & ! Output:  [real(r8) (:) ]
+#else
          frootc_xfer_to_frootc               =>    veg_cf%frootc_xfer_to_frootc           , & ! Output:  [real(r8) (:) ]
+         frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:) ]
+         frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:) ]
+#endif
+         ! frootc_xfer_to_frootc               =>    veg_cf%frootc_xfer_to_frootc           , & ! Output:  [real(r8) (:) ]
          livestemc_xfer_to_livestemc         =>    veg_cf%livestemc_xfer_to_livestemc     , & ! Output:  [real(r8) (:) ]
          deadstemc_xfer_to_deadstemc         =>    veg_cf%deadstemc_xfer_to_deadstemc     , & ! Output:  [real(r8) (:) ]
          livecrootc_xfer_to_livecrootc       =>    veg_cf%livecrootc_xfer_to_livecrootc   , & ! Output:  [real(r8) (:) ]
          deadcrootc_xfer_to_deadcrootc       =>    veg_cf%deadcrootc_xfer_to_deadcrootc   , & ! Output:  [real(r8) (:) ]
 
          leafn_xfer_to_leafn                 =>    veg_nf%leafn_xfer_to_leafn           , & ! Output:  [real(r8) (:) ]
-         frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:) ]
+         ! frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:) ]
          livestemn_xfer_to_livestemn         =>    veg_nf%livestemn_xfer_to_livestemn   , & ! Output:  [real(r8) (:) ]
          deadstemn_xfer_to_deadstemn         =>    veg_nf%deadstemn_xfer_to_deadstemn   , & ! Output:  [real(r8) (:) ]
          livecrootn_xfer_to_livecrootn       =>    veg_nf%livecrootn_xfer_to_livecrootn , & ! Output:  [real(r8) (:) ]
          deadcrootn_xfer_to_deadcrootn       =>    veg_nf%deadcrootn_xfer_to_deadcrootn , & ! Output:  [real(r8) (:) ]
 
          leafp_xfer_to_leafp                 =>    veg_pf%leafp_xfer_to_leafp           , & ! Output:  [real(r8) (:) ]
-         frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:) ]
+         ! frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:) ]
          livestemp_xfer_to_livestemp         =>    veg_pf%livestemp_xfer_to_livestemp   , & ! Output:  [real(r8) (:) ]
          deadstemp_xfer_to_deadstemp         =>    veg_pf%deadstemp_xfer_to_deadstemp   , & ! Output:  [real(r8) (:) ]
          livecrootp_xfer_to_livecrootp       =>    veg_pf%livecrootp_xfer_to_livecrootp , & ! Output:  [real(r8) (:) ]
@@ -2994,11 +3011,28 @@ contains
                t1 = 2.0_r8 / (onset_counter(p))
             end if
             leafc_xfer_to_leafc(p)   = t1 * leafc_xfer(p)
-            frootc_xfer_to_frootc(p) = t1 * frootc_xfer(p)
+            ! frootc_xfer_to_frootc(p) = t1 * frootc_xfer(p)
             leafn_xfer_to_leafn(p)   = t1 * leafn_xfer(p)
-            frootn_xfer_to_frootn(p) = t1 * frootn_xfer(p)
+            ! frootn_xfer_to_frootn(p) = t1 * frootn_xfer(p)
             leafp_xfer_to_leafp(p)   = t1 * leafp_xfer(p)
+            ! frootp_xfer_to_frootp(p) = t1 * frootp_xfer(p)
+#if defined(TAM)
+            frootc_xfer_to_froottc(p) = t1 * frootc_xfer(p)
+            frootn_xfer_to_froottn(p) = t1 * frootn_xfer(p)
+            frootp_xfer_to_froottp(p) = t1 * frootp_xfer(p)
+
+            frootc_xfer_to_frootac(p) = t1 * frootc_xfer(p)
+            frootn_xfer_to_frootan(p) = t1 * frootn_xfer(p)
+            frootp_xfer_to_frootap(p) = t1 * frootp_xfer(p)
+
+            frootc_xfer_to_frootmc(p) = t1 * frootc_xfer(p)
+            frootn_xfer_to_frootmn(p) = t1 * frootn_xfer(p)
+            frootp_xfer_to_frootmp(p) = t1 * frootp_xfer(p)
+#else
+            frootc_xfer_to_frootc(p) = t1 * frootc_xfer(p)
+            frootn_xfer_to_frootn(p) = t1 * frootn_xfer(p)
             frootp_xfer_to_frootp(p) = t1 * frootp_xfer(p)
+#endif
             livecrootc_xfer_to_livecrootc(p) = t1 * livecrootc_xfer(p)
             livecrootn_xfer_to_livecrootn(p) = t1 * livecrootn_xfer(p)
             livecrootp_xfer_to_livecrootp(p) = t1 * livecrootp_xfer(p)
@@ -3023,11 +3057,28 @@ contains
 
          if (bgtr(p) > 0._r8) then
             leafc_xfer_to_leafc(p)   = leafc_xfer(p) / dt
-            frootc_xfer_to_frootc(p) = frootc_xfer(p) / dt
+            ! frootc_xfer_to_frootc(p) = frootc_xfer(p) / dt
             leafn_xfer_to_leafn(p)   = leafn_xfer(p) / dt
-            frootn_xfer_to_frootn(p) = frootn_xfer(p) / dt
+            ! frootn_xfer_to_frootn(p) = frootn_xfer(p) / dt
             leafp_xfer_to_leafp(p)   = leafp_xfer(p) / dt
+            ! frootp_xfer_to_frootp(p) = frootp_xfer(p) / dt
+#if defined(TAM)
+            frootc_xfer_to_froottc(p) = frootc_xfer(p) / dt
+            frootn_xfer_to_froottn(p) = frootn_xfer(p) / dt
+            frootp_xfer_to_froottp(p) = frootp_xfer(p) / dt
+
+            frootc_xfer_to_frootac(p) = frootc_xfer(p) / dt
+            frootn_xfer_to_frootan(p) = frootn_xfer(p) / dt
+            frootp_xfer_to_frootap(p) = frootp_xfer(p) / dt
+
+            frootc_xfer_to_frootmc(p) = frootc_xfer(p) / dt
+            frootn_xfer_to_frootmn(p) = frootn_xfer(p) / dt
+            frootp_xfer_to_frootmp(p) = frootp_xfer(p) / dt
+#else
+            frootc_xfer_to_frootc(p) = frootc_xfer(p) / dt
+            frootn_xfer_to_frootn(p) = frootn_xfer(p) / dt
             frootp_xfer_to_frootp(p) = frootp_xfer(p) / dt
+#endif
             livecrootc_xfer_to_livecrootc(p) = livecrootc_xfer(p) / dt
             livecrootn_xfer_to_livecrootn(p) = livecrootn_xfer(p) / dt
             livecrootp_xfer_to_livecrootp(p) = livecrootp_xfer(p) / dt
@@ -3290,14 +3341,74 @@ contains
 
          leafcn                =>    veg_vp%leafcn                           , & ! Input:  [real(r8) (:) ]  leaf C:N (gC/gN)
          lflitcn               =>    veg_vp%lflitcn                          , & ! Input:  [real(r8) (:) ]  leaf litter C:N (gC/gN)
+#if defined(TAM)
+         froottcn               =>    veg_vp%froottcn                          , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
+         froottcp               =>    veg_vp%froottcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         froottc                =>    veg_cs%froottc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         froottn                =>    veg_ns%froottn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
+         froottp                =>    veg_ps%froottp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
+         cpool_to_froottc       =>    veg_cf%cpool_to_froottc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
+         npool_to_froottn       =>    veg_nf%npool_to_froottn         , &
+         ppool_to_froottp       =>    veg_pf%ppool_to_froottp       , &
+         froottc_to_litter      =>    veg_cf%froottc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
+         froottn_to_litter      =>    veg_nf%froottn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
+         froottp_to_litter      =>    veg_pf%froottp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
+         prev_froottc_to_litter =>    veg_cf%prev_froottc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
+         prev_froottn_to_litter =>    veg_nf%prev_froottn_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
+         prev_froottp_to_litter =>    veg_pf%prev_froottp_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot P litterfall flux (gP/m2/s)
+
+         frootacn               =>    veg_vp%frootacn                          , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
+         frootacp               =>    veg_vp%frootacp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         frootac                =>    veg_cs%frootac               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         frootan                =>    veg_ns%frootan                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
+         frootap                =>    veg_ps%frootap               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
+         cpool_to_frootac       =>    veg_cf%cpool_to_frootac       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
+         npool_to_frootan       =>    veg_nf%npool_to_frootan         , &
+         ppool_to_frootap       =>    veg_pf%ppool_to_frootap       , &
+         frootac_to_litter      =>    veg_cf%frootac_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
+         frootan_to_litter      =>    veg_nf%frootan_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
+         frootap_to_litter      =>    veg_pf%frootap_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
+         prev_frootac_to_litter =>    veg_cf%prev_frootac_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
+         prev_frootan_to_litter =>    veg_nf%prev_frootan_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
+         prev_frootap_to_litter =>    veg_pf%prev_frootap_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot P litterfall flux (gP/m2/s)
+
+         frootmcn               =>    veg_vp%frootmcn                          , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
+         frootmcp               =>    veg_vp%frootmcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         frootmc                =>    veg_cs%frootmc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         frootmn                =>    veg_ns%frootmn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
+         frootmp                =>    veg_ps%frootmp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
+         cpool_to_frootmc       =>    veg_cf%cpool_to_frootmc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
+         npool_to_frootmn       =>    veg_nf%npool_to_frootmn         , &
+         ppool_to_frootmp       =>    veg_pf%ppool_to_frootmp       , &
+         frootmc_to_litter      =>    veg_cf%frootmc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
+         frootmn_to_litter      =>    veg_nf%frootmn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
+         frootmp_to_litter      =>    veg_pf%frootmp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
+         prev_frootmc_to_litter =>    veg_cf%prev_frootmc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
+         prev_frootmn_to_litter =>    veg_nf%prev_frootmn_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
+         prev_frootmp_to_litter =>    veg_pf%prev_frootmp_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot P litterfall flux (gP/m2/s)
+#else
          frootcn               =>    veg_vp%frootcn                          , & ! Input:  [real(r8) (:) ]  fine root C:N (gC/gN)
+         frootcp               =>    veg_vp%frootcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         frootc                =>    veg_cs%frootc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         frootn                =>    veg_ns%frootn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
+         frootp                =>    veg_ps%frootp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
+         cpool_to_frootc       =>    veg_cf%cpool_to_frootc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
+         npool_to_frootn       =>    veg_nf%npool_to_frootn         , &
+         ppool_to_frootp       =>    veg_pf%ppool_to_frootp       , &
+         frootc_to_litter      =>    veg_cf%frootc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
+         frootn_to_litter      =>    veg_nf%frootn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
+         frootp_to_litter      =>    veg_pf%frootp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
+         prev_frootc_to_litter =>    veg_cf%prev_frootc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
+         prev_frootn_to_litter =>    veg_nf%prev_frootn_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
+         prev_frootp_to_litter =>    veg_pf%prev_frootp_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot P litterfall flux (gP/m2/s)
+#endif
          livewdcn              =>    veg_vp%livewdcn                         , & ! Input:  [real(r8) (:) ]  live wood C:N (gC/gN)
          graincn               =>    veg_vp%graincn                          , & ! Input:  [real(r8) (:) ]  grain C:N (gC/gN)
          presharv              =>    veg_vp%presharv                         , & ! Input:  [real(r8) (:) ]  porportion of residue harvested
 
          leafcp                =>    veg_vp%leafcp                           , & ! Input:  [real(r8) (:) ]  leaf C:P (gC/gP)
          lflitcp               =>    veg_vp%lflitcp                          , & ! Input:  [real(r8) (:) ]  leaf litter C:P (gC/gP)
-         frootcp               =>    veg_vp%frootcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
+         ! frootcp               =>    veg_vp%frootcp                          , & ! Input:  [real(r8) (:) ]  fine root C:P (gC/gP)
          livewdcp              =>    veg_vp%livewdcp                         , & ! Input:  [real(r8) (:) ]  live wood C:P (gC/gP)
          graincp               =>    veg_vp%graincp                          , & ! Input:  [real(r8) (:) ]  grain C:P (gC/gP)
 
@@ -3305,18 +3416,18 @@ contains
          offset_counter        =>    cnstate_vars%offset_counter_patch           , & ! Input:  [real(r8) (:) ]  offset days counter
 
          leafc                 =>    veg_cs%leafc                , & ! Input:  [real(r8) (:) ]  (gC/m2) leaf C
-         frootc                =>    veg_cs%frootc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
+         ! frootc                =>    veg_cs%frootc               , & ! Input:  [real(r8) (:) ]  (gC/m2) fine root C
          grainc                =>    veg_cs%grainc               , & ! Input:  [real(r8) (:) ]  (gC/m2) grain C
          livestemc             =>    veg_cs%livestemc            , & ! Input:  [real(r8) (:) ]  (gC/m2) livestem C
 
          cpool_to_grainc       =>    veg_cf%cpool_to_grainc       , & ! Input:  [real(r8) (:) ]  allocation to grain C (gC/m2/s)
          cpool_to_livestemc    =>    veg_cf%cpool_to_livestemc    , & ! Input:  [real(r8) (:) ]  allocation to live stem C (gC/m2/s)
          cpool_to_leafc        =>    veg_cf%cpool_to_leafc        , & ! Input:  [real(r8) (:) ]  allocation to leaf C (gC/m2/s)
-         cpool_to_frootc       =>    veg_cf%cpool_to_frootc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
+         ! cpool_to_frootc       =>    veg_cf%cpool_to_frootc       , & ! Input:  [real(r8) (:) ]  allocation to fine root C (gC/m2/s)
          prev_leafc_to_litter  =>    veg_cf%prev_leafc_to_litter  , & ! Output: [real(r8) (:) ]  previous timestep leaf C litterfall flux (gC/m2/s)
-         prev_frootc_to_litter =>    veg_cf%prev_frootc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
+         ! prev_frootc_to_litter =>    veg_cf%prev_frootc_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot C litterfall flux (gC/m2/s)
          leafc_to_litter       =>    veg_cf%leafc_to_litter       , & ! Output: [real(r8) (:) ]  leaf C litterfall (gC/m2/s)
-         frootc_to_litter      =>    veg_cf%frootc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
+         ! frootc_to_litter      =>    veg_cf%frootc_to_litter      , & ! Output: [real(r8) (:) ]  fine root C litterfall (gC/m2/s)
          livestemc_to_litter   =>    veg_cf%livestemc_to_litter   , & ! Output: [real(r8) (:) ]  live stem C litterfall (gC/m2/s)
          grainc_to_food        =>    veg_cf%grainc_to_food        , & ! Output: [real(r8) (:) ]  grain C to food (gC/m2/s)
 
@@ -3324,29 +3435,29 @@ contains
          grainn_to_food        =>    veg_nf%grainn_to_food      , & ! Output: [real(r8) (:) ]  grain N to food (gN/m2/s)
          leafn_to_litter       =>    veg_nf%leafn_to_litter     , & ! Output: [real(r8) (:) ]  leaf N litterfall (gN/m2/s)
          leafn_to_retransn     =>    veg_nf%leafn_to_retransn   , & ! Output: [real(r8) (:) ]  leaf N to retranslocated N pool (gN/m2/s)
-         frootn_to_litter      =>    veg_nf%frootn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
+         ! frootn_to_litter      =>    veg_nf%frootn_to_litter    , & ! Output: [real(r8) (:) ]  fine root N litterfall (gN/m2/s)
 
          livestemp_to_litter   =>    veg_pf%livestemp_to_litter , & ! Output: [real(r8) (:) ]  livestem P to litter (gP/m2/s)
          grainp_to_food        =>    veg_pf%grainp_to_food      , & ! Output: [real(r8) (:) ]  grain P to food (gP/m2/s)
          leafp_to_litter       =>    veg_pf%leafp_to_litter     , & ! Output: [real(r8) (:) ]  leaf P litterfall (gP/m2/s)
          leafp_to_retransp     =>    veg_pf%leafp_to_retransp   , & ! Output: [real(r8) (:) ]  leaf P to retranslocated P pool (gP/m2/s)
-         frootp_to_litter      =>    veg_pf%frootp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
+         ! frootp_to_litter      =>    veg_pf%frootp_to_litter    , & ! Output: [real(r8) (:) ]  fine root P litterfall (gP/m2/s)
 
          prev_leafn_to_litter  =>    veg_nf%prev_leafn_to_litter    , & ! Output: [real(r8) (:) ]  previous timestep leaf N litterfall flux (gN/m2/s)
-         prev_frootn_to_litter =>    veg_nf%prev_frootn_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
+         ! prev_frootn_to_litter =>    veg_nf%prev_frootn_to_litter   , & ! Output: [real(r8) (:) ]  previous timestep froot N litterfall flux (gN/m2/s)
          prev_leafp_to_litter  =>    veg_pf%prev_leafp_to_litter  , & ! Output: [real(r8) (:) ]  previous timestep leaf P litterfall flux (gP/m2/s)
-         prev_frootp_to_litter =>    veg_pf%prev_frootp_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot P litterfall flux (gP/m2/s)
+         ! prev_frootp_to_litter =>    veg_pf%prev_frootp_to_litter , & ! Output: [real(r8) (:) ]  previous timestep froot P litterfall flux (gP/m2/s)
          leafn                 =>    veg_ns%leafn                  , & ! Input:  [real(r8) (:) ]  (gN/m2) leaf N
-         frootn                =>    veg_ns%frootn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
+         ! frootn                =>    veg_ns%frootn                 , & ! Input:  [real(r8) (:) ]  (gN/m2) fine root N
          livestemn             =>    veg_ns%livestemn              , & ! Input:  [real(r8) (:) ]  (gN/m2) livestem N
          leafp                 =>    veg_ps%leafp                , & ! Input:  [real(r8) (:) ]  (gP/m2) leaf P
-         frootp                =>    veg_ps%frootp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
+         ! frootp                =>    veg_ps%frootp               , & ! Input:  [real(r8) (:) ]  (gP/m2) fine root P
          livestemp             =>    veg_ps%livestemp            , & ! Input:  [real(r8) (:) ]  (gP/m2) livestem P
          npool_to_leafn        =>    veg_nf%npool_to_leafn          , &
-         npool_to_frootn       =>    veg_nf%npool_to_frootn         , &
+         ! npool_to_frootn       =>    veg_nf%npool_to_frootn         , &
          npool_to_livestemn    =>    veg_nf%npool_to_livestemn      , &
          ppool_to_leafp        =>    veg_pf%ppool_to_leafp        , &
-         ppool_to_frootp       =>    veg_pf%ppool_to_frootp       , &
+         ! ppool_to_frootp       =>    veg_pf%ppool_to_frootp       , &
          ppool_to_livestemp    =>    veg_pf%ppool_to_livestemp    , &
          hrv_leafc_to_prod1c   =>    veg_cf%hrv_leafc_to_prod1c       , & ! Input:  [real(r8) (:)] crop leafc harvested
          hrv_livestemc_to_prod1c  => veg_cf%hrv_livestemc_to_prod1c   , & ! Input:  [real(r8) (:)] crop stemc harvested
@@ -3371,16 +3482,34 @@ contains
                ! this assumes that offset_counter == dt for crops
                ! if this were ever changed, we'd need to add code to the "else"
                   leafc_to_litter(p) = (1.0_r8 - presharv(ivt(p))) * ((t1 * leafc(p)) + cpool_to_leafc(p))
+#if defined(TAM)
+                  froottc_to_litter(p) = t1 * froottc(p) + cpool_to_froottc(p)
+                  frootac_to_litter(p) = t1 * frootac(p) + cpool_to_frootac(p)
+                  frootmc_to_litter(p) = t1 * frootmc(p) + cpool_to_frootmc(p)
+#else
                   frootc_to_litter(p) = t1 * frootc(p) + cpool_to_frootc(p)
+#endif
                   livestemc_to_litter(p) = (1.0_r8 - presharv(ivt(p))) * ((t1 * livestemc(p)) + cpool_to_livestemc(p))
                else
                   leafc_to_litter(p)  = t1 * leafc(p)  + cpool_to_leafc(p)
+#if defined(TAM)
+                  froottc_to_litter(p) = t1 * froottc(p) + cpool_to_froottc(p)
+                  frootac_to_litter(p) = t1 * frootac(p) + cpool_to_frootac(p)
+                  frootmc_to_litter(p) = t1 * frootmc(p) + cpool_to_frootmc(p)
+#else
                   frootc_to_litter(p) = t1 * frootc(p) + cpool_to_frootc(p)
+#endif
                end if
             else
                t1 = dt * 2.0_r8 / (offset_counter(p) * offset_counter(p))
                leafc_to_litter(p)  = prev_leafc_to_litter(p)  + t1*(leafc(p)  - prev_leafc_to_litter(p)*offset_counter(p))
+#if defined(TAM)
+               froottc_to_litter(p) = prev_froottc_to_litter(p) + t1*(froottc(p) - prev_froottc_to_litter(p)*offset_counter(p))
+               frootac_to_litter(p) = prev_frootac_to_litter(p) + t1*(frootac(p) - prev_frootac_to_litter(p)*offset_counter(p))
+               frootmc_to_litter(p) = prev_frootmc_to_litter(p) + t1*(frootmc(p) - prev_frootmc_to_litter(p)*offset_counter(p))
+#else
                frootc_to_litter(p) = prev_frootc_to_litter(p) + t1*(frootc(p) - prev_frootc_to_litter(p)*offset_counter(p))
+#endif
             end if
 
             if ( nu_com .eq. 'RD') then
@@ -3393,10 +3522,19 @@ contains
                      ! "else"
                      leafn_to_litter(p) = (t1 * leafn(p) + npool_to_leafn(p)) - hrv_leafn_to_prod1n(p)
                      leafp_to_litter(p) = (t1 * leafp(p) + ppool_to_leafp(p)) - hrv_leafp_to_prod1p(p)
+#if defined(TAM)
+                     froottn_to_litter(p) = t1 * froottn(p) + npool_to_froottn(p)
+                     froottp_to_litter(p) = t1 * froottp(p) + ppool_to_froottp(p)
 
+                     frootan_to_litter(p) = t1 * frootan(p) + npool_to_frootan(p)
+                     frootap_to_litter(p) = t1 * frootap(p) + ppool_to_frootap(p)
+
+                     frootmn_to_litter(p) = t1 * frootmn(p) + npool_to_frootmn(p)
+                     frootmp_to_litter(p) = t1 * frootmp(p) + ppool_to_frootmp(p)
+#else
                      frootn_to_litter(p) = t1 * frootn(p) + npool_to_frootn(p)
                      frootp_to_litter(p) = t1 * frootp(p) + ppool_to_frootp(p)
-
+#endif
                      livestemn_to_litter(p) = (t1 * livestemn(p) + npool_to_livestemn(p)) - hrv_livestemn_to_prod1n(p)
                      livestemp_to_litter(p) = (t1 * livestemp(p) + ppool_to_livestemp(p)) - hrv_livestemp_to_prod1p(p)
                   end if
@@ -3406,14 +3544,25 @@ contains
                   leafn_to_retransn(p) = (leafc_to_litter(p) / leafcn(ivt(p))) - leafn_to_litter(p)
 
                   ! calculate fine root N litterfall (no retranslocation of fine root N)
-                  frootn_to_litter(p) = frootc_to_litter(p) / frootcn(ivt(p))
+                  ! frootn_to_litter(p) = frootc_to_litter(p) / frootcn(ivt(p))
 
                   ! calculate the leaf P litterfall and retranslocation
                   leafp_to_litter(p)   = leafc_to_litter(p)  / lflitcp(ivt(p))
                   leafp_to_retransp(p) = (leafc_to_litter(p) / leafcp(ivt(p))) - leafp_to_litter(p)
 
                   ! calculate fine root P litterfall (no retranslocation of fine root N)
+                  ! frootp_to_litter(p) = frootc_to_litter(p) / frootcp(ivt(p))
+#if defined(TAM)
+                  froottn_to_litter(p) = froottc_to_litter(p) / froottcn(ivt(p))
+                  froottp_to_litter(p) = froottc_to_litter(p) / froottcp(ivt(p))
+                  frootan_to_litter(p) = frootac_to_litter(p) / frootacn(ivt(p))
+                  frootap_to_litter(p) = frootac_to_litter(p) / frootacp(ivt(p))
+                  frootmn_to_litter(p) = frootmc_to_litter(p) / frootmcn(ivt(p))
+                  frootmp_to_litter(p) = frootmc_to_litter(p) / frootmcp(ivt(p))
+#else
+                  frootn_to_litter(p) = frootc_to_litter(p) / frootcn(ivt(p))
                   frootp_to_litter(p) = frootc_to_litter(p) / frootcp(ivt(p))
+#endif
                end if
             else
                if (offset_counter(p) == dt) then
@@ -3423,36 +3572,77 @@ contains
                      ! if this were ever changed, we'd need to add code to the "else"
                      leafn_to_litter(p) = (1.0_r8 - presharv(ivt(p))) * ((t1 * leafn(p)) + npool_to_leafn(p))
                      leafp_to_litter(p) = (1.0_r8 - presharv(ivt(p))) * ((t1 * leafp(p)) + ppool_to_leafp(p))
+#if defined(TAM)
+                     froottn_to_litter(p) = t1 * froottn(p) + npool_to_froottn(p)
+                     froottp_to_litter(p) = t1 * froottp(p) + ppool_to_froottp(p)
 
+                     frootan_to_litter(p) = t1 * frootan(p) + npool_to_frootan(p)
+                     frootap_to_litter(p) = t1 * frootap(p) + ppool_to_frootap(p)
+
+                     frootmn_to_litter(p) = t1 * frootmn(p) + npool_to_frootmn(p)
+                     frootmp_to_litter(p) = t1 * frootmp(p) + ppool_to_frootmp(p)
+#else
                      frootn_to_litter(p) = t1 * frootn(p) + npool_to_frootn(p)
                      frootp_to_litter(p) = t1 * frootp(p) + ppool_to_frootp(p)
-
+#endif
                      livestemn_to_litter(p) = (1.0_r8 - presharv(ivt(p))) * ((t1 * livestemn(p)) + npool_to_livestemn(p))
                      livestemp_to_litter(p) = (1.0_r8 - presharv(ivt(p))) * ((t1 * livestemp(p)) + ppool_to_livestemp(p))
 
                   else
                      leafn_to_litter(p)   = (max(t1 * leafn(p),0._r8) + npool_to_leafn(p))*0.38_r8
                      leafn_to_retransn(p) = (max(t1 * leafn(p),0._r8) + npool_to_leafn(p))*0.62_r8
-                     frootn_to_litter(p)  = max(t1 * frootn(p),0._r8) + npool_to_frootn(p)
+                     ! frootn_to_litter(p)  = max(t1 * frootn(p),0._r8) + npool_to_frootn(p)
 
                      leafp_to_litter(p)   = (max(t1 * leafp(p),0._r8) + ppool_to_leafp(p))*0.35_r8
                      leafp_to_retransp(p) = (max(t1 * leafp(p),0._r8) + ppool_to_leafp(p))*0.65_r8
+                     ! frootp_to_litter(p)  = max(t1 * frootp(p),0._r8) + ppool_to_frootp(p)
+#if defined(TAM)
+                     froottn_to_litter(p)  = max(t1 * froottn(p),0._r8) + npool_to_froottn(p)
+                     froottp_to_litter(p)  = max(t1 * froottp(p),0._r8) + ppool_to_froottp(p)
+
+                     frootan_to_litter(p)  = max(t1 * frootan(p),0._r8) + npool_to_frootan(p)
+                     frootap_to_litter(p)  = max(t1 * frootap(p),0._r8) + ppool_to_frootap(p)
+
+                     frootmn_to_litter(p)  = max(t1 * frootmn(p),0._r8) + npool_to_frootmn(p)
+                     frootmp_to_litter(p)  = max(t1 * frootmp(p),0._r8) + ppool_to_frootmp(p)
+#else
+                     frootn_to_litter(p)  = max(t1 * frootn(p),0._r8) + npool_to_frootn(p)
                      frootp_to_litter(p)  = max(t1 * frootp(p),0._r8) + ppool_to_frootp(p)
+#endif
                   end if
                else
                   leafn_to_litter(p)   = max(min(leafc_to_litter(p) / max(leafc(p), 1.e-20_r8) * leafn(p), t1 * leafn(p)),0._r8)* 0.38_r8
                   leafn_to_retransn(p) = max(min(leafc_to_litter(p) / max(leafc(p), 1.e-20_r8) * leafn(p), t1 * leafn(p)),0._r8) * 0.62_r8
-                  frootn_to_litter(p)  = max(min(frootc_to_litter(p)/max(frootc(p), 1.e-20_r8) * frootn(p),t1 * frootn(p)),0._r8)
+                  ! frootn_to_litter(p)  = max(min(frootc_to_litter(p)/max(frootc(p), 1.e-20_r8) * frootn(p),t1 * frootn(p)),0._r8)
 
                   leafp_to_litter(p)   = max(min(leafc_to_litter(p) / max(leafc(p), 1.e-20_r8) * leafp(p), t1 * leafp(p)),0._r8) * 0.35_r8
                   leafp_to_retransp(p) = max(min(leafc_to_litter(p) / max(leafc(p), 1.e-20_r8) * leafp(p), t1 * leafp(p)),0._r8) * 0.65_r8
+                  ! frootp_to_litter(p)  = max(min(frootc_to_litter(p)/max(frootc(p), 1.e-20_r8) * frootp(p), t1 * frootp(p)),0._r8)
+#if defined(TAM)
+                  froottn_to_litter(p)  = max(min(froottc_to_litter(p)/max(froottc(p), 1.e-20_r8) * froottn(p),t1 * froottn(p)),0._r8)
+                  froottp_to_litter(p)  = max(min(froottc_to_litter(p)/max(froottc(p), 1.e-20_r8) * froottp(p), t1 * froottp(p)),0._r8)
+
+                  frootan_to_litter(p)  = max(min(frootac_to_litter(p)/max(frootac(p), 1.e-20_r8) * frootan(p),t1 * frootan(p)),0._r8)
+                  frootap_to_litter(p)  = max(min(frootac_to_litter(p)/max(frootac(p), 1.e-20_r8) * frootap(p), t1 * frootap(p)),0._r8)
+
+                  frootmn_to_litter(p)  = max(min(frootmc_to_litter(p)/max(frootmc(p), 1.e-20_r8) * frootmn(p),t1 * frootmn(p)),0._r8)
+                  frootmp_to_litter(p)  = max(min(frootmc_to_litter(p)/max(frootmc(p), 1.e-20_r8) * frootmp(p), t1 * frootmp(p)),0._r8)
+#else
+                  frootn_to_litter(p)  = max(min(frootc_to_litter(p)/max(frootc(p), 1.e-20_r8) * frootn(p),t1 * frootn(p)),0._r8)
                   frootp_to_litter(p)  = max(min(frootc_to_litter(p)/max(frootc(p), 1.e-20_r8) * frootp(p), t1 * frootp(p)),0._r8)
+#endif
                end if
             end if
 
             ! save the current litterfall fluxes
             prev_leafc_to_litter(p)  = leafc_to_litter(p)
+#if defined(TAM)
+            prev_froottc_to_litter(p) = froottc_to_litter(p)
+            prev_frootac_to_litter(p) = frootac_to_litter(p)
+            prev_frootmc_to_litter(p) = frootmc_to_litter(p)
+#else
             prev_frootc_to_litter(p) = frootc_to_litter(p)
+#endif
 
          end if ! end if offset period
 

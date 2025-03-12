@@ -1186,7 +1186,33 @@ contains
          dayl                                =>    grc_pp%dayl                                              , & ! Input:  [real(r8)  (:)   ]  daylength (s)
 
          leaf_long                           =>    veg_vp%leaf_long                                  , & ! Input:  [real(r8)  (:)   ]  leaf longevity (yrs)
+#if defined(TAM)
+         froott_long                          =>    veg_vp%froott_long                                 , & ! Input:  [real(r8)  (:)   ]  fine root longevity (yrs)
+         froota_long                          =>    veg_vp%froota_long                                 , & ! Input:  [real(r8)  (:)   ]  fine root longevity (yrs)
+         frootm_long                          =>    veg_vp%frootm_long                                 , & ! Input:  [real(r8)  (:)   ]  fine root longevity (yrs)
+         bglfr_froott                         =>    cnstate_vars%bglfr_froott_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
+         bglfr_froota                         =>    cnstate_vars%bglfr_froota_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
+         bglfr_frootm                         =>    cnstate_vars%bglfr_frootm_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
+         prev_froottc_to_litter               =>    veg_cf%prev_froottc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         prev_frootac_to_litter               =>    veg_cf%prev_frootac_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         prev_frootmc_to_litter               =>    veg_cf%prev_frootmc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         frootc_xfer_to_froottc               =>    veg_cf%frootc_xfer_to_froottc           , & ! Output:  [real(r8) (:)   ]
+         frootc_xfer_to_frootac               =>    veg_cf%frootc_xfer_to_frootac           , & ! Output:  [real(r8) (:)   ]
+         frootc_xfer_to_frootmc               =>    veg_cf%frootc_xfer_to_frootmc           , & ! Output:  [real(r8) (:)   ]
+         frootn_xfer_to_froottn               =>    veg_nf%frootn_xfer_to_froottn         , & ! Output:  [real(r8) (:)   ]
+         frootn_xfer_to_frootan               =>    veg_nf%frootn_xfer_to_frootan         , & ! Output:  [real(r8) (:)   ]
+         frootn_xfer_to_frootmn               =>    veg_nf%frootn_xfer_to_frootmn         , & ! Output:  [real(r8) (:)   ]
+         frootp_xfer_to_froottp               =>    veg_pf%frootp_xfer_to_froottp         , & ! Output:  [real(r8) (:)   ]
+         frootp_xfer_to_frootap               =>    veg_pf%frootp_xfer_to_frootap         , & ! Output:  [real(r8) (:)   ]
+         frootp_xfer_to_frootmp               =>    veg_pf%frootp_xfer_to_frootmp         , & ! Output:  [real(r8) (:)   ]
+#else
          froot_long                          =>    veg_vp%froot_long                                 , & ! Input:  [real(r8)  (:)   ]  fine root longevity (yrs)
+         bglfr_froot                         =>    cnstate_vars%bglfr_froot_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
+         prev_frootc_to_litter               =>    veg_cf%prev_frootc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         frootc_xfer_to_frootc               =>    veg_cf%frootc_xfer_to_frootc           , & ! Output:  [real(r8) (:)   ]
+         frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:)   ]
+         frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:)   ]
+#endif         
          woody                               =>    veg_vp%woody                                      , & ! Input:  [real(r8)  (:)   ]  binary flag for woody lifeform (1=woody, 0=not woody)
          stress_decid                        =>    veg_vp%stress_decid                               , & ! Input:  [real(r8)  (:)   ]  binary flag for stress-deciduous leaf habit (0 or 1)
          crit_gdd1                           =>    veg_vp%crit_gdd1                                  , & ! Input:  [real(r8) (:) ] critical GDD intercept (at t = 0)
@@ -1210,7 +1236,7 @@ contains
          offset_swi                          =>    cnstate_vars%offset_swi_patch                         , & ! Output:  [real(r8) (:)   ]  offset soil water index
          lgsf                                =>    cnstate_vars%lgsf_patch                               , & ! Output:  [real(r8) (:)   ]  long growing season factor [0-1]
          bglfr_leaf                          =>    cnstate_vars%bglfr_leaf_patch                         , & ! Output:  [real(r8) (:)   ]  background leaf litterfall rate (1/s)
-         bglfr_froot                         =>    cnstate_vars%bglfr_froot_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
+         ! bglfr_froot                         =>    cnstate_vars%bglfr_froot_patch                        , & ! Output:  [real(r8) (:)   ]  background fine root litterfall rate (1/s)
          bgtr                                =>    cnstate_vars%bgtr_patch                               , & ! Output:  [real(r8) (:)   ]  background transfer growth rate (1/s)
          annavg_t2m                          =>    cnstate_vars%annavg_t2m_patch                         , & ! Output:  [real(r8) (:)   ]  annual average 2m air temperature (K)
 
@@ -1256,9 +1282,9 @@ contains
          deadcrootp_xfer                     =>    veg_ps%deadcrootp_xfer              , & ! Output:  [real(r8) (:)   ]  (gP/m2) dead coarse root P transfer
 
          prev_leafc_to_litter                =>    veg_cf%prev_leafc_to_litter            , & ! Output:  [real(r8) (:)   ]  previous timestep leaf C litterfall flux (gC/m2/s)
-         prev_frootc_to_litter               =>    veg_cf%prev_frootc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
+         ! prev_frootc_to_litter               =>    veg_cf%prev_frootc_to_litter           , & ! Output:  [real(r8) (:)   ]  previous timestep froot C litterfall flux (gC/m2/s)
          leafc_xfer_to_leafc                 =>    veg_cf%leafc_xfer_to_leafc             , & ! Output:  [real(r8) (:)   ]
-         frootc_xfer_to_frootc               =>    veg_cf%frootc_xfer_to_frootc           , & ! Output:  [real(r8) (:)   ]
+         ! frootc_xfer_to_frootc               =>    veg_cf%frootc_xfer_to_frootc           , & ! Output:  [real(r8) (:)   ]
          livestemc_xfer_to_livestemc         =>    veg_cf%livestemc_xfer_to_livestemc     , & ! Output:  [real(r8) (:)   ]
          deadstemc_xfer_to_deadstemc         =>    veg_cf%deadstemc_xfer_to_deadstemc     , & ! Output:  [real(r8) (:)   ]
          livecrootc_xfer_to_livecrootc       =>    veg_cf%livecrootc_xfer_to_livecrootc   , & ! Output:  [real(r8) (:)   ]
@@ -1272,7 +1298,7 @@ contains
          gresp_storage_to_xfer               =>    veg_cf%gresp_storage_to_xfer           , & ! Output:  [real(r8) (:)   ]
 
          leafn_xfer_to_leafn                 =>    veg_nf%leafn_xfer_to_leafn           , & ! Output:  [real(r8) (:)   ]
-         frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:)   ]
+         ! frootn_xfer_to_frootn               =>    veg_nf%frootn_xfer_to_frootn         , & ! Output:  [real(r8) (:)   ]
          livestemn_xfer_to_livestemn         =>    veg_nf%livestemn_xfer_to_livestemn   , & ! Output:  [real(r8) (:)   ]
          deadstemn_xfer_to_deadstemn         =>    veg_nf%deadstemn_xfer_to_deadstemn   , & ! Output:  [real(r8) (:)   ]
          livecrootn_xfer_to_livecrootn       =>    veg_nf%livecrootn_xfer_to_livecrootn , & ! Output:  [real(r8) (:)   ]
@@ -1285,7 +1311,7 @@ contains
          deadcrootn_storage_to_xfer          =>    veg_nf%deadcrootn_storage_to_xfer    ,  & ! Output:  [real(r8) (:)   ]
 
          leafp_xfer_to_leafp                 =>    veg_pf%leafp_xfer_to_leafp           , & ! Output:  [real(r8) (:)   ]
-         frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:)   ]
+         ! frootp_xfer_to_frootp               =>    veg_pf%frootp_xfer_to_frootp         , & ! Output:  [real(r8) (:)   ]
          livestemp_xfer_to_livestemp         =>    veg_pf%livestemp_xfer_to_livestemp   , & ! Output:  [real(r8) (:)   ]
          deadstemp_xfer_to_deadstemp         =>    veg_pf%deadstemp_xfer_to_deadstemp   , & ! Output:  [real(r8) (:)   ]
          livecrootp_xfer_to_livecrootp       =>    veg_pf%livecrootp_xfer_to_livecrootp , & ! Output:  [real(r8) (:)   ]
@@ -1334,7 +1360,13 @@ contains
 
                   ! reset the previous timestep litterfall flux memory
                   prev_leafc_to_litter(p) = 0._r8
+#if defined(TAM)
+                  prev_froottc_to_litter(p) = 0._r8
+                  prev_frootac_to_litter(p) = 0._r8
+                  prev_frootmc_to_litter(p) = 0._r8
+#else
                   prev_frootc_to_litter(p) = 0._r8
+#endif
                end if
             end if
 
@@ -1352,11 +1384,28 @@ contains
                   onset_counter(p) = 0._r8
                   ! set all transfer growth rates to 0.0
                   leafc_xfer_to_leafc(p)   = 0._r8
-                  frootc_xfer_to_frootc(p) = 0._r8
+                  ! frootc_xfer_to_frootc(p) = 0._r8
                   leafn_xfer_to_leafn(p)   = 0._r8
-                  frootn_xfer_to_frootn(p) = 0._r8
+                  ! frootn_xfer_to_frootn(p) = 0._r8
                   leafp_xfer_to_leafp(p)   = 0._r8
+                  ! frootp_xfer_to_frootp(p) = 0._r8
+#if defined(TAM)
+                  frootc_xfer_to_froottc(p) = 0._r8
+                  frootn_xfer_to_froottn(p) = 0._r8
+                  frootp_xfer_to_froottp(p) = 0._r8
+
+                  frootc_xfer_to_frootac(p) = 0._r8
+                  frootn_xfer_to_frootan(p) = 0._r8
+                  frootp_xfer_to_frootap(p) = 0._r8
+
+                  frootc_xfer_to_frootmc(p) = 0._r8
+                  frootn_xfer_to_frootmn(p) = 0._r8
+                  frootp_xfer_to_frootmp(p) = 0._r8
+#else
+                  frootc_xfer_to_frootc(p) = 0._r8
+                  frootn_xfer_to_frootn(p) = 0._r8
                   frootp_xfer_to_frootp(p) = 0._r8
+#endif
                   livecrootc_xfer_to_livecrootc(p) = 0._r8
                   livecrootn_xfer_to_livecrootn(p) = 0._r8
                   livecrootp_xfer_to_livecrootp(p) = 0._r8
@@ -1556,7 +1605,13 @@ contains
                   offset_swi(p) = 0._r8
                   offset_counter(p) = PhenolParamsInst%ndays_off * secspday
                   prev_leafc_to_litter(p) = 0._r8
+#if defined(TAM)
+                  prev_froottc_to_litter(p) = 0._r8
+                  prev_frootac_to_litter(p) = 0._r8
+                  prev_frootmc_to_litter(p) = 0._r8
+#else
                   prev_frootc_to_litter(p) = 0._r8
+#endif
                end if
             end if
 
@@ -1575,13 +1630,25 @@ contains
             ! set background litterfall rate, when not in the phenological offset period
             if (offset_flag(p) == 1._r8) then
                bglfr_leaf(p) = 0._r8
+#if defined(TAM)
+               bglfr_froott(p) = 0._r8
+               bglfr_froota(p) = 0._r8
+               bglfr_frootm(p) = 0._r8
+#else
                bglfr_froot(p) = 0._r8
+#endif
             else
                ! calculate the background litterfall rate (bglfr)
                ! in units 1/s, based on leaf longevity (yrs) and correction for long growing season
 
                bglfr_leaf(p)  = (1._r8/(leaf_long(ivt(p))*dayspyr*secspday))*lgsf(p)
+#if defined(TAM)
+               bglfr_froott(p) = (1._r8/(froott_long(ivt(p))*dayspyr*secspday))*lgsf(p)
+               bglfr_froota(p) = (1._r8/(froota_long(ivt(p))*dayspyr*secspday))*lgsf(p)
+               bglfr_frootm(p) = (1._r8/(frootm_long(ivt(p))*dayspyr*secspday))*lgsf(p)
+#else
                bglfr_froot(p) = (1._r8/(froot_long(ivt(p))*dayspyr*secspday))*lgsf(p)
+#endif
 
             end if
 

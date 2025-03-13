@@ -14,10 +14,10 @@ module CNStateType
   use elm_varctl     , only : iulog, fsurdat
   use LandunitType   , only : lun_pp                
   use ColumnType     , only : col_pp                
-  use VegetationType      , only : veg_pp                
+  use VegetationType , only : veg_pp                
   use elm_varctl     , only: forest_fert_exp
-  use elm_varctl          , only : nu_com
-  use elm_varctl   , only:  use_fates,use_crop
+  use elm_varctl     , only : nu_com
+  use elm_varctl     , only:  use_fates,use_crop
   use topounit_varcon,  only : max_topounits
   use GridcellType    , only : grc_pp
   ! 
@@ -54,7 +54,19 @@ module CNStateType
 
      integer  , pointer :: idop_patch                  (:)     ! patch date of planting
      real(r8) , pointer :: leaf_prof_patch             (:,:)   ! patch (1/m) profile of leaves (vertical profiles for calculating fluxes)
+#if defined(TAM)
+     real(r8) , pointer :: froott_prof_patch           (:,:)   ! patch (1/m) profile of fine roots (vertical profiles for calculating fluxes)
+     real(r8) , pointer :: froota_prof_patch           (:,:)   ! patch (1/m) profile of fine roots (vertical profiles for calculating fluxes)
+     real(r8) , pointer :: frootm_prof_patch           (:,:)   ! patch (1/m) profile of fine roots (vertical profiles for calculating fluxes)
+     real(r8), pointer :: bglfr_froott_patch           (:)     ! patch background fine root litterfall rate (1/s)
+     real(r8), pointer :: bglfr_froota_patch           (:)     ! patch background fine root litterfall rate (1/s)
+     real(r8), pointer :: bglfr_frootm_patch           (:)     ! patch background fine root litterfall rate (1/s)
+#else
      real(r8) , pointer :: froot_prof_patch            (:,:)   ! patch (1/m) profile of fine roots (vertical profiles for calculating fluxes)
+     real(r8), pointer :: bglfr_froot_patch            (:)     ! patch background fine root litterfall rate (1/s)
+#endif
+     
+
      real(r8) , pointer :: croot_prof_patch            (:,:)   ! patch (1/m) profile of coarse roots (vertical profiles for calculating fluxes)
      real(r8) , pointer :: stem_prof_patch             (:,:)   ! patch (1/m) profile of stems (vertical profiles for calculating fluxes)
 
@@ -127,7 +139,7 @@ module CNStateType
      real(r8), pointer :: lgsf_patch                   (:)     ! patch long growing season factor [0-1]
      real(r8), pointer :: bglfr_patch                  (:)     ! patch background litterfall rate (1/s)
      real(r8), pointer :: bglfr_leaf_patch             (:)     ! patch background leaf litterfall rate (1/s)
-     real(r8), pointer :: bglfr_froot_patch            (:)     ! patch background fine root litterfall rate (1/s)
+
      real(r8), pointer :: bgtr_patch                   (:)     ! patch background transfer growth rate (1/s)
      real(r8), pointer :: alloc_pnow_patch             (:)     ! patch fraction of current allocation to display as new growth (DIM)
      real(r8), pointer :: c_allometry_patch            (:)     ! patch C allocation index (DIM)
@@ -240,7 +252,19 @@ contains
 
     allocate(this%idop_patch          (begp:endp))                   ; this%idop_patch          (:)   = huge(1)
     allocate(this%leaf_prof_patch     (begp:endp,1:nlevdecomp_full)) ; this%leaf_prof_patch     (:,:) = spval
+#if defined(TAM)
+    allocate(this%froott_prof_patch   (begp:endp,1:nlevdecomp_full)) ; this%froott_prof_patch   (:,:) = spval
+    allocate(this%froota_prof_patch   (begp:endp,1:nlevdecomp_full)) ; this%froota_prof_patch   (:,:) = spval
+    allocate(this%frootm_prof_patch   (begp:endp,1:nlevdecomp_full)) ; this%frootm_prof_patch   (:,:) = spval
+    allocate(this%bglfr_froott_patch          (begp:endp)) ;    this%bglfr_froott_patch          (:) = spval
+    allocate(this%bglfr_froota_patch          (begp:endp)) ;    this%bglfr_froota_patch          (:) = spval
+    allocate(this%bglfr_frootm_patch          (begp:endp)) ;    this%bglfr_frootm_patch          (:) = spval
+#else
     allocate(this%froot_prof_patch    (begp:endp,1:nlevdecomp_full)) ; this%froot_prof_patch    (:,:) = spval
+    allocate(this%bglfr_froot_patch           (begp:endp)) ;    this%bglfr_froot_patch           (:) = spval
+#endif
+    
+
     allocate(this%croot_prof_patch    (begp:endp,1:nlevdecomp_full)) ; this%croot_prof_patch    (:,:) = spval
     allocate(this%stem_prof_patch     (begp:endp,1:nlevdecomp_full)) ; this%stem_prof_patch     (:,:) = spval
 
@@ -257,9 +281,9 @@ contains
     allocate(this%fpg_col             (begc:endc))                   ; this%fpg_col             (:)   = spval
     !!! add phosphours related variables
     allocate(this%isoilorder            (begc:endc))                   ; 
-    allocate(this%fpi_p_vr_col          (begc:endc,1:nlevdecomp_full)) ; this%fpi_p_vr_col          (:,:) = spval
-    allocate(this%fpi_p_col             (begc:endc))                   ; this%fpi_p_col             (:)   = spval
-    allocate(this%fpg_p_col             (begc:endc))                   ; this%fpg_p_col             (:)   = spval
+    allocate(this%fpi_p_vr_col          (begc:endc,1:nlevdecomp_full)) ; this%fpi_p_vr_col        (:,:) = spval
+    allocate(this%fpi_p_col             (begc:endc))                   ; this%fpi_p_col           (:)   = spval
+    allocate(this%fpg_p_col             (begc:endc))                   ; this%fpg_p_col           (:)   = spval
     allocate(this%pdep_prof_col         (begc:endc,1:nlevdecomp_full)) ; this%pdep_prof_col       (:,:) = spval
 
     allocate(this%rf_decomp_cascade_col(begc:endc,1:nlevdecomp_full,1:ndecomp_cascade_transitions)); 
@@ -314,7 +338,6 @@ contains
     allocate(this%lgsf_patch                  (begp:endp)) ;    this%lgsf_patch                  (:) = spval
     allocate(this%bglfr_patch                 (begp:endp)) ;    this%bglfr_patch                 (:) = spval
     allocate(this%bglfr_leaf_patch            (begp:endp)) ;    this%bglfr_leaf_patch            (:) = spval
-    allocate(this%bglfr_froot_patch           (begp:endp)) ;    this%bglfr_froot_patch           (:) = spval
     allocate(this%bgtr_patch                  (begp:endp)) ;    this%bgtr_patch                  (:) = spval
     allocate(this%alloc_pnow_patch            (begp:endp)) ;    this%alloc_pnow_patch            (:) = spval
     allocate(this%c_allometry_patch           (begp:endp)) ;    this%c_allometry_patch           (:) = spval
@@ -399,12 +422,51 @@ contains
     call hist_addfld_decomp (fname='CROOT_PROF', units='1/m',  type2d='levdcmp', &
          avgflag='A', long_name='profile for litter C and N inputs from coarse roots', &
          ptr_patch=this%croot_prof_patch, default='inactive')
+#if defined(TAM)
+    this%froott_prof_patch(begp:endp,:) = spval
+    call hist_addfld_decomp (fname='FROOTT_PROF', units='1/m',  type2d='levdcmp', &
+          avgflag='A', long_name='profile for litter C and N inputs from fine t roots', &
+          ptr_patch=this%froott_prof_patch, default='inactive')
+    !A
+    this%froota_prof_patch(begp:endp,:) = spval
+    call hist_addfld_decomp (fname='FROOTA_PROF', units='1/m',  type2d='levdcmp', &
+         avgflag='A', long_name='profile for litter C and N inputs from fine a roots', &
+         ptr_patch=this%froota_prof_patch, default='inactive')
+    !M
+    this%frootm_prof_patch(begp:endp,:) = spval
+    call hist_addfld_decomp (fname='FROOTM_PROF', units='1/m',  type2d='levdcmp', &
+         avgflag='A', long_name='profile for litter C and N inputs from fine m roots', &
+         ptr_patch=this%frootm_prof_patch, default='inactive')
 
+     !T
+    this%bglfr_froott_patch(begp:endp) = spval
+    call hist_addfld1d (fname='BGLFR_FROOTT', units='1/s', &
+          avgflag='A', long_name='background fine root t litterfall rate', &
+          ptr_patch=this%bglfr_froott_patch, default='inactive')
+    !A
+    this%bglfr_froota_patch(begp:endp) = spval
+    call hist_addfld1d (fname='BGLFR_FROOTA', units='1/s', &
+         avgflag='A', long_name='background fine root a litterfall rate', &
+         ptr_patch=this%bglfr_froota_patch, default='inactive')
+    !M
+    this%bglfr_frootm_patch(begp:endp) = spval
+    call hist_addfld1d (fname='BGLFR_FROOTM', units='1/s', &
+         avgflag='A', long_name='background fine root m litterfall rate', &
+         ptr_patch=this%bglfr_frootm_patch, default='inactive')
+#else
     this%froot_prof_patch(begp:endp,:) = spval
     call hist_addfld_decomp (fname='FROOT_PROF', units='1/m',  type2d='levdcmp', &
          avgflag='A', long_name='profile for litter C and N inputs from fine roots', &
          ptr_patch=this%froot_prof_patch, default='inactive')
 
+    this%bglfr_froot_patch(begp:endp) = spval
+    call hist_addfld1d (fname='BGLFR_FROOT', units='1/s', &
+         avgflag='A', long_name='background fine root litterfall rate', &
+         ptr_patch=this%bglfr_froot_patch, default='inactive')
+#endif
+    
+     
+    !leaf
     this%leaf_prof_patch(begp:endp,:) = spval
     call hist_addfld_decomp (fname='LEAF_PROF', units='1/m',  type2d='levdcmp', &
          avgflag='A', long_name='profile for litter C and N inputs from leaves', &
@@ -599,11 +661,26 @@ contains
     call hist_addfld1d (fname='BGLFR_LEAF', units='1/s', &
          avgflag='A', long_name='background leaf litterfall rate', &
          ptr_patch=this%bglfr_leaf_patch, default='inactive')
-
-    this%bglfr_froot_patch(begp:endp) = spval
-    call hist_addfld1d (fname='BGLFR_FROOT', units='1/s', &
-         avgflag='A', long_name='background fine root litterfall rate', &
-         ptr_patch=this%bglfr_froot_patch, default='inactive')
+    !TAM
+!     this%bglfr_froot_patch(begp:endp) = spval
+!     call hist_addfld1d (fname='BGLFR_FROOT', units='1/s', &
+!          avgflag='A', long_name='background fine root litterfall rate', &
+!          ptr_patch=this%bglfr_froot_patch, default='inactive')
+!     !T
+!     this%bglfr_froott_patch(begp:endp) = spval
+!     call hist_addfld1d (fname='BGLFR_FROOT', units='1/s', &
+!           avgflag='A', long_name='background fine root T litterfall rate', &
+!           ptr_patch=this%bglfr_froott_patch, default='inactive')
+!     !A
+!     this%bglfr_froota_patch(begp:endp) = spval
+!     call hist_addfld1d (fname='BGLFR_FROOT', units='1/s', &
+!          avgflag='A', long_name='background fine root A litterfall rate', &
+!          ptr_patch=this%bglfr_froota_patch, default='inactive')
+!     !M
+!     this%bglfr_frootm_patch(begp:endp) = spval
+!     call hist_addfld1d (fname='BGLFR_FROOT', units='1/s', &
+!          avgflag='A', long_name='background fine root M litterfall rate', &
+!          ptr_patch=this%bglfr_frootm_patch, default='inactive')
 
     this%bgtr_patch(begp:endp) = spval
     call hist_addfld1d (fname='BGTR', units='1/s', &
@@ -1082,7 +1159,15 @@ contains
           this%lgsf_patch(p)                  = spval
           this%bglfr_patch(p)                 = spval
           this%bglfr_leaf_patch(p)            = spval
+#if defined(TAM)
+          this%bglfr_froott_patch(p)          = spval
+          this%bglfr_froota_patch(p)          = spval
+          this%bglfr_frootm_patch(p)          = spval
+#else
           this%bglfr_froot_patch(p)           = spval
+#endif
+          
+
           this%bgtr_patch(p)                  = spval
           this%alloc_pnow_patch(p)            = spval
           this%c_allometry_patch(p)           = spval
@@ -1127,7 +1212,14 @@ contains
           this%lgsf_patch(p)           = 0._r8
           this%bglfr_patch(p)          = 0._r8
           this%bglfr_leaf_patch(p)     = 0._r8
+#if defined(TAM)
+          this%bglfr_froott_patch(p)   = 0._r8
+          this%bglfr_froota_patch(p)   = 0._r8
+          this%bglfr_frootm_patch(p)   = 0._r8
+#else
           this%bglfr_froot_patch(p)    = 0._r8
+#endif     
+
           this%bgtr_patch(p)           = 0._r8
           this%annavg_t2m_patch(p)     = 280._r8
           this%tempavg_t2m_patch(p)    = 0._r8
@@ -1260,11 +1352,25 @@ contains
          dim1name='pft', &
          long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%bglfr_leaf_patch) 
-
+#if defined(TAM)
+     call restartvar(ncid=ncid, flag=flag, varname='bglfr_froott', xtype=ncd_double,  &
+         dim1name='pft', &
+         long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%bglfr_froott_patch)
+     call restartvar(ncid=ncid, flag=flag, varname='bglfr_froota', xtype=ncd_double,  &
+         dim1name='pft', &
+         long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%bglfr_froota_patch)
+     call restartvar(ncid=ncid, flag=flag, varname='bglfr_frootm', xtype=ncd_double,  &
+         dim1name='pft', &
+         long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%bglfr_frootm_patch)
+#else
     call restartvar(ncid=ncid, flag=flag, varname='bglfr_froot', xtype=ncd_double,  &
          dim1name='pft', &
          long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%bglfr_froot_patch)
+#endif
 
     call restartvar(ncid=ncid, flag=flag, varname='bgtr', xtype=ncd_double,  &
          dim1name='pft', &

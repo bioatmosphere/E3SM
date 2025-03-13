@@ -233,7 +233,13 @@ contains
          deadcrootc         =>    veg_cs%deadcrootc         , & ! Input:  [real(r8) (:)     ]  (gC/m2) dead coarse root C
          deadcrootc_storage =>    veg_cs%deadcrootc_storage , & ! Input:  [real(r8) (:)     ]  (gC/m2) dead coarse root C storage
          deadcrootc_xfer    =>    veg_cs%deadcrootc_xfer    , & ! Input:  [real(r8) (:)     ]  (gC/m2) dead coarse root C transfer
+#if defined(TAM)
+          froottc             =>    veg_cs%froottc             , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C
+          frootac             =>    veg_cs%frootac             , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C
+          frootmc             =>    veg_cs%frootmc             , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C
+#else
          frootc             =>    veg_cs%frootc             , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C
+#endif
          frootc_storage     =>    veg_cs%frootc_storage     , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C storage
          frootc_xfer        =>    veg_cs%frootc_xfer        , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C transfer
          livecrootc         =>    veg_cs%livecrootc         , & ! Input:  [real(r8) (:)     ]  (gC/m2) live coarse root C
@@ -390,12 +396,20 @@ contains
                        end if
                     end if
                  end if
+#if defined(TAM)
+                 rootc_col(c) = rootc_col(c) + (froottc(p) + frootac(p) + frootmc(p) + &
+                      frootc_storage(p) + &
+                      frootc_xfer(p) + deadcrootc(p) +                &
+                      deadcrootc_storage(p) + deadcrootc_xfer(p) +    &
+                      livecrootc(p)+livecrootc_storage(p) +           &
+                      livecrootc_xfer(p))*veg_pp%wtcol(p)
+#else
                  rootc_col(c) = rootc_col(c) + (frootc(p) + frootc_storage(p) + &
                       frootc_xfer(p) + deadcrootc(p) +                &
                       deadcrootc_storage(p) + deadcrootc_xfer(p) +    &
                       livecrootc(p)+livecrootc_storage(p) +           &
                       livecrootc_xfer(p))*veg_pp%wtcol(p)
-
+#endif
                  fsr_col(c) = fsr_col(c) + fsr_pft(veg_pp%itype(p))*veg_pp%wtcol(p)/(1.0_r8-cropf_col(c))
 
                  if( lfwt(c)  /=  0.0_r8 )then
@@ -687,7 +701,10 @@ contains
    real(r8):: f                    ! rate for fire effects (1/s)
    integer :: itype
    real(r8):: cc_other_sc, wt_col, baf_crop_sc,lprof_pj,fr_prof_pj,cr_prof_pj,st_prof_pj
-
+#if defined(TAM)
+   !NOTE: frt_ used temporally; leaves space for future of root type-based profile
+   real(r8):: frt_prof_pj, fra_prof_pj, frm_prof_pj
+#endif
    logical           :: transient_landcover  ! whether this run has any prescribed transient landcover
 
    !-----------------------------------------------------------------------
@@ -713,7 +730,51 @@ contains
         cropf_col                           =>    cnstate_vars%cropf_col               , & ! Input:  [real(r8) (:)     ]  cropland fraction in veg column
         croot_prof                          =>    cnstate_vars%croot_prof_patch        , & ! Input:  [real(r8) (:,:)   ]  (1/m) profile of coarse roots
         stem_prof                           =>    cnstate_vars%stem_prof_patch         , & ! Input:  [real(r8) (:,:)   ]  (1/m) profile of stems
+#if defined(TAM)
+        froott_prof                          =>    cnstate_vars%froott_prof_patch        , & ! Input:  [real(r8) (:,:)   ]  (1/m) profile of fine roots
+        froottc                              =>    veg_cs%froottc              , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C
+        froottn                              =>    veg_ns%froottn              , & ! Input:  [real(r8) (:)     ]  (gN/m2) fine root N
+        froottp                              =>    veg_ps%froottp              , & ! Input:  [real(r8) (:)     ]  (gP/m2) fine root P
+        m_froottc_to_fire                    =>    veg_cf%m_froottc_to_fire              , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. frootc
+        m_froottn_to_fire                    =>    veg_nf%m_froottn_to_fire             , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. frootn
+        m_froottp_to_fire                    =>    veg_pf%m_froottp_to_fire                    , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. frootp
+        m_froottc_to_litter_fire             =>    veg_cf%m_froottc_to_litter_fire               , & ! Output: [real(r8) (:)     ]
+        m_froottn_to_litter_fire             =>    veg_nf%m_froottn_to_litter_fire,&
+        m_froottp_to_litter_fire             =>    veg_pf%m_froottp_to_litter_fire ,&
+
+        froota_prof                          =>    cnstate_vars%froota_prof_patch        , & ! Input:  [real(r8) (:,:)   ]  (1/m) profile of fine roots
+        frootac                              =>    veg_cs%frootac              , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C
+        frootan                              =>    veg_ns%frootan              , & ! Input:  [real(r8) (:)     ]  (gN/m2) fine root N
+        frootap                              =>    veg_ps%frootap              , & ! Input:  [real(r8) (:)     ]  (gP/m2) fine root P
+        m_frootac_to_fire                    =>    veg_cf%m_frootac_to_fire              , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. frootc
+        m_frootan_to_fire                    =>    veg_nf%m_frootan_to_fire             , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. frootn
+        m_frootap_to_fire                    =>    veg_pf%m_frootap_to_fire                    , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. frootp
+        m_frootac_to_litter_fire             =>    veg_cf%m_frootac_to_litter_fire               , & ! Output: [real(r8) (:)     ]
+        m_frootan_to_litter_fire             =>    veg_nf%m_frootan_to_litter_fire,&
+        m_frootap_to_litter_fire             =>    veg_pf%m_frootap_to_litter_fire ,&
+
+        frootm_prof                          =>    cnstate_vars%frootm_prof_patch        , & ! Input:  [real(r8) (:,:)   ]  (1/m) profile of fine roots
+        frootmc                              =>    veg_cs%frootmc              , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C
+        frootmn                              =>    veg_ns%frootmn              , & ! Input:  [real(r8) (:)     ]  (gN/m2) fine root N
+        frootmp                              =>    veg_ps%frootmp              , & ! Input:  [real(r8) (:)     ]  (gP/m2) fine root P
+        m_frootmc_to_fire                    =>    veg_cf%m_frootmc_to_fire              , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. frootc
+        m_frootmn_to_fire                    =>    veg_nf%m_frootmn_to_fire             , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. frootn
+        m_frootmp_to_fire                    =>    veg_pf%m_frootmp_to_fire                    , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. frootp
+        m_frootmc_to_litter_fire             =>    veg_cf%m_frootmc_to_litter_fire               , & ! Output: [real(r8) (:)     ]
+        m_frootmn_to_litter_fire             =>    veg_nf%m_frootmn_to_litter_fire, &
+        m_frootmp_to_litter_fire             =>    veg_pf%m_frootmp_to_litter_fire, &
+#else
         froot_prof                          =>    cnstate_vars%froot_prof_patch        , & ! Input:  [real(r8) (:,:)   ]  (1/m) profile of fine roots
+        frootc                              =>    veg_cs%frootc              , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C
+        frootn                              =>    veg_ns%frootn              , & ! Input:  [real(r8) (:)     ]  (gN/m2) fine root N
+        frootp                              =>    veg_ps%frootp              , & ! Input:  [real(r8) (:)     ]  (gP/m2) fine root P
+        m_frootc_to_fire                    =>    veg_cf%m_frootc_to_fire              , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. frootc
+        m_frootn_to_fire                    =>    veg_nf%m_frootn_to_fire             , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. frootn
+        m_frootp_to_fire                    =>    veg_pf%m_frootp_to_fire                    , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. frootp
+        m_frootc_to_litter_fire             =>    veg_cf%m_frootc_to_litter_fire               , & ! Output: [real(r8) (:)     ]
+        m_frootn_to_litter_fire             =>    veg_nf%m_frootn_to_litter_fire,&
+        m_frootp_to_litter_fire             =>    veg_pf%m_frootp_to_litter_fire ,&
+#endif
         leaf_prof                           =>    cnstate_vars%leaf_prof_patch         , & ! Input:  [real(r8) (:,:)   ]  (1/m) profile of leaves
         farea_burned                        =>    cnstate_vars%farea_burned_col        , & ! Input:  [real(r8) (:)     ]  fractional area burned (/sec)
         lfc                                 =>    cnstate_vars%lfc_col                 , & ! Input:  [real(r8) (:)     ]  conv. area frac. of BET+BDT that haven't burned before
@@ -738,7 +799,8 @@ contains
         deadstemc                           =>    veg_cs%deadstemc           , & ! Input:  [real(r8) (:)     ]  (gC/m2) dead stem C
         deadstemc_storage                   =>    veg_cs%deadstemc_storage   , & ! Input:  [real(r8) (:)     ]  (gC/m2) dead stem C storage
         deadstemc_xfer                      =>    veg_cs%deadstemc_xfer      , & ! Input:  [real(r8) (:)     ]  (gC/m2) dead stem C transfer
-        frootc                              =>    veg_cs%frootc              , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C
+        !TAM
+     !    frootc                              =>    veg_cs%frootc              , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C
         frootc_storage                      =>    veg_cs%frootc_storage      , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C storage
         frootc_xfer                         =>    veg_cs%frootc_xfer         , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C transfer
         livecrootc                          =>    veg_cs%livecrootc          , & ! Input:  [real(r8) (:)     ]  (gC/m2) live coarse root C
@@ -761,7 +823,8 @@ contains
         deadstemn                           =>    veg_ns%deadstemn           , & ! Input:  [real(r8) (:)     ]  (gN/m2) dead stem N
         deadstemn_storage                   =>    veg_ns%deadstemn_storage   , & ! Input:  [real(r8) (:)     ]  (gN/m2) dead stem N storage
         deadstemn_xfer                      =>    veg_ns%deadstemn_xfer      , & ! Input:  [real(r8) (:)     ]  (gN/m2) dead stem N transfer
-        frootn                              =>    veg_ns%frootn              , & ! Input:  [real(r8) (:)     ]  (gN/m2) fine root N
+        !TAM
+     !    frootn                              =>    veg_ns%frootn              , & ! Input:  [real(r8) (:)     ]  (gN/m2) fine root N
         frootn_storage                      =>    veg_ns%frootn_storage      , & ! Input:  [real(r8) (:)     ]  (gN/m2) fine root N storage
         frootn_xfer                         =>    veg_ns%frootn_xfer         , & ! Input:  [real(r8) (:)     ]  (gN/m2) fine root N transfer
         livecrootn                          =>    veg_ns%livecrootn          , & ! Input:  [real(r8) (:)     ]  (gN/m2) live coarse root N
@@ -783,7 +846,8 @@ contains
         deadstemp                           =>    veg_ps%deadstemp           , & ! Input:  [real(r8) (:)     ]  (gP/m2) dead stem P
         deadstemp_storage                   =>    veg_ps%deadstemp_storage   , & ! Input:  [real(r8) (:)     ]  (gP/m2) dead stem P storage
         deadstemp_xfer                      =>    veg_ps%deadstemp_xfer      , & ! Input:  [real(r8) (:)     ]  (gP/m2) dead stem P transfer
-        frootp                              =>    veg_ps%frootp              , & ! Input:  [real(r8) (:)     ]  (gP/m2) fine root P
+        !TAM
+     !    frootp                              =>    veg_ps%frootp              , & ! Input:  [real(r8) (:)     ]  (gP/m2) fine root P
         frootp_storage                      =>    veg_ps%frootp_storage      , & ! Input:  [real(r8) (:)     ]  (gP/m2) fine root P storage
         frootp_xfer                         =>    veg_ps%frootp_xfer         , & ! Input:  [real(r8) (:)     ]  (gP/m2) fine root P transfer
         livecrootp                          =>    veg_ps%livecrootp          , & ! Input:  [real(r8) (:)     ]  (gP/m2) live coarse root P
@@ -806,7 +870,7 @@ contains
         m_deadstemc_to_fire                 =>    veg_cf%m_deadstemc_to_fire           , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. deadstemc_xfer
         m_deadstemc_storage_to_fire         =>    veg_cf%m_deadstemc_storage_to_fire   , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. deadstemc_storage
         m_deadstemc_xfer_to_fire            =>    veg_cf%m_deadstemc_xfer_to_fire      , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. deadstemc_xfer
-        m_frootc_to_fire                    =>    veg_cf%m_frootc_to_fire              , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. frootc
+     !    m_frootc_to_fire                    =>    veg_cf%m_frootc_to_fire              , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. frootc
         m_frootc_storage_to_fire            =>    veg_cf%m_frootc_storage_to_fire      , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. frootc_storage
         m_frootc_xfer_to_fire               =>    veg_cf%m_frootc_xfer_to_fire         , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. frootc_xfer
         m_livecrootc_to_fire                =>    veg_cf%m_livecrootc_to_fire          , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. livecrootc
@@ -829,7 +893,7 @@ contains
         m_deadstemn_to_fire                 =>    veg_nf%m_deadstemn_to_fire          , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. deadstemn
         m_deadstemn_storage_to_fire         =>    veg_nf%m_deadstemn_storage_to_fire  , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. deadstemn_storage
         m_deadstemn_xfer_to_fire            =>    veg_nf%m_deadstemn_xfer_to_fire     , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. deadstemn_xfer
-        m_frootn_to_fire                    =>    veg_nf%m_frootn_to_fire             , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. frootn
+     !    m_frootn_to_fire                    =>    veg_nf%m_frootn_to_fire             , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. frootn
         m_frootn_storage_to_fire            =>    veg_nf%m_frootn_storage_to_fire     , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. frootn_storage
         m_frootn_xfer_to_fire               =>    veg_nf%m_frootn_xfer_to_fire        , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. frootn_xfer
         m_livecrootn_to_fire                =>    veg_nf%m_livecrootn_to_fire         , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. m_livecrootn_to_fire
@@ -854,7 +918,7 @@ contains
         m_deadstemp_to_fire                 =>    veg_pf%m_deadstemp_to_fire                 , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. deadstemp
         m_deadstemp_storage_to_fire         =>    veg_pf%m_deadstemp_storage_to_fire         , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. deadstemp_storage
         m_deadstemp_xfer_to_fire            =>    veg_pf%m_deadstemp_xfer_to_fire            , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. deadstemp_xfer
-        m_frootp_to_fire                    =>    veg_pf%m_frootp_to_fire                    , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. frootp
+     !    m_frootp_to_fire                    =>    veg_pf%m_frootp_to_fire                    , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. frootp
         m_frootp_storage_to_fire            =>    veg_pf%m_frootp_storage_to_fire            , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. frootp_storage
         m_frootp_xfer_to_fire               =>    veg_pf%m_frootp_xfer_to_fire               , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. frootp_xfer
         m_livecrootp_to_fire                =>    veg_pf%m_livecrootp_to_fire                , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. m_livecrootp_to_fire
@@ -876,7 +940,7 @@ contains
         m_deadstemc_to_litter_fire          =>    veg_cf%m_deadstemc_to_litter_fire            , & ! Output: [real(r8) (:)     ]
         m_deadstemc_storage_to_litter_fire  =>    veg_cf%m_deadstemc_storage_to_litter_fire    , & ! Output: [real(r8) (:)     ]
         m_deadstemc_xfer_to_litter_fire     =>    veg_cf%m_deadstemc_xfer_to_litter_fire       , & ! Output: [real(r8) (:)     ]
-        m_frootc_to_litter_fire             =>    veg_cf%m_frootc_to_litter_fire               , & ! Output: [real(r8) (:)     ]
+     !    m_frootc_to_litter_fire             =>    veg_cf%m_frootc_to_litter_fire               , & ! Output: [real(r8) (:)     ]
         m_frootc_storage_to_litter_fire     =>    veg_cf%m_frootc_storage_to_litter_fire       , & ! Output: [real(r8) (:)     ]
         m_frootc_xfer_to_litter_fire        =>    veg_cf%m_frootc_xfer_to_litter_fire          , & ! Output: [real(r8) (:)     ]
         m_livecrootc_to_litter_fire         =>    veg_cf%m_livecrootc_to_litter_fire           , & ! Output: [real(r8) (:)     ]
@@ -903,7 +967,7 @@ contains
         m_deadstemn_to_litter_fire          =>    veg_nf%m_deadstemn_to_litter_fire,&
         m_deadstemn_storage_to_litter_fire  =>    veg_nf%m_deadstemn_storage_to_litter_fire,&
         m_deadstemn_xfer_to_litter_fire     =>    veg_nf%m_deadstemn_xfer_to_litter_fire,&
-        m_frootn_to_litter_fire             =>    veg_nf%m_frootn_to_litter_fire,&
+     !    m_frootn_to_litter_fire             =>    veg_nf%m_frootn_to_litter_fire,&
         m_frootn_storage_to_litter_fire     =>    veg_nf%m_frootn_storage_to_litter_fire,&
         m_frootn_xfer_to_litter_fire        =>    veg_nf%m_frootn_xfer_to_litter_fire ,&
         m_livecrootn_to_litter_fire         =>    veg_nf%m_livecrootn_to_litter_fire         ,&
@@ -929,7 +993,7 @@ contains
         m_deadstemp_to_litter_fire          =>    veg_pf%m_deadstemp_to_litter_fire ,&
         m_deadstemp_storage_to_litter_fire  =>    veg_pf%m_deadstemp_storage_to_litter_fire ,&
         m_deadstemp_xfer_to_litter_fire     =>    veg_pf%m_deadstemp_xfer_to_litter_fire ,&
-        m_frootp_to_litter_fire             =>    veg_pf%m_frootp_to_litter_fire ,&
+     !    m_frootp_to_litter_fire             =>    veg_pf%m_frootp_to_litter_fire ,&
         m_frootp_storage_to_litter_fire     =>    veg_pf%m_frootp_storage_to_litter_fire ,&
         m_frootp_xfer_to_litter_fire        =>    veg_pf%m_frootp_xfer_to_litter_fire ,&
         m_livecrootp_to_litter_fire         =>    veg_pf%m_livecrootp_to_litter_fire ,&
@@ -998,7 +1062,7 @@ contains
         m_deadstemc_to_fire(p)           =  deadstemc(p)          * m_veg * f * cc_dstem(itype)
         m_deadstemc_storage_to_fire(p)   =  deadstemc_storage(p)  * f * cc_other_sc
         m_deadstemc_xfer_to_fire(p)      =  deadstemc_xfer(p)     * f * cc_other_sc
-        m_frootc_to_fire(p)              =  frootc(p)             * f * 0._r8
+     !    m_frootc_to_fire(p)              =  frootc(p)             * f * 0._r8
         m_frootc_storage_to_fire(p)      =  frootc_storage(p)     * f * cc_other_sc
         m_frootc_xfer_to_fire(p)         =  frootc_xfer(p)        * f * cc_other_sc
         m_livecrootc_to_fire(p)          =  livecrootc(p)         * f * 0._r8
@@ -1021,7 +1085,7 @@ contains
         m_deadstemn_to_fire(p)           =  deadstemn(p)          * m_veg * f * cc_dstem(itype)
         m_deadstemn_storage_to_fire(p)   =  deadstemn_storage(p)  * f * cc_other_sc
         m_deadstemn_xfer_to_fire(p)      =  deadstemn_xfer(p)     * f * cc_other_sc
-        m_frootn_to_fire(p)              =  frootn(p)             * f * 0._r8
+     !    m_frootn_to_fire(p)              =  frootn(p)             * f * 0._r8
         m_frootn_storage_to_fire(p)      =  frootn_storage(p)     * f * cc_other_sc
         m_frootn_xfer_to_fire(p)         =  frootn_xfer(p)        * f * cc_other_sc
         m_livecrootn_to_fire(p)          =  livecrootn(p)         * f * 0._r8
@@ -1044,7 +1108,7 @@ contains
         m_deadstemp_to_fire(p)           =  deadstemp(p)          * f * cc_dstem(itype)
         m_deadstemp_storage_to_fire(p)   =  deadstemp_storage(p)  * f * cc_other_sc
         m_deadstemp_xfer_to_fire(p)      =  deadstemp_xfer(p)     * f * cc_other_sc
-        m_frootp_to_fire(p)              =  frootp(p)             * f * 0._r8
+     !    m_frootp_to_fire(p)              =  frootp(p)             * f * 0._r8
         m_frootp_storage_to_fire(p)      =  frootp_storage(p)     * f * cc_other_sc
         m_frootp_xfer_to_fire(p)         =  frootp_xfer(p)        * f * cc_other_sc
         m_livecrootp_to_fire(p)          =  livecrootp(p)         * f * 0._r8
@@ -1055,7 +1119,23 @@ contains
         m_deadcrootp_storage_to_fire(p)  =  deadcrootp_storage(p) * f * cc_other_sc
         m_retransp_to_fire(p)            =  retransp(p)           * f * cc_other_sc
         m_ppool_to_fire(p)               =  ppool(p)              * f * cc_other_sc
+#if defined(TAM)
+     m_froottc_to_fire(p)              =  froottc(p)             * f * 0._r8
+     m_froottn_to_fire(p)              =  froottn(p)             * f * 0._r8
+     m_froottp_to_fire(p)              =  froottp(p)             * f * 0._r8
 
+     m_frootac_to_fire(p)              =  frootac(p)             * f * 0._r8
+     m_frootan_to_fire(p)              =  frootan(p)             * f * 0._r8
+     m_frootap_to_fire(p)              =  frootap(p)             * f * 0._r8
+
+     m_frootmc_to_fire(p)              =  frootmc(p)             * f * 0._r8
+     m_frootmn_to_fire(p)              =  frootmn(p)             * f * 0._r8
+     m_frootmp_to_fire(p)              =  frootmp(p)             * f * 0._r8
+#else
+     m_frootc_to_fire(p)              =  frootc(p)             * f * 0._r8
+     m_frootn_to_fire(p)              =  frootn(p)             * f * 0._r8
+     m_frootp_to_fire(p)              =  frootp(p)             * f * 0._r8
+#endif
 
         ! mortality due to fire
         ! carbon pools
@@ -1089,8 +1169,8 @@ contains
         m_deadstemc_xfer_to_litter_fire(p)          =  deadstemc_xfer(p) * f * &
              (1._r8 - cc_other_sc) * &
              fm_other(itype)
-        m_frootc_to_litter_fire(p)                  =  frootc(p)             * f * &
-             fm_root(itype)
+     !    m_frootc_to_litter_fire(p)                  =  frootc(p)             * f * &
+     !         fm_root(itype)
         m_frootc_storage_to_litter_fire(p)          =  frootc_storage(p)     * f * &
              fm_other(itype)
         m_frootc_xfer_to_litter_fire(p)             =  frootc_xfer(p)        * f * &
@@ -1141,8 +1221,8 @@ contains
         m_livestemn_to_deadstemn_fire(p)           =  livestemn(p) * f * &
              (1._r8 - cc_lstem(itype)) * &
              (fm_lstem(itype)-fm_droot(itype))
-        m_frootn_to_litter_fire(p)                 =  frootn(p)             * f * &
-             fm_root(itype)
+     !    m_frootn_to_litter_fire(p)                 =  frootn(p)             * f * &
+     !         fm_root(itype)
         m_deadstemn_to_litter_fire(p)              =  deadstemn(p) * m_veg * f *  &
              (1._r8 - cc_dstem(itype)) * &
              fm_droot(itype)
@@ -1234,6 +1314,44 @@ contains
         m_ppool_to_litter_fire(p)                  =  ppool(p)              * f * &
              (1._r8 - cc_other_sc) * &
              fm_other(itype)
+#if defined(TAM)
+          !T
+          m_froottc_to_litter_fire(p)                  =  froottc(p)             * f * &
+          fm_root(itype)
+
+          m_froottn_to_litter_fire(p)                 =  froottn(p)             * f * &
+          fm_root(itype)
+
+          m_froottp_to_litter_fire(p)                 =  froottp(p)             * f * &
+          fm_root(itype)
+          !A
+          m_frootac_to_litter_fire(p)                  =  frootac(p)             * f * &
+          fm_root(itype)
+
+          m_frootan_to_litter_fire(p)                 =  frootan(p)             * f * &
+          fm_root(itype)
+
+          m_frootap_to_litter_fire(p)                 =  frootap(p)             * f * &
+          fm_root(itype)
+          !M
+          m_frootmc_to_litter_fire(p)                  =  frootmc(p)             * f * &
+          fm_root(itype)
+
+          m_frootmn_to_litter_fire(p)                 =  frootmn(p)             * f * &
+          fm_root(itype)
+
+          m_frootmp_to_litter_fire(p)                 =  frootmp(p)             * f * &
+          fm_root(itype)
+#else
+          m_frootc_to_litter_fire(p)                  =  frootc(p)             * f * &
+          fm_root(itype)
+
+          m_frootn_to_litter_fire(p)                 =  frootn(p)             * f * &
+          fm_root(itype)
+
+          m_frootp_to_litter_fire(p)                 =  frootp(p)             * f * &
+          fm_root(itype)
+#endif
 
      end do  ! end of patches loop
 
@@ -1247,7 +1365,13 @@ contains
 
        do j = 1,nlevdecomp
          lprof_pj   = leaf_prof(p,j)
+#if defined(TAM)
+         frt_prof_pj = froott_prof(p,j)
+         fra_prof_pj = froota_prof(p,j)
+         frm_prof_pj = frootm_prof(p,j)
+#else
          fr_prof_pj = froot_prof(p,j)
+#endif
          cr_prof_pj = croot_prof(p,j)
          st_prof_pj = stem_prof(p,j)
 
@@ -1288,10 +1412,10 @@ contains
                m_leafc_xfer_to_litter_fire(p) + m_cpool_to_litter_fire(p) + &
                m_gresp_storage_to_litter_fire(p) &
                +m_gresp_xfer_to_litter_fire(p))*lprof_pj + &
-               (m_frootc_to_litter_fire(p)*fr_flab(itype) &
-               +m_frootc_storage_to_litter_fire(p) + &
-               m_frootc_xfer_to_litter_fire(p))*fr_prof_pj &
-               +(m_livestemc_storage_to_litter_fire(p) + &
+               ! (m_frootc_to_litter_fire(p)*fr_flab(itype) &
+               ! +m_frootc_storage_to_litter_fire(p) + &
+               ! m_frootc_xfer_to_litter_fire(p))*fr_prof_pj &
+               (m_livestemc_storage_to_litter_fire(p) + &
                m_livestemc_xfer_to_litter_fire(p) &
                +m_deadstemc_storage_to_litter_fire(p) + &
                m_deadstemc_xfer_to_litter_fire(p))* st_prof_pj&
@@ -1300,20 +1424,50 @@ contains
                +m_deadcrootc_storage_to_litter_fire(p) + &
                m_deadcrootc_xfer_to_litter_fire(p))* cr_prof_pj)* wt_col
 
-       m_c_to_litr_cel_fire(c,j)=m_c_to_litr_cel_fire(c,j) + &
-            (m_leafc_to_litter_fire(p)*lf_fcel(itype)*lprof_pj + &
-            m_frootc_to_litter_fire(p)*fr_fcel(itype)*fr_prof_pj)* wt_col
-       m_c_to_litr_lig_fire(c,j)=m_c_to_litr_lig_fire(c,j) + &
-            (m_leafc_to_litter_fire(p)*lf_flig(itype)*lprof_pj + &
-            m_frootc_to_litter_fire(p)*fr_flig(itype)*fr_prof_pj)* wt_col
+#if defined(TAM)
+            m_c_to_litr_met_fire(c,j)=m_c_to_litr_met_fire(c,j) + &
+                 (m_froottc_to_litter_fire(p)*frt_flab(itype) + &
+                  m_frootac_to_litter_fire(p)*fra_flab(itype) + &
+                  m_frootmc_to_litter_fire(p)*frm_flab(itype) + &
+                  m_frootc_storage_to_litter_fire(p) + &
+                  m_frootc_xfer_to_litter_fire(p))*frt_prof_pj * wt_col
+
+            m_c_to_litr_cel_fire(c,j)=m_c_to_litr_cel_fire(c,j) + &
+                 (m_leafc_to_litter_fire(p)*lf_fcel(itype)*lprof_pj + &
+                  m_froottc_to_litter_fire(p)*frt_fcel(itype)*frt_prof_pj + &
+                  m_frootac_to_litter_fire(p)*fra_fcel(itype)*frt_prof_pj + &
+                  m_frootmc_to_litter_fire(p)*frm_fcel(itype)*frt_prof_pj + &
+                 )* wt_col
+
+            m_c_to_litr_lig_fire(c,j)=m_c_to_litr_lig_fire(c,j) + &
+                 (m_leafc_to_litter_fire(p)*lf_flig(itype)*lprof_pj + &
+                  m_froottc_to_litter_fire(p)*frt_flig(itype)*frt_prof_pj + &
+                  m_frootac_to_litter_fire(p)*fra_flig(itype)*frt_prof_pj + &
+                  m_frootmc_to_litter_fire(p)*frm_flig(itype)*frt_prof_pj + &
+                 )* wt_col   
+
+#else
+            m_c_to_litr_met_fire(c,j)=m_c_to_litr_met_fire(c,j) + &
+                 (m_frootc_to_litter_fire(p)*fr_flab(itype) + &
+                  m_frootc_storage_to_litter_fire(p) + &
+                  m_frootc_xfer_to_litter_fire(p))*fr_prof_pj  * wt_col
+
+            m_c_to_litr_cel_fire(c,j)=m_c_to_litr_cel_fire(c,j) + &
+                 (m_leafc_to_litter_fire(p)*lf_fcel(itype)*lprof_pj + &
+                 m_frootc_to_litter_fire(p)*fr_fcel(itype)*fr_prof_pj)* wt_col
+
+            m_c_to_litr_lig_fire(c,j)=m_c_to_litr_lig_fire(c,j) + &
+                 (m_leafc_to_litter_fire(p)*lf_flig(itype)*lprof_pj + &
+                 m_frootc_to_litter_fire(p)*fr_flig(itype)*fr_prof_pj)* wt_col
+#endif
 
        m_n_to_litr_met_fire(c,j)=m_n_to_litr_met_fire(c,j) + &
             ((m_leafn_to_litter_fire(p)*lf_flab(itype) &
             +m_leafn_storage_to_litter_fire(p) + m_npool_to_litter_fire(p) + &
-            m_leafn_xfer_to_litter_fire(p)+m_retransn_to_litter_fire(p)) &
-            *lprof_pj +(m_frootn_to_litter_fire(p)*fr_flab(itype) &
-            +m_frootn_storage_to_litter_fire(p) + &
-            m_frootn_xfer_to_litter_fire(p))*fr_prof_pj &
+            m_leafn_xfer_to_litter_fire(p)+m_retransn_to_litter_fire(p))*lprof_pj &
+          !   (m_frootn_to_litter_fire(p)*fr_flab(itype) &
+          !   +m_frootn_storage_to_litter_fire(p) + &
+          !   m_frootn_xfer_to_litter_fire(p))*fr_prof_pj &
             +(m_livestemn_storage_to_litter_fire(p) + &
             m_livestemn_xfer_to_litter_fire(p) &
             +m_deadstemn_storage_to_litter_fire(p) + &
@@ -1322,22 +1476,50 @@ contains
             m_livecrootn_xfer_to_litter_fire(p) &
             +m_deadcrootn_storage_to_litter_fire(p) + &
             m_deadcrootn_xfer_to_litter_fire(p))* cr_prof_pj)* wt_col
+
+#if defined(TAM)
+       m_n_to_litr_met_fire(c,j)=m_n_to_litr_met_fire(c,j) + &
+               (m_froottn_to_litter_fire(p)*frt_flab(itype) + &
+                m_frootan_to_litter_fire(p)*fra_flab(itype) + &
+                m_frootmn_to_litter_fire(p)*frm_flab(itype) + &
+                m_frootn_storage_to_litter_fire(p) + &
+                m_frootn_xfer_to_litter_fire(p))*frt_prof_pj*wt_col
+
        m_n_to_litr_cel_fire(c,j)=m_n_to_litr_cel_fire(c,j) + &
-            (m_leafn_to_litter_fire(p)*lf_fcel(itype)*lprof_pj + &
-            m_frootn_to_litter_fire(p)*fr_fcel(itype)*fr_prof_pj)* wt_col
+               (m_leafn_to_litter_fire(p)*lf_fcel(itype)*lprof_pj + &
+                m_froottn_to_litter_fire(p)*frt_fcel(itype)*frt_prof_pj + &
+                m_frootan_to_litter_fire(p)*fra_fcel(itype)*frt_prof_pj + &
+                m_frootmn_to_litter_fire(p)*frm_fcel(itype)*frt_prof_pj + &
+               )* wt_col
 
-        m_n_to_litr_lig_fire(c,j)=m_n_to_litr_lig_fire(c,j) + &
-             (m_leafn_to_litter_fire(p)*lf_flig(itype)*lprof_pj + &
-             m_frootn_to_litter_fire(p)*fr_flig(itype)*fr_prof_pj)* wt_col
+       m_n_to_litr_lig_fire(c,j)=m_n_to_litr_lig_fire(c,j) + &
+               (m_leafn_to_litter_fire(p)*lf_flig(itype)*lprof_pj + &
+                m_froottn_to_litter_fire(p)*frt_flig(itype)*frt_prof_pj + &
+                m_frootan_to_litter_fire(p)*fra_flig(itype)*frt_prof_pj + &
+                m_frootmn_to_litter_fire(p)*frm_flig(itype)*frt_prof_pj + &
+               )* wt_col
+#else
+       m_n_to_litr_met_fire(c,j)=m_n_to_litr_met_fire(c,j) + &
+               (m_frootn_to_litter_fire(p)*fr_flab(itype) + &
+                m_frootn_storage_to_litter_fire(p) + &
+                m_frootn_xfer_to_litter_fire(p))*fr_prof_pj*wt_col
 
+       m_n_to_litr_cel_fire(c,j)=m_n_to_litr_cel_fire(c,j) + &
+               (m_leafn_to_litter_fire(p)*lf_fcel(itype)*lprof_pj + &
+               m_frootn_to_litter_fire(p)*fr_fcel(itype)*fr_prof_pj)* wt_col
+
+       m_n_to_litr_lig_fire(c,j)=m_n_to_litr_lig_fire(c,j) + &
+               (m_leafn_to_litter_fire(p)*lf_flig(itype)*lprof_pj + &
+               m_frootn_to_litter_fire(p)*fr_flig(itype)*fr_prof_pj)* wt_col
+#endif
          ! add phosphorus
          m_p_to_litr_met_fire(c,j)=m_p_to_litr_met_fire(c,j) + &
               ((m_leafp_to_litter_fire(p)*lf_flab(itype) &
               +m_leafp_storage_to_litter_fire(p) + m_ppool_to_litter_fire(p) + &
-              m_leafp_xfer_to_litter_fire(p)+m_retransp_to_litter_fire(p)) &
-              *lprof_pj +(m_frootp_to_litter_fire(p)*fr_flab(itype) &
-              +m_frootp_storage_to_litter_fire(p) + &
-              m_frootp_xfer_to_litter_fire(p))*fr_prof_pj &
+              m_leafp_xfer_to_litter_fire(p)+m_retransp_to_litter_fire(p)) *lprof_pj &
+          !     (m_frootp_to_litter_fire(p)*fr_flab(itype) &
+          !     +m_frootp_storage_to_litter_fire(p) + &
+          !     m_frootp_xfer_to_litter_fire(p))*fr_prof_pj &
               +(m_livestemp_storage_to_litter_fire(p) + &
               m_livestemp_xfer_to_litter_fire(p) &
               +m_deadstemp_storage_to_litter_fire(p) + &
@@ -1346,13 +1528,41 @@ contains
               m_livecrootp_xfer_to_litter_fire(p) &
               +m_deadcrootp_storage_to_litter_fire(p) + &
               m_deadcrootp_xfer_to_litter_fire(p))* cr_prof_pj)* wt_col
+#if defined(TAM)
+         m_p_to_litr_met_fire(c,j)=m_p_to_litr_met_fire(c,j) + &
+               (m_froottp_to_litter_fire(p)*frt_flab(itype) + &
+                m_frootap_to_litter_fire(p)*fra_flab(itype) + &
+                m_frootmp_to_litter_fire(p)*frm_flab(itype) + &
+                m_frootp_storage_to_litter_fire(p) + &
+                m_frootp_xfer_to_litter_fire(p))*frt_prof_pj *wt_col
+
+         m_p_to_litr_cel_fire(c,j)=m_p_to_litr_cel_fire(c,j) + &
+              (m_leafp_to_litter_fire(p)*lf_fcel(itype)*lprof_pj + &
+               m_froottp_to_litter_fire(p)*frt_fcel(itype)*frt_prof_pj + &
+               m_frootap_to_litter_fire(p)*fra_fcel(itype)*frt_prof_pj + &
+               m_frootmp_to_litter_fire(p)*frm_fcel(itype)*frt_prof_pj + &
+              )* wt_col
+
+         m_p_to_litr_lig_fire(c,j)=m_p_to_litr_lig_fire(c,j) + &
+              (m_leafp_to_litter_fire(p)*lf_flig(itype)*lprof_pj + &
+               m_froottp_to_litter_fire(p)*frt_flig(itype)*frt_prof_pj + &
+               m_frootap_to_litter_fire(p)*fra_flig(itype)*frt_prof_pj + &
+               m_frootmp_to_litter_fire(p)*frm_flig(itype)*frt_prof_pj + &
+              )* wt_col
+#else
+          m_p_to_litr_met_fire(c,j)=m_p_to_litr_met_fire(c,j) + &
+               (m_frootp_to_litter_fire(p)*fr_flab(itype) + &
+                m_frootp_storage_to_litter_fire(p) + &
+                m_frootp_xfer_to_litter_fire(p))*fr_prof_pj * wt_col
+
          m_p_to_litr_cel_fire(c,j)=m_p_to_litr_cel_fire(c,j) + &
               (m_leafp_to_litter_fire(p)*lf_fcel(itype)*lprof_pj + &
               m_frootp_to_litter_fire(p)*fr_fcel(itype)*fr_prof_pj)* wt_col
+
          m_p_to_litr_lig_fire(c,j)=m_p_to_litr_lig_fire(c,j) + &
               (m_leafp_to_litter_fire(p)*lf_flig(itype)*lprof_pj + &
               m_frootp_to_litter_fire(p)*fr_flig(itype)*fr_prof_pj)* wt_col
-
+#endif
         end do
      end do
      !

@@ -423,6 +423,10 @@ contains
 
     !! Local P variables
     real(r8):: cpl,cpfr,cplw,cpdw,cpg                                    !C:N ratios for leaf, fine root, and wood
+#if defined(TAM)
+    real(r8):: f1t, f1a, f1m
+    real(r8):: cpfrt, cpfra, cpfrm, cnfrt, cnfra, cnfrm
+#endif
     real(r8):: puptake_prof(bounds%begc:bounds%endc, 1:nlevdecomp)
 
 
@@ -2032,6 +2036,10 @@ contains
     !! Local P variables
     real(r8):: rc, rc_p, r                  !Factors for nitrogen pool
     real(r8):: cpl,cpfr,cplw,cpdw,cpg       !C:N ratios for leaf, fine root, and wood
+#if defined(TAM)
+    real(r8):: f1t, f1a, f1m
+    real(r8):: cpfrt, cpfra, cpfrm, cnfrt, cnfra, cnfrm
+#endif
     real(r8):: puptake_prof(bounds%begc:bounds%endc, 1:nlevdecomp)
     real(r8):: temp_sminn_to_plant(bounds%begc:bounds%endc)
     real(r8):: temp_sminp_to_plant(bounds%begc:bounds%endc)
@@ -2929,10 +2937,12 @@ contains
          npool_to_froottn(p)        = (nlc * f1*f1t / cnfrt) * fcur ! TAM's T pool
          npool_to_frootan(p)        = (nlc * f1*f1a / cnfra) * fcur ! ...   A pool
          npool_to_frootmn(p)        = (nlc * f1*f1m / cnfrm) * fcur ! ...   M pool
+         npool_to_frootn_storage(p) = (nlc * f1 *(f1t/cnfrt + f1a/cnfra + f1m/cnfrm)) * (1._r8 - fcur)
 #else
          npool_to_frootn(p)         = (nlc * f1 / cnfr) * fcur !original one pool
-#endif
          npool_to_frootn_storage(p) = (nlc * f1 / cnfr) * (1._r8 - fcur)
+#endif
+         
          if (woody(ivt(p)) >= 1._r8) then
             npool_to_livestemn(p)          = (nlc * f3 * f4 / cnlw) * fcur
             npool_to_livestemn_storage(p)  = (nlc * f3 * f4 / cnlw) * (1._r8 - fcur)
@@ -2984,10 +2994,12 @@ contains
          ppool_to_froottp(p)        = (nlc * f1*f1t / cpfrt) * fcur ! TAM's T pool
          ppool_to_frootap(p)        = (nlc * f1*f1a / cpfra) * fcur ! ...   A pool
          ppool_to_frootmp(p)        = (nlc * f1*f1m / cpfrm) * fcur ! ...   M pool
+         ppool_to_frootp_storage(p) = (nlc * f1 * (f1t/cpfrt + f1a/cpfra + f1m/cpfrm)) * (1._r8 - fcur)
 #else
          ppool_to_frootp(p)         = (nlc * f1 / cpfr) * fcur      ! original one pool
-#endif       
          ppool_to_frootp_storage(p) = (nlc * f1 / cpfr) * (1._r8 - fcur)
+#endif       
+         
          if (woody(ivt(p)) >= 1._r8) then
             ppool_to_livestemp(p)          = (nlc * f3 * f4 / cplw) * fcur
             ppool_to_livestemp_storage(p)  = (nlc * f3 * f4 / cplw) * (1._r8 -fcur)

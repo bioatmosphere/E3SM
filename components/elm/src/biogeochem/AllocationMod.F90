@@ -887,10 +887,17 @@ contains
                              fleafcn(ivt(p))))
                         livestemn_to_retransn(p) = t1 * ((livestemc(p) / livewdcn(ivt(p))) - (livestemc(p) / &
                              fstemcn(ivt(p))))
+#if defined(TAM)
+                        froottn_to_retransn(p) = 0._r8
+                        if (ffrootcn(ivt(p)) > 0._r8) then
+                           froottn_to_retransn(p) = t1 * ((froottc(p) / froottcn(ivt(p))) - (froottc(p) / &
+                                ffrootcn(ivt(p))))
+#else
                         frootn_to_retransn(p) = 0._r8
                         if (ffrootcn(ivt(p)) > 0._r8) then
                            frootn_to_retransn(p) = t1 * ((frootc(p) / frootcn(ivt(p))) - (frootc(p) / &
                                 ffrootcn(ivt(p))))
+#endif
                         end if
                         grain_flag(p) = 1._r8
                      end if

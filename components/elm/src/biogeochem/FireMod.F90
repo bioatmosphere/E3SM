@@ -800,7 +800,7 @@ contains
         deadstemc_storage                   =>    veg_cs%deadstemc_storage   , & ! Input:  [real(r8) (:)     ]  (gC/m2) dead stem C storage
         deadstemc_xfer                      =>    veg_cs%deadstemc_xfer      , & ! Input:  [real(r8) (:)     ]  (gC/m2) dead stem C transfer
         !TAM
-     !    frootc                              =>    veg_cs%frootc              , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C
+        !    frootc                              =>    veg_cs%frootc              , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C
         frootc_storage                      =>    veg_cs%frootc_storage      , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C storage
         frootc_xfer                         =>    veg_cs%frootc_xfer         , & ! Input:  [real(r8) (:)     ]  (gC/m2) fine root C transfer
         livecrootc                          =>    veg_cs%livecrootc          , & ! Input:  [real(r8) (:)     ]  (gC/m2) live coarse root C
@@ -824,7 +824,7 @@ contains
         deadstemn_storage                   =>    veg_ns%deadstemn_storage   , & ! Input:  [real(r8) (:)     ]  (gN/m2) dead stem N storage
         deadstemn_xfer                      =>    veg_ns%deadstemn_xfer      , & ! Input:  [real(r8) (:)     ]  (gN/m2) dead stem N transfer
         !TAM
-     !    frootn                              =>    veg_ns%frootn              , & ! Input:  [real(r8) (:)     ]  (gN/m2) fine root N
+        !    frootn                              =>    veg_ns%frootn              , & ! Input:  [real(r8) (:)     ]  (gN/m2) fine root N
         frootn_storage                      =>    veg_ns%frootn_storage      , & ! Input:  [real(r8) (:)     ]  (gN/m2) fine root N storage
         frootn_xfer                         =>    veg_ns%frootn_xfer         , & ! Input:  [real(r8) (:)     ]  (gN/m2) fine root N transfer
         livecrootn                          =>    veg_ns%livecrootn          , & ! Input:  [real(r8) (:)     ]  (gN/m2) live coarse root N
@@ -847,7 +847,7 @@ contains
         deadstemp_storage                   =>    veg_ps%deadstemp_storage   , & ! Input:  [real(r8) (:)     ]  (gP/m2) dead stem P storage
         deadstemp_xfer                      =>    veg_ps%deadstemp_xfer      , & ! Input:  [real(r8) (:)     ]  (gP/m2) dead stem P transfer
         !TAM
-     !    frootp                              =>    veg_ps%frootp              , & ! Input:  [real(r8) (:)     ]  (gP/m2) fine root P
+        !    frootp                              =>    veg_ps%frootp              , & ! Input:  [real(r8) (:)     ]  (gP/m2) fine root P
         frootp_storage                      =>    veg_ps%frootp_storage      , & ! Input:  [real(r8) (:)     ]  (gP/m2) fine root P storage
         frootp_xfer                         =>    veg_ps%frootp_xfer         , & ! Input:  [real(r8) (:)     ]  (gP/m2) fine root P transfer
         livecrootp                          =>    veg_ps%livecrootp          , & ! Input:  [real(r8) (:)     ]  (gP/m2) live coarse root P
@@ -870,7 +870,7 @@ contains
         m_deadstemc_to_fire                 =>    veg_cf%m_deadstemc_to_fire           , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. deadstemc_xfer
         m_deadstemc_storage_to_fire         =>    veg_cf%m_deadstemc_storage_to_fire   , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. deadstemc_storage
         m_deadstemc_xfer_to_fire            =>    veg_cf%m_deadstemc_xfer_to_fire      , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. deadstemc_xfer
-     !    m_frootc_to_fire                    =>    veg_cf%m_frootc_to_fire              , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. frootc
+        !    m_frootc_to_fire                    =>    veg_cf%m_frootc_to_fire              , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. frootc
         m_frootc_storage_to_fire            =>    veg_cf%m_frootc_storage_to_fire      , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. frootc_storage
         m_frootc_xfer_to_fire               =>    veg_cf%m_frootc_xfer_to_fire         , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. frootc_xfer
         m_livecrootc_to_fire                =>    veg_cf%m_livecrootc_to_fire          , & ! Input:  [real(r8) (:)     ]  (gC/m2/s) C emis. livecrootc
@@ -893,7 +893,7 @@ contains
         m_deadstemn_to_fire                 =>    veg_nf%m_deadstemn_to_fire          , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. deadstemn
         m_deadstemn_storage_to_fire         =>    veg_nf%m_deadstemn_storage_to_fire  , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. deadstemn_storage
         m_deadstemn_xfer_to_fire            =>    veg_nf%m_deadstemn_xfer_to_fire     , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. deadstemn_xfer
-     !    m_frootn_to_fire                    =>    veg_nf%m_frootn_to_fire             , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. frootn
+        !    m_frootn_to_fire                    =>    veg_nf%m_frootn_to_fire             , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. frootn
         m_frootn_storage_to_fire            =>    veg_nf%m_frootn_storage_to_fire     , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. frootn_storage
         m_frootn_xfer_to_fire               =>    veg_nf%m_frootn_xfer_to_fire        , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. frootn_xfer
         m_livecrootn_to_fire                =>    veg_nf%m_livecrootn_to_fire         , & ! Input:  [real(r8) (:)     ]  (gN/m2/s) N emis. m_livecrootn_to_fire
@@ -918,7 +918,7 @@ contains
         m_deadstemp_to_fire                 =>    veg_pf%m_deadstemp_to_fire                 , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. deadstemp
         m_deadstemp_storage_to_fire         =>    veg_pf%m_deadstemp_storage_to_fire         , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. deadstemp_storage
         m_deadstemp_xfer_to_fire            =>    veg_pf%m_deadstemp_xfer_to_fire            , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. deadstemp_xfer
-     !    m_frootp_to_fire                    =>    veg_pf%m_frootp_to_fire                    , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. frootp
+        !    m_frootp_to_fire                    =>    veg_pf%m_frootp_to_fire                    , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. frootp
         m_frootp_storage_to_fire            =>    veg_pf%m_frootp_storage_to_fire            , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. frootp_storage
         m_frootp_xfer_to_fire               =>    veg_pf%m_frootp_xfer_to_fire               , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. frootp_xfer
         m_livecrootp_to_fire                =>    veg_pf%m_livecrootp_to_fire                , & ! Input:  [real(r8) (:)     ]  (gP/m2/s) P emis. m_livecrootp_to_fire
@@ -940,7 +940,7 @@ contains
         m_deadstemc_to_litter_fire          =>    veg_cf%m_deadstemc_to_litter_fire            , & ! Output: [real(r8) (:)     ]
         m_deadstemc_storage_to_litter_fire  =>    veg_cf%m_deadstemc_storage_to_litter_fire    , & ! Output: [real(r8) (:)     ]
         m_deadstemc_xfer_to_litter_fire     =>    veg_cf%m_deadstemc_xfer_to_litter_fire       , & ! Output: [real(r8) (:)     ]
-     !    m_frootc_to_litter_fire             =>    veg_cf%m_frootc_to_litter_fire               , & ! Output: [real(r8) (:)     ]
+        !    m_frootc_to_litter_fire             =>    veg_cf%m_frootc_to_litter_fire               , & ! Output: [real(r8) (:)     ]
         m_frootc_storage_to_litter_fire     =>    veg_cf%m_frootc_storage_to_litter_fire       , & ! Output: [real(r8) (:)     ]
         m_frootc_xfer_to_litter_fire        =>    veg_cf%m_frootc_xfer_to_litter_fire          , & ! Output: [real(r8) (:)     ]
         m_livecrootc_to_litter_fire         =>    veg_cf%m_livecrootc_to_litter_fire           , & ! Output: [real(r8) (:)     ]
@@ -967,7 +967,7 @@ contains
         m_deadstemn_to_litter_fire          =>    veg_nf%m_deadstemn_to_litter_fire,&
         m_deadstemn_storage_to_litter_fire  =>    veg_nf%m_deadstemn_storage_to_litter_fire,&
         m_deadstemn_xfer_to_litter_fire     =>    veg_nf%m_deadstemn_xfer_to_litter_fire,&
-     !    m_frootn_to_litter_fire             =>    veg_nf%m_frootn_to_litter_fire,&
+        !    m_frootn_to_litter_fire             =>    veg_nf%m_frootn_to_litter_fire,&
         m_frootn_storage_to_litter_fire     =>    veg_nf%m_frootn_storage_to_litter_fire,&
         m_frootn_xfer_to_litter_fire        =>    veg_nf%m_frootn_xfer_to_litter_fire ,&
         m_livecrootn_to_litter_fire         =>    veg_nf%m_livecrootn_to_litter_fire         ,&
@@ -993,7 +993,7 @@ contains
         m_deadstemp_to_litter_fire          =>    veg_pf%m_deadstemp_to_litter_fire ,&
         m_deadstemp_storage_to_litter_fire  =>    veg_pf%m_deadstemp_storage_to_litter_fire ,&
         m_deadstemp_xfer_to_litter_fire     =>    veg_pf%m_deadstemp_xfer_to_litter_fire ,&
-     !    m_frootp_to_litter_fire             =>    veg_pf%m_frootp_to_litter_fire ,&
+        !    m_frootp_to_litter_fire             =>    veg_pf%m_frootp_to_litter_fire ,&
         m_frootp_storage_to_litter_fire     =>    veg_pf%m_frootp_storage_to_litter_fire ,&
         m_frootp_xfer_to_litter_fire        =>    veg_pf%m_frootp_xfer_to_litter_fire ,&
         m_livecrootp_to_litter_fire         =>    veg_pf%m_livecrootp_to_litter_fire ,&
@@ -1062,7 +1062,7 @@ contains
         m_deadstemc_to_fire(p)           =  deadstemc(p)          * m_veg * f * cc_dstem(itype)
         m_deadstemc_storage_to_fire(p)   =  deadstemc_storage(p)  * f * cc_other_sc
         m_deadstemc_xfer_to_fire(p)      =  deadstemc_xfer(p)     * f * cc_other_sc
-     !    m_frootc_to_fire(p)              =  frootc(p)             * f * 0._r8
+        !    m_frootc_to_fire(p)              =  frootc(p)             * f * 0._r8
         m_frootc_storage_to_fire(p)      =  frootc_storage(p)     * f * cc_other_sc
         m_frootc_xfer_to_fire(p)         =  frootc_xfer(p)        * f * cc_other_sc
         m_livecrootc_to_fire(p)          =  livecrootc(p)         * f * 0._r8
@@ -1085,7 +1085,7 @@ contains
         m_deadstemn_to_fire(p)           =  deadstemn(p)          * m_veg * f * cc_dstem(itype)
         m_deadstemn_storage_to_fire(p)   =  deadstemn_storage(p)  * f * cc_other_sc
         m_deadstemn_xfer_to_fire(p)      =  deadstemn_xfer(p)     * f * cc_other_sc
-     !    m_frootn_to_fire(p)              =  frootn(p)             * f * 0._r8
+        !    m_frootn_to_fire(p)              =  frootn(p)             * f * 0._r8
         m_frootn_storage_to_fire(p)      =  frootn_storage(p)     * f * cc_other_sc
         m_frootn_xfer_to_fire(p)         =  frootn_xfer(p)        * f * cc_other_sc
         m_livecrootn_to_fire(p)          =  livecrootn(p)         * f * 0._r8
@@ -1108,7 +1108,7 @@ contains
         m_deadstemp_to_fire(p)           =  deadstemp(p)          * f * cc_dstem(itype)
         m_deadstemp_storage_to_fire(p)   =  deadstemp_storage(p)  * f * cc_other_sc
         m_deadstemp_xfer_to_fire(p)      =  deadstemp_xfer(p)     * f * cc_other_sc
-     !    m_frootp_to_fire(p)              =  frootp(p)             * f * 0._r8
+        !    m_frootp_to_fire(p)              =  frootp(p)             * f * 0._r8
         m_frootp_storage_to_fire(p)      =  frootp_storage(p)     * f * cc_other_sc
         m_frootp_xfer_to_fire(p)         =  frootp_xfer(p)        * f * cc_other_sc
         m_livecrootp_to_fire(p)          =  livecrootp(p)         * f * 0._r8
@@ -1120,21 +1120,21 @@ contains
         m_retransp_to_fire(p)            =  retransp(p)           * f * cc_other_sc
         m_ppool_to_fire(p)               =  ppool(p)              * f * cc_other_sc
 #if defined(TAM)
-     m_froottc_to_fire(p)              =  froottc(p)             * f * 0._r8
-     m_froottn_to_fire(p)              =  froottn(p)             * f * 0._r8
-     m_froottp_to_fire(p)              =  froottp(p)             * f * 0._r8
+         m_froottc_to_fire(p)              =  froottc(p)             * f * 0._r8
+         m_froottn_to_fire(p)              =  froottn(p)             * f * 0._r8
+         m_froottp_to_fire(p)              =  froottp(p)             * f * 0._r8
 
-     m_frootac_to_fire(p)              =  frootac(p)             * f * 0._r8
-     m_frootan_to_fire(p)              =  frootan(p)             * f * 0._r8
-     m_frootap_to_fire(p)              =  frootap(p)             * f * 0._r8
+         m_frootac_to_fire(p)              =  frootac(p)             * f * 0._r8
+         m_frootan_to_fire(p)              =  frootan(p)             * f * 0._r8
+         m_frootap_to_fire(p)              =  frootap(p)             * f * 0._r8
 
-     m_frootmc_to_fire(p)              =  frootmc(p)             * f * 0._r8
-     m_frootmn_to_fire(p)              =  frootmn(p)             * f * 0._r8
-     m_frootmp_to_fire(p)              =  frootmp(p)             * f * 0._r8
+         m_frootmc_to_fire(p)              =  frootmc(p)             * f * 0._r8
+         m_frootmn_to_fire(p)              =  frootmn(p)             * f * 0._r8
+         m_frootmp_to_fire(p)              =  frootmp(p)             * f * 0._r8
 #else
-     m_frootc_to_fire(p)              =  frootc(p)             * f * 0._r8
-     m_frootn_to_fire(p)              =  frootn(p)             * f * 0._r8
-     m_frootp_to_fire(p)              =  frootp(p)             * f * 0._r8
+         m_frootc_to_fire(p)              =  frootc(p)             * f * 0._r8
+         m_frootn_to_fire(p)              =  frootn(p)             * f * 0._r8
+         m_frootp_to_fire(p)              =  frootp(p)             * f * 0._r8
 #endif
 
         ! mortality due to fire
@@ -1169,8 +1169,8 @@ contains
         m_deadstemc_xfer_to_litter_fire(p)          =  deadstemc_xfer(p) * f * &
              (1._r8 - cc_other_sc) * &
              fm_other(itype)
-     !    m_frootc_to_litter_fire(p)                  =  frootc(p)             * f * &
-     !         fm_root(itype)
+        !    m_frootc_to_litter_fire(p)                  =  frootc(p)             * f * &
+        !         fm_root(itype)
         m_frootc_storage_to_litter_fire(p)          =  frootc_storage(p)     * f * &
              fm_other(itype)
         m_frootc_xfer_to_litter_fire(p)             =  frootc_xfer(p)        * f * &
@@ -1221,8 +1221,8 @@ contains
         m_livestemn_to_deadstemn_fire(p)           =  livestemn(p) * f * &
              (1._r8 - cc_lstem(itype)) * &
              (fm_lstem(itype)-fm_droot(itype))
-     !    m_frootn_to_litter_fire(p)                 =  frootn(p)             * f * &
-     !         fm_root(itype)
+        !    m_frootn_to_litter_fire(p)                 =  frootn(p)             * f * &
+        !         fm_root(itype)
         m_deadstemn_to_litter_fire(p)              =  deadstemn(p) * m_veg * f *  &
              (1._r8 - cc_dstem(itype)) * &
              fm_droot(itype)
@@ -1279,8 +1279,8 @@ contains
         m_livestemp_to_deadstemp_fire(p)           =  livestemp(p) * f * &
              (1._r8 - cc_lstem(itype)) * &
              (fm_lstem(itype)-fm_droot(itype))
-        m_frootp_to_litter_fire(p)                 =  frootp(p)             * f * &
-             fm_root(itype)
+        !   m_frootp_to_litter_fire(p)                 =  frootp(p)             * f * &
+        !        fm_root(itype)
         m_deadstemp_to_litter_fire(p)               =  deadstemp(p) * m_veg * f *  &
              (1._r8 - cc_dstem(itype)) * &
              fm_droot(itype)

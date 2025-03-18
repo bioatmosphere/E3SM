@@ -678,6 +678,9 @@ contains
       !$acc routine seq
    use pftvarcon            , only: cc_leaf,cc_lstem,cc_dstem,cc_other,fm_leaf,fm_lstem,fm_other,fm_root,fm_lroot,fm_droot
    use pftvarcon            , only: nc3crop,lf_flab,lf_fcel,lf_flig,fr_flab,fr_fcel,fr_flig
+#if defined(TAM)
+   use pftvarcon            , only: frt_flab, frt_fcel, frt_flig, fra_flab, fra_fcel, fra_flig, frm_flab, frm_fcel, frm_flig
+#endif
    use elm_varpar           , only: max_patch_per_col
    use elm_varctl           , only: spinup_state, spinup_mortality_factor
    use dynSubgridControlMod , only: get_flanduse_timeseries

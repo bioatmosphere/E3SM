@@ -2447,11 +2447,21 @@ contains
              if (ivt(p) >= npcropmin) then ! skip 2 generic crops
                  if (croplive(p)) then
                      f1 = aroot(p) / aleaf(p)
+#if defined(TAM)
+                     f1t = f1/3.0_r8
+                     f1a = f1/3.0_r8
+                     f1m = f1/3.0_r8
+#endif
                      f3 = astem(p) / aleaf(p)
                      f5 = arepr(p) / aleaf(p)
                      g1 = 0.25_r8
                  else
                      f1 = 0._r8
+#if defined(TAM)
+                     f1t = f1/3.0_r8
+                     f1a = f1/3.0_r8
+                     f1m = f1/3.0_r8
+#endif
                      f3 = 0._r8
                      f5 = 0._r8
                      g1 = 0.25_r8

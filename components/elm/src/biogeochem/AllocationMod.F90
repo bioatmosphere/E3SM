@@ -965,18 +965,33 @@ contains
             cng = graincn(ivt(p))
             cpg = graincp(ivt(p))
             c_allometry(p) = (1._r8+g1)*(1._r8+f1+f5+f3*(1._r8+f2))
+#if defined(TAM)
+            n_allometry(p) = 1._r8/cnl + f1*(f1t/cnfrt + f1a/cnfra + f1m/cnfrm) + &
+                 f5/cng + (f3*f4*(1._r8+f2))/cnlw + &
+                 (f3*(1._r8-f4)*(1._r8+f2))/cndw
+            p_allometry(p) = 1._r8/cpl + f1*(f1t/cpfrt + f1a/cpfra + f1m/cpfrm) + &
+                 f5/cpg + (f3*f4*(1._r8+f2))/cplw + &
+                 (f3*(1._r8-f4)*(1._r8+f2))/cpdw
+#else
             n_allometry(p) = 1._r8/cnl + f1/cnfr + f5/cng + (f3*f4*(1._r8+f2))/cnlw + &
                  (f3*(1._r8-f4)*(1._r8+f2))/cndw
             p_allometry(p) = 1._r8/cpl + f1/cpfr + f5/cpg + (f3*f4*(1._r8+f2))/cplw + &
                  (f3*(1._r8-f4)*(1._r8+f2))/cpdw
-
+#endif
          else
             c_allometry(p) = (1._r8+g1)*(1._r8+f1+f3) ! B Sulman: Let graminoids allocate rhizomes (all livecroot) using stem_leaf parameter
+            
+#if defined(TAM)
+            n_allometry(p) = 1._r8/cnl + f1*(f1t/cnfrt + f1a/cnfra + f1m/cnfrm)
+            if(cnlw>0) n_allometry(p) = n_allometry(p) + f3/cnlw ! Rhizomes
+            p_allometry(p) = 1._r8/cpl + f1*(f1t/cpfrt + f1a/cpfra + f1m/cpfrm)
+            if(cplw>0) p_allometry(p) = p_allometry(p) + f3/cplw ! Rhizomes
+#else
             n_allometry(p) = 1._r8/cnl + f1/cnfr
             if(cnlw>0) n_allometry(p) = n_allometry(p) + f3/cnlw ! Rhizomes
             p_allometry(p) = 1._r8/cpl + f1/cpfr
             if(cplw>0) p_allometry(p) = p_allometry(p) + f3/cplw ! Rhizomes
-            
+#endif            
          end if
          plant_ndemand(p) = availc(p)*(n_allometry(p)/c_allometry(p))
          plant_pdemand(p) = availc(p)*(p_allometry(p)/c_allometry(p))

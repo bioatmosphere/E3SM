@@ -915,6 +915,11 @@ contains
                end if
 
                f1 = aroot(p) / aleaf(p)
+#if defined(TAM)
+               f1t = f1 /3.0_r8
+               f1a = f1 /3.0_r8
+               f1m = f1 /3.0_r8
+#endif
                f3 = astem(p) / aleaf(p)
                f5 = arepr(p) / aleaf(p)
                g1 = 0.25_r8
@@ -931,12 +936,22 @@ contains
                astem(p) = 1._r8 - arepr(p) - aleaf(p) - aroot(p)
 
                f1 = aroot(p) / aleaf(p)
+#if defined(TAM)
+               f1t = f1 /3.0_r8
+               f1a = f1 /3.0_r8
+               f1m = f1 /3.0_r8
+#endif
                f3 = astem(p) / aleaf(p)
                f5 = arepr(p) / aleaf(p)
                g1 = 0.25_r8
 
             else   ! .not croplive
                f1 = 0._r8
+#if defined(TAM)
+               f1t = f1 /3.0_r8
+               f1a = f1 /3.0_r8
+               f1m = f1 /3.0_r8
+#endif
                f3 = 0._r8
                f5 = 0._r8
                g1 = 0.25_r8
@@ -980,7 +995,7 @@ contains
 #endif
          else
             c_allometry(p) = (1._r8+g1)*(1._r8+f1+f3) ! B Sulman: Let graminoids allocate rhizomes (all livecroot) using stem_leaf parameter
-            
+
 #if defined(TAM)
             n_allometry(p) = 1._r8/cnl + f1*(f1t/cnfrt + f1a/cnfra + f1m/cnfrm)
             if(cnlw>0) n_allometry(p) = n_allometry(p) + f3/cnlw ! Rhizomes

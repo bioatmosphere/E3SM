@@ -889,6 +889,8 @@ contains
                              fstemcn(ivt(p))))
 #if defined(TAM)
                         froottn_to_retransn(p) = 0._r8
+                        frootan_to_retransn(p) = 0._r8
+                        frootmn_to_retransn(p) = 0._r8
                         if (ffrootcn(ivt(p)) > 0._r8) then
                            froottn_to_retransn(p) = t1 * ((froottc(p) / froottcn(ivt(p))) - (froottc(p) / &
                                 ffrootcn(ivt(p))))

@@ -8769,12 +8769,27 @@ module VegetationDataType
          dim1name='pft', &
          long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%prev_leafc_to_litter)
+#if defined(TAM)
+     call restartvar(ncid=ncid, flag=flag, varname='prev_froottc_to_litter', xtype=ncd_double,  &
+         dim1name='pft', &
+         long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%prev_froottc_to_litter)
 
+     call restartvar(ncid=ncid, flag=flag, varname='prev_frootac_to_litter', xtype=ncd_double,  &
+         dim1name='pft', &
+         long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%prev_frootac_to_litter)
+
+     call restartvar(ncid=ncid, flag=flag, varname='prev_frootmc_to_litter', xtype=ncd_double,  &
+         dim1name='pft', &
+         long_name='', units='', &
+         interpinic_flag='interp', readvar=readvar, data=this%prev_frootmc_to_litter)
+#else
     call restartvar(ncid=ncid, flag=flag, varname='prev_frootc_to_litter', xtype=ncd_double,  &
          dim1name='pft', &
          long_name='', units='', &
          interpinic_flag='interp', readvar=readvar, data=this%prev_frootc_to_litter)
-
+#endif
     call restartvar(ncid=ncid, flag=flag, varname='tempsum_npp', xtype=ncd_double,  &
          dim1name='pft', &
          long_name='', units='', &
@@ -10821,8 +10836,13 @@ module VegetationDataType
           this%npool_to_grainn_storage(i)          = value_patch
           this%grainn_storage_to_xfer(i)           = value_patch
           this%soyfixn(i)                          = value_patch
-          !TAM
+#if defined(TAM)
+          this%froottn_to_retransn(i)               = value_patch
+          this%frootan_to_retransn(i)               = value_patch
+          this%frootmn_to_retransn(i)               = value_patch
+#else
           this%frootn_to_retransn(i)               = value_patch
+#endif
        end do
     end if
 
@@ -11250,9 +11270,9 @@ module VegetationDataType
     allocate(this%m_frootap_to_litter_fire             (begp:endp)) ; this%m_frootap_to_litter_fire             (:) = spval
     allocate(this%m_frootmp_to_litter_fire             (begp:endp)) ; this%m_frootmp_to_litter_fire             (:) = spval
 
-    allocate(this%froottp_xfer_to_frootp               (begp:endp)) ; this%froottp_xfer_to_frootp               (:) = spval
-    allocate(this%frootap_xfer_to_frootp               (begp:endp)) ; this%frootap_xfer_to_frootp               (:) = spval
-    allocate(this%frootmp_xfer_to_frootp               (begp:endp)) ; this%frootmp_xfer_to_frootp               (:) = spval
+    allocate(this%frootp_xfer_to_froottp               (begp:endp)) ; this%frootp_xfer_to_froottp               (:) = spval
+    allocate(this%frootp_xfer_to_frootap               (begp:endp)) ; this%frootp_xfer_to_frootap               (:) = spval
+    allocate(this%frootp_xfer_to_frootmp               (begp:endp)) ; this%frootp_xfer_to_frootmp               (:) = spval
 
     allocate(this%froottp_to_retransp                  (begp:endp)) ; this%froottp_to_retransp                  (:) = spval
     allocate(this%frootap_to_retransp                  (begp:endp)) ; this%frootap_to_retransp                  (:) = spval
@@ -11315,20 +11335,20 @@ module VegetationDataType
           avgflag='A', long_name='fine root m P fire loss ', &
           ptr_patch=this%m_frootmp_to_fire, default='inactive')
 
-     this%froottp_xfer_to_frootp(begp:endp) = spval
-     call hist_addfld1d (fname='FROOTTP_XFER_TO_FROOTP', units='gP/m^2/s', &
+     this%frootp_xfer_to_froottp(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTP_XFER_TO_FROOTTP', units='gP/m^2/s', &
           avgflag='A', long_name='fine root t P growth from storage', &
-          ptr_patch=this%froottp_xfer_to_frootp, default='inactive') 
+          ptr_patch=this%frootp_xfer_to_froottp, default='inactive') 
 
-     this%frootap_xfer_to_frootp(begp:endp) = spval
-     call hist_addfld1d (fname='FROOTAP_XFER_TO_FROOTP', units='gP/m^2/s', &
+     this%frootp_xfer_to_frootap(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTP_XFER_TO_FROOTAP', units='gP/m^2/s', &
           avgflag='A', long_name='fine root a P growth from storage', &
-          ptr_patch=this%frootap_xfer_to_frootp, default='inactive') 
+          ptr_patch=this%frootp_xfer_to_frootap, default='inactive') 
 
-     this%frootmp_xfer_to_frootp(begp:endp) = spval
-     call hist_addfld1d (fname='FROOTMP_XFER_TO_FROOTP', units='gP/m^2/s', &
+     this%frootp_xfer_to_frootmp(begp:endp) = spval
+     call hist_addfld1d (fname='FROOTP_XFER_TO_FROOTMP', units='gP/m^2/s', &
           avgflag='A', long_name='fine root m P growth from storage', &
-          ptr_patch=this%frootmp_xfer_to_frootp, default='inactive')
+          ptr_patch=this%frootp_xfer_to_frootmp, default='inactive')
 
      this%froottp_to_litter(begp:endp) = spval
      call hist_addfld1d (fname='FROOTTP_TO_LITTER', units='gP/m^2/s', &

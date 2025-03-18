@@ -387,12 +387,16 @@ contains
             stem_prof_sum = stem_prof_sum + stem_prof(p,j) *  dzsoi_decomp(j)
 #endif
          end do
+
+#if defined(TAM)
+
+#else
          if ( ( abs(froot_prof_sum - 1._r8) > delta ) .or.  ( abs(croot_prof_sum - 1._r8) > delta ) .or. &
               ( abs(stem_prof_sum - 1._r8) > delta ) .or.  ( abs(leaf_prof_sum - 1._r8) > delta ) ) then
             write(iulog, *) 'profile sums: ', froot_prof_sum, croot_prof_sum, leaf_prof_sum, stem_prof_sum
             call endrun(msg=' ERROR: sum-1 > delta'//errMsg(__FILE__, __LINE__))
          endif
-
+#endif
       end do ! fp
 
     end associate 

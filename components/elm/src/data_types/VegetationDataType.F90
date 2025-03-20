@@ -2542,12 +2542,14 @@ module VegetationDataType
        call hist_addfld1d (fname='C14_LEAFC_XFER', units='gC14/m^2', &
              avgflag='A', long_name='C14 leaf C transfer', &
              ptr_patch=this%leafc_xfer, default='inactive')
-       !TAM
+#if defined(TAM)
+
+#else
        this%frootc(begp:endp) = spval
        call hist_addfld1d (fname='C14_FROOTC', units='gC14/m^2', &
              avgflag='A', long_name='C14 fine root C', &
              ptr_patch=this%frootc)
-
+#endif
        this%frootc_storage(begp:endp) = spval
        call hist_addfld1d (fname='C14_FROOTC_STORAGE', units='gC14/m^2', &
              avgflag='A', long_name='C14 fine root C storage', &
@@ -2738,12 +2740,20 @@ module VegetationDataType
                    if (veg_vp%evergreen(veg_pp%itype(p)) == 1._r8) then
                       this%leafc(p) = 20._r8 * ratio
                       this%leafc_storage(p) = 0._r8
+#if defined(TAM)
+
+#else
                       this%frootc(p) = 20._r8 * ratio
+#endif
                       this%frootc_storage(p) = 0._r8
                    else
                       this%leafc(p) = 0._r8
                       this%leafc_storage(p) = 20._r8 * ratio
+#if defined(TAM)
+
+#else
                       this%frootc(p) = 0._r8
+#endif
                       this%frootc_storage(p) = 20._r8 * ratio
                    end if
                 end if
@@ -3130,7 +3140,10 @@ module VegetationDataType
                 endif
              end do
           end if
-          !TAM
+#if defined(TAM)
+
+
+#else
           call restartvar(ncid=ncid, flag=flag, varname='frootc_13', xtype=ncd_double,  &
                dim1name='pft', long_name='', units='', &
                interpinic_flag='interp', readvar=readvar, data=this%frootc)
@@ -3144,7 +3157,7 @@ module VegetationDataType
                 endif
              end do
           end if
-
+#endif
           call restartvar(ncid=ncid, flag=flag, varname='frootc_storage_13', xtype=ncd_double,  &
                dim1name='pft', long_name='', units='', &
                interpinic_flag='interp', readvar=readvar, data=this%frootc_storage)
@@ -3471,7 +3484,10 @@ module VegetationDataType
                 endif
              end do
           end if
-          !TAM
+#if defined(TAM)
+
+
+#else
           call restartvar(ncid=ncid, flag=flag, varname='frootc_14', xtype=ncd_double,  &
                dim1name='pft', long_name='', units='', &
                interpinic_flag='interp', readvar=readvar, data=this%frootc)
@@ -3484,7 +3500,7 @@ module VegetationDataType
                 endif
              end do
           end if
-
+#endif
           call restartvar(ncid=ncid, flag=flag, varname='frootc_storage_14', xtype=ncd_double,  &
                dim1name='pft', long_name='', units='', &
                interpinic_flag='interp', readvar=readvar, data=this%frootc_storage)
@@ -4092,7 +4108,7 @@ module VegetationDataType
     this%frootan(begp:endp) = spval
     call hist_addfld1d (fname='FROOTAN', units='gN/m^2', &
          avgflag='A', long_name='fine root A N', &
-         ptr_patch=this%frootn)
+         ptr_patch=this%frootan)
 
     this%frootmn(begp:endp) = spval
     call hist_addfld1d (fname='FROOTMN', units='gN/m^2', &
@@ -4272,8 +4288,12 @@ module VegetationDataType
               ! ECA competition calculate root NP uptake as a function of fine root biomass
               ! better to initialize root CNP pools with a non-zero value
               if (veg_pp%itype(p) .ne. noveg) then
+#if defined(TAM)
+
+#else
                  this%frootn(p) = veg_cs%frootc(p) / veg_vp%frootcn(veg_pp%itype(p))
                  this%frootn_storage(p) = veg_cs%frootc_storage(p) / veg_vp%frootcn(veg_pp%itype(p))
+#endif
               end if
           end if
 
@@ -4354,15 +4374,15 @@ module VegetationDataType
 #if defined(TAM)
      call restartvar(ncid=ncid, flag=flag, varname='froottn', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
-         interpinic_flag='interp', readvar=readvar, data=this%frootn)
+         interpinic_flag='interp', readvar=readvar, data=this%froottn)
 
      call restartvar(ncid=ncid, flag=flag, varname='frootan', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
-         interpinic_flag='interp', readvar=readvar, data=this%frootn)
+         interpinic_flag='interp', readvar=readvar, data=this%frootan)
 
      call restartvar(ncid=ncid, flag=flag, varname='frootmn', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
-         interpinic_flag='interp', readvar=readvar, data=this%frootn)
+         interpinic_flag='interp', readvar=readvar, data=this%frootmn)
 #else
      call restartvar(ncid=ncid, flag=flag, varname='frootn', xtype=ncd_double,  &
          dim1name='pft', long_name='', units='', &
@@ -5015,8 +5035,12 @@ module VegetationDataType
               ! ECA competition calculate root NP uptake as a function of fine root biomass
               ! better to initialize root CNP pools with a non-zero value
               if (veg_pp%itype(p) .ne. noveg) then
+#if defined(TAM)
+
+#else
                  this%frootp(p) = veg_cs%frootc(p) / veg_vp%frootcp(veg_pp%itype(p))
                  this%frootp_storage(p) = veg_cs%frootc_storage(p) / veg_vp%frootcp(veg_pp%itype(p))
+#endif
               end if
           end if
 
@@ -7337,10 +7361,14 @@ module VegetationDataType
           call hist_addfld1d (fname='allocation_stem', units='', &
                avgflag='A', long_name='fraction of availc allocated to stem', &
                ptr_patch=this%allocation_stem)
+#if defined(TAM)
+
+#else
           this%allocation_froot(begp:endp) = spval
           call hist_addfld1d (fname='allocation_froot', units='', &
                avgflag='A', long_name='fraction of availc allocated to fine root', &
                ptr_patch=this%allocation_froot)
+#endif
        end if
 
        this%crop_seedc_to_leaf(begp:endp) = spval
@@ -7393,12 +7421,53 @@ module VegetationDataType
        call hist_addfld1d (fname='C13_M_LEAFC_TO_LITTER', units='gC13/m^2/s', &
             avgflag='A', long_name='C13 leaf C mortality', &
             ptr_patch=this%m_leafc_to_litter, default='inactive')
+#if defined(TAM)
 
+#else
        this%m_frootc_to_litter(begp:endp) = spval
        call hist_addfld1d (fname='C13_M_FROOTC_TO_LITTER', units='gC13/m^2/s', &
             avgflag='A', long_name='C13 fine root C mortality', &
             ptr_patch=this%m_frootc_to_litter, default='inactive')
 
+       this%m_frootc_to_fire(begp:endp) = spval
+       call hist_addfld1d (fname='C13_M_FROOTC_TO_FIRE', units='gC13/m^2/s', &
+          avgflag='A', long_name='C13 fine root C fire loss', &
+          ptr_patch=this%m_frootc_to_fire, default='inactive')
+
+       this%frootc_xfer_to_frootc(begp:endp) = spval
+       call hist_addfld1d (fname='C13_FROOTC_XFER_TO_FROOTC', units='gC13/m^2/s', &
+            avgflag='A', long_name='C13 fine root C growth from storage', &
+            ptr_patch=this%frootc_xfer_to_frootc, default='inactive')
+
+
+       this%frootc_to_litter(begp:endp) = spval
+       call hist_addfld1d (fname='C13_FROOTC_TO_LITTER', units='gC13/m^2/s', &
+          avgflag='A', long_name='C13 fine root C litterfall', &
+          ptr_patch=this%frootc_to_litter, default='inactive')
+
+
+       this%froot_mr(begp:endp) = spval
+       call hist_addfld1d (fname='C13_FROOT_MR', units='gC13/m^2/s', &
+          avgflag='A', long_name='C13 fine root maintenance respiration', &
+          ptr_patch=this%froot_mr, default='inactive')
+
+
+       this%cpool_to_frootc(begp:endp) = spval
+       call hist_addfld1d (fname='C13_CPOOL_TO_FROOTC', units='gC13/m^2/s', &
+          avgflag='A', long_name='C13 allocation to fine root C', &
+          ptr_patch=this%cpool_to_frootc, default='inactive')
+
+
+       this%cpool_froot_gr(begp:endp) = spval
+       call hist_addfld1d (fname='C13_CPOOL_FROOT_GR', units='gC13/m^2/s', &
+            avgflag='A', long_name='C13 fine root growth respiration', &
+            ptr_patch=this%cpool_froot_gr, default='inactive')
+
+       this%transfer_froot_gr(begp:endp) = spval
+       call hist_addfld1d (fname='C13_TRANSFER_FROOT_GR', units='gC13/m^2/s', &
+            avgflag='A', long_name='C13 fine root  growth respiration from storage', &
+            ptr_patch=this%transfer_froot_gr, default='inactive')
+#endif
        this%m_leafc_storage_to_litter(begp:endp) = spval
        call hist_addfld1d (fname='C13_M_LEAFC_STORAGE_TO_LITTER', units='gC13/m^2/s', &
             avgflag='A', long_name='C13 leaf C storage mortality', &
@@ -7494,10 +7563,10 @@ module VegetationDataType
             avgflag='A', long_name='C13 leaf C fire loss', &
             ptr_patch=this%m_leafc_to_fire, default='inactive')
 
-       this%m_frootc_to_fire(begp:endp) = spval
-       call hist_addfld1d (fname='C13_M_FROOTC_TO_FIRE', units='gC13/m^2/s', &
-            avgflag='A', long_name='C13 fine root C fire loss', &
-            ptr_patch=this%m_frootc_to_fire, default='inactive')
+     !   this%m_frootc_to_fire(begp:endp) = spval
+     !   call hist_addfld1d (fname='C13_M_FROOTC_TO_FIRE', units='gC13/m^2/s', &
+     !        avgflag='A', long_name='C13 fine root C fire loss', &
+     !        ptr_patch=this%m_frootc_to_fire, default='inactive')
 
        this%m_leafc_storage_to_fire(begp:endp) = spval
        call hist_addfld1d (fname='C13_M_LEAFC_STORAGE_TO_FIRE', units='gC13/m^2/s', &
@@ -7604,10 +7673,10 @@ module VegetationDataType
             avgflag='A', long_name='C13 leaf C growth from storage', &
             ptr_patch=this%leafc_xfer_to_leafc, default='inactive')
 
-       this%frootc_xfer_to_frootc(begp:endp) = spval
-       call hist_addfld1d (fname='C13_FROOTC_XFER_TO_FROOTC', units='gC13/m^2/s', &
-            avgflag='A', long_name='C13 fine root C growth from storage', &
-            ptr_patch=this%frootc_xfer_to_frootc, default='inactive')
+     !   this%frootc_xfer_to_frootc(begp:endp) = spval
+     !   call hist_addfld1d (fname='C13_FROOTC_XFER_TO_FROOTC', units='gC13/m^2/s', &
+     !        avgflag='A', long_name='C13 fine root C growth from storage', &
+     !        ptr_patch=this%frootc_xfer_to_frootc, default='inactive')
 
        this%livestemc_xfer_to_livestemc(begp:endp) = spval
        call hist_addfld1d (fname='C13_LIVESTEMC_XFER_TO_LIVESTEMC', units='gC13/m^2/s', &
@@ -7634,10 +7703,10 @@ module VegetationDataType
             avgflag='A', long_name='C13 leaf C litterfall', &
             ptr_patch=this%leafc_to_litter, default='inactive')
 
-       this%frootc_to_litter(begp:endp) = spval
-       call hist_addfld1d (fname='C13_FROOTC_TO_LITTER', units='gC13/m^2/s', &
-            avgflag='A', long_name='C13 fine root C litterfall', &
-            ptr_patch=this%frootc_to_litter, default='inactive')
+     !   this%frootc_to_litter(begp:endp) = spval
+     !   call hist_addfld1d (fname='C13_FROOTC_TO_LITTER', units='gC13/m^2/s', &
+     !        avgflag='A', long_name='C13 fine root C litterfall', &
+     !        ptr_patch=this%frootc_to_litter, default='inactive')
 
        this%livecrootc_to_litter(begp:endp) = spval
        call hist_addfld1d (fname='C13_LIVECROOTC_TO_LITTER', units='gC13/m^2/s', &
@@ -7649,10 +7718,10 @@ module VegetationDataType
             avgflag='A', long_name='C13 leaf maintenance respiration', &
             ptr_patch=this%leaf_mr, default='inactive')
 
-       this%froot_mr(begp:endp) = spval
-       call hist_addfld1d (fname='C13_FROOT_MR', units='gC13/m^2/s', &
-            avgflag='A', long_name='C13 fine root maintenance respiration', &
-            ptr_patch=this%froot_mr, default='inactive')
+     !   this%froot_mr(begp:endp) = spval
+     !   call hist_addfld1d (fname='C13_FROOT_MR', units='gC13/m^2/s', &
+     !        avgflag='A', long_name='C13 fine root maintenance respiration', &
+     !        ptr_patch=this%froot_mr, default='inactive')
 
        this%livestem_mr(begp:endp) = spval
        call hist_addfld1d (fname='C13_LIVESTEM_MR', units='gC13/m^2/s', &
@@ -7684,10 +7753,10 @@ module VegetationDataType
             avgflag='A', long_name='C13 allocation to leaf C storage', &
             ptr_patch=this%cpool_to_leafc_storage, default='inactive')
 
-       this%cpool_to_frootc(begp:endp) = spval
-       call hist_addfld1d (fname='C13_CPOOL_TO_FROOTC', units='gC13/m^2/s', &
-            avgflag='A', long_name='C13 allocation to fine root C', &
-            ptr_patch=this%cpool_to_frootc, default='inactive')
+     !   this%cpool_to_frootc(begp:endp) = spval
+     !   call hist_addfld1d (fname='C13_CPOOL_TO_FROOTC', units='gC13/m^2/s', &
+     !        avgflag='A', long_name='C13 allocation to fine root C', &
+     !        ptr_patch=this%cpool_to_frootc, default='inactive')
 
        this%cpool_to_frootc_storage(begp:endp) = spval
        call hist_addfld1d (fname='C13_CPOOL_TO_FROOTC_STORAGE', units='gC13/m^2/s', &
@@ -7754,20 +7823,20 @@ module VegetationDataType
             avgflag='A', long_name='C13 leaf growth respiration from storage', &
             ptr_patch=this%transfer_leaf_gr, default='inactive')
 
-       this%cpool_froot_gr(begp:endp) = spval
-       call hist_addfld1d (fname='C13_CPOOL_FROOT_GR', units='gC13/m^2/s', &
-            avgflag='A', long_name='C13 fine root growth respiration', &
-            ptr_patch=this%cpool_froot_gr, default='inactive')
+     !   this%cpool_froot_gr(begp:endp) = spval
+     !   call hist_addfld1d (fname='C13_CPOOL_FROOT_GR', units='gC13/m^2/s', &
+     !        avgflag='A', long_name='C13 fine root growth respiration', &
+     !        ptr_patch=this%cpool_froot_gr, default='inactive')
 
        this%cpool_froot_storage_gr(begp:endp) = spval
        call hist_addfld1d (fname='C13_CPOOL_FROOT_STORAGE_GR', units='gC13/m^2/s', &
             avgflag='A', long_name='C13 fine root  growth respiration to storage', &
             ptr_patch=this%cpool_froot_storage_gr, default='inactive')
 
-       this%transfer_froot_gr(begp:endp) = spval
-       call hist_addfld1d (fname='C13_TRANSFER_FROOT_GR', units='gC13/m^2/s', &
-            avgflag='A', long_name='C13 fine root  growth respiration from storage', &
-            ptr_patch=this%transfer_froot_gr, default='inactive')
+     !   this%transfer_froot_gr(begp:endp) = spval
+     !   call hist_addfld1d (fname='C13_TRANSFER_FROOT_GR', units='gC13/m^2/s', &
+     !        avgflag='A', long_name='C13 fine root  growth respiration from storage', &
+     !        ptr_patch=this%transfer_froot_gr, default='inactive')
 
        this%cpool_livestem_gr(begp:endp) = spval
        call hist_addfld1d (fname='C13_CPOOL_LIVESTEM_GR', units='gC13/m^2/s', &
@@ -7993,12 +8062,50 @@ module VegetationDataType
        call hist_addfld1d (fname='C14_M_LEAFC_TO_LITTER', units='gC14/m^2/s', &
             avgflag='A', long_name='C14 leaf C mortality', &
             ptr_patch=this%m_leafc_to_litter, default='inactive')
+#if defined(TAM)
 
+
+#else
        this%m_frootc_to_litter(begp:endp) = spval
        call hist_addfld1d (fname='C14_M_FROOTC_TO_LITTER', units='gC14/m^2/s', &
             avgflag='A', long_name='C14 fine root C mortality', &
             ptr_patch=this%m_frootc_to_litter, default='inactive')
 
+       this%m_frootc_to_fire(begp:endp) = spval
+       call hist_addfld1d (fname='C14_M_FROOTC_TO_FIRE', units='gC14/m^2/s', &
+            avgflag='A', long_name='C14 fine root C fire loss', &
+            ptr_patch=this%m_frootc_to_fire, default='inactive')
+
+       this%frootc_xfer_to_frootc(begp:endp) = spval
+       call hist_addfld1d (fname='C14_FROOTC_XFER_TO_FROOTC', units='gC14/m^2/s', &
+            avgflag='A', long_name='C14 fine root C growth from storage', &
+            ptr_patch=this%frootc_xfer_to_frootc, default='inactive')
+
+       this%frootc_to_litter(begp:endp) = spval
+       call hist_addfld1d (fname='C14_FROOTC_TO_LITTER', units='gC14/m^2/s', &
+            avgflag='A', long_name='C14 fine root C litterfall', &
+            ptr_patch=this%frootc_to_litter, default='inactive')
+
+       this%froot_mr(begp:endp) = spval
+       call hist_addfld1d (fname='C14_FROOT_MR', units='gC14/m^2/s', &
+            avgflag='A', long_name='C14 fine root maintenance respiration', &
+            ptr_patch=this%froot_mr, default='inactive')
+
+       this%cpool_to_frootc(begp:endp) = spval
+       call hist_addfld1d (fname='C14_CPOOL_TO_FROOTC', units='gC14/m^2/s', &
+            avgflag='A', long_name='C14 allocation to fine root C', &
+            ptr_patch=this%cpool_to_frootc, default='inactive')
+
+       this%cpool_froot_gr(begp:endp) = spval
+       call hist_addfld1d (fname='C14_CPOOL_FROOT_GR', units='gC14/m^2/s', &
+            avgflag='A', long_name='C14 fine root growth respiration', &
+            ptr_patch=this%cpool_froot_gr, default='inactive')
+
+       this%transfer_froot_gr(begp:endp) = spval
+       call hist_addfld1d (fname='C14_TRANSFER_FROOT_GR', units='gC14/m^2/s', &
+            avgflag='A', long_name='C14 fine root  growth respiration from storage', &
+            ptr_patch=this%transfer_froot_gr, default='inactive')
+#endif
        this%m_leafc_storage_to_litter(begp:endp) = spval
        call hist_addfld1d (fname='C14_M_LEAFC_STORAGE_TO_LITTER', units='gC14/m^2/s', &
             avgflag='A', long_name='C14 leaf C storage mortality', &
@@ -8094,10 +8201,10 @@ module VegetationDataType
             avgflag='A', long_name='C14 leaf C fire loss', &
             ptr_patch=this%m_leafc_to_fire, default='inactive')
 
-       this%m_frootc_to_fire(begp:endp) = spval
-       call hist_addfld1d (fname='C14_M_FROOTC_TO_FIRE', units='gC14/m^2/s', &
-            avgflag='A', long_name='C14 fine root C fire loss', &
-            ptr_patch=this%m_frootc_to_fire, default='inactive')
+     !   this%m_frootc_to_fire(begp:endp) = spval
+     !   call hist_addfld1d (fname='C14_M_FROOTC_TO_FIRE', units='gC14/m^2/s', &
+     !        avgflag='A', long_name='C14 fine root C fire loss', &
+     !        ptr_patch=this%m_frootc_to_fire, default='inactive')
 
        this%m_leafc_storage_to_fire(begp:endp) = spval
        call hist_addfld1d (fname='C14_M_LEAFC_STORAGE_TO_FIRE', units='gC14/m^2/s', &
@@ -8204,10 +8311,10 @@ module VegetationDataType
             avgflag='A', long_name='C14 leaf C growth from storage', &
             ptr_patch=this%leafc_xfer_to_leafc, default='inactive')
 
-       this%frootc_xfer_to_frootc(begp:endp) = spval
-       call hist_addfld1d (fname='C14_FROOTC_XFER_TO_FROOTC', units='gC14/m^2/s', &
-            avgflag='A', long_name='C14 fine root C growth from storage', &
-            ptr_patch=this%frootc_xfer_to_frootc, default='inactive')
+     !   this%frootc_xfer_to_frootc(begp:endp) = spval
+     !   call hist_addfld1d (fname='C14_FROOTC_XFER_TO_FROOTC', units='gC14/m^2/s', &
+     !        avgflag='A', long_name='C14 fine root C growth from storage', &
+     !        ptr_patch=this%frootc_xfer_to_frootc, default='inactive')
 
        this%livestemc_xfer_to_livestemc(begp:endp) = spval
        call hist_addfld1d (fname='C14_LIVESTEMC_XFER_TO_LIVESTEMC', units='gC14/m^2/s', &
@@ -8234,10 +8341,10 @@ module VegetationDataType
             avgflag='A', long_name='C14 leaf C litterfall', &
             ptr_patch=this%leafc_to_litter, default='inactive')
 
-       this%frootc_to_litter(begp:endp) = spval
-       call hist_addfld1d (fname='C14_FROOTC_TO_LITTER', units='gC14/m^2/s', &
-            avgflag='A', long_name='C14 fine root C litterfall', &
-            ptr_patch=this%frootc_to_litter, default='inactive')
+     !   this%frootc_to_litter(begp:endp) = spval
+     !   call hist_addfld1d (fname='C14_FROOTC_TO_LITTER', units='gC14/m^2/s', &
+     !        avgflag='A', long_name='C14 fine root C litterfall', &
+     !        ptr_patch=this%frootc_to_litter, default='inactive')
 
        this%livecrootc_to_litter(begp:endp) = spval
        call hist_addfld1d (fname='C14_LIVECROOTC_TO_LITTER', units='gC14/m^2/s', &
@@ -8249,10 +8356,10 @@ module VegetationDataType
             avgflag='A', long_name='C14 leaf maintenance respiration', &
             ptr_patch=this%leaf_mr, default='inactive')
 
-       this%froot_mr(begp:endp) = spval
-       call hist_addfld1d (fname='C14_FROOT_MR', units='gC14/m^2/s', &
-            avgflag='A', long_name='C14 fine root maintenance respiration', &
-            ptr_patch=this%froot_mr, default='inactive')
+     !   this%froot_mr(begp:endp) = spval
+     !   call hist_addfld1d (fname='C14_FROOT_MR', units='gC14/m^2/s', &
+     !        avgflag='A', long_name='C14 fine root maintenance respiration', &
+     !        ptr_patch=this%froot_mr, default='inactive')
 
        this%livestem_mr(begp:endp) = spval
        call hist_addfld1d (fname='C14_LIVESTEM_MR', units='gC14/m^2/s', &
@@ -8284,10 +8391,10 @@ module VegetationDataType
             avgflag='A', long_name='C14 allocation to leaf C storage', &
             ptr_patch=this%cpool_to_leafc_storage, default='inactive')
 
-       this%cpool_to_frootc(begp:endp) = spval
-       call hist_addfld1d (fname='C14_CPOOL_TO_FROOTC', units='gC14/m^2/s', &
-            avgflag='A', long_name='C14 allocation to fine root C', &
-            ptr_patch=this%cpool_to_frootc, default='inactive')
+     !   this%cpool_to_frootc(begp:endp) = spval
+     !   call hist_addfld1d (fname='C14_CPOOL_TO_FROOTC', units='gC14/m^2/s', &
+     !        avgflag='A', long_name='C14 allocation to fine root C', &
+     !        ptr_patch=this%cpool_to_frootc, default='inactive')
 
        this%cpool_to_frootc_storage(begp:endp) = spval
        call hist_addfld1d (fname='C14_CPOOL_TO_FROOTC_STORAGE', units='gC14/m^2/s', &
@@ -8354,20 +8461,20 @@ module VegetationDataType
             avgflag='A', long_name='C14 leaf growth respiration from storage', &
             ptr_patch=this%transfer_leaf_gr, default='inactive')
 
-       this%cpool_froot_gr(begp:endp) = spval
-       call hist_addfld1d (fname='C14_CPOOL_FROOT_GR', units='gC14/m^2/s', &
-            avgflag='A', long_name='C14 fine root growth respiration', &
-            ptr_patch=this%cpool_froot_gr, default='inactive')
+     !   this%cpool_froot_gr(begp:endp) = spval
+     !   call hist_addfld1d (fname='C14_CPOOL_FROOT_GR', units='gC14/m^2/s', &
+     !        avgflag='A', long_name='C14 fine root growth respiration', &
+     !        ptr_patch=this%cpool_froot_gr, default='inactive')
 
        this%cpool_froot_storage_gr(begp:endp) = spval
        call hist_addfld1d (fname='C14_CPOOL_FROOT_STORAGE_GR', units='gC14/m^2/s', &
             avgflag='A', long_name='C14 fine root  growth respiration to storage', &
             ptr_patch=this%cpool_froot_storage_gr, default='inactive')
 
-       this%transfer_froot_gr(begp:endp) = spval
-       call hist_addfld1d (fname='C14_TRANSFER_FROOT_GR', units='gC14/m^2/s', &
-            avgflag='A', long_name='C14 fine root  growth respiration from storage', &
-            ptr_patch=this%transfer_froot_gr, default='inactive')
+     !   this%transfer_froot_gr(begp:endp) = spval
+     !   call hist_addfld1d (fname='C14_TRANSFER_FROOT_GR', units='gC14/m^2/s', &
+     !        avgflag='A', long_name='C14 fine root  growth respiration from storage', &
+     !        ptr_patch=this%transfer_froot_gr, default='inactive')
 
        this%cpool_livestem_gr(begp:endp) = spval
        call hist_addfld1d (fname='C14_CPOOL_LIVESTEM_GR', units='gC14/m^2/s', &
@@ -11026,10 +11133,14 @@ module VegetationDataType
 #endif
 
       if (crop_prog) then
+#if defined(TAM)
+
+#else
          this%sen_nloss_litter(p) = &
              this%livestemn_to_litter(p)            + &
              this%leafn_to_litter(p)                + &
              this%frootn_to_litter(p)
+#endif
       else
          this%sen_nloss_litter(p) = &
              this%leafn_to_litter(p)                + &
@@ -11192,7 +11303,7 @@ module VegetationDataType
     allocate(this%leafp_to_retransp                   (begp:endp)) ; this%leafp_to_retransp                   (:) = spval
     !TAM
     !allocate(this%frootp_to_retransp                  (begp:endp)) ; this%frootp_to_retransp                  (:) = spval
-    allocate(this%frootp_to_litter                    (begp:endp)) ; this%frootp_to_litter                    (:) = spval
+!     allocate(this%frootp_to_litter                    (begp:endp)) ; this%frootp_to_litter                    (:) = spval
     allocate(this%retransp_to_ppool                   (begp:endp)) ; this%retransp_to_ppool                   (:) = spval
     allocate(this%sminp_to_ppool                      (begp:endp)) ; this%sminp_to_ppool                      (:) = spval
     allocate(this%biochem_pmin_to_plant               (begp:endp)) ; this%biochem_pmin_to_plant               (:) = spval
@@ -11278,6 +11389,10 @@ module VegetationDataType
     allocate(this%frootap_to_retransp                  (begp:endp)) ; this%frootap_to_retransp                  (:) = spval
     allocate(this%frootmp_to_retransp                  (begp:endp)) ; this%frootmp_to_retransp                  (:) = spval
 
+    allocate(this%froottp_to_litter                    (begp:endp)) ; this%froottp_to_litter                    (:) = spval
+    allocate(this%frootap_to_litter                    (begp:endp)) ; this%frootap_to_litter                    (:) = spval
+    allocate(this%frootmp_to_litter                    (begp:endp)) ; this%frootmp_to_litter                    (:) = spval
+
     allocate(this%ppool_to_froottp                     (begp:endp)) ; this%ppool_to_froottp                     (:) = spval
     allocate(this%ppool_to_frootap                     (begp:endp)) ; this%ppool_to_frootap                     (:) = spval
     allocate(this%ppool_to_frootmp                     (begp:endp)) ; this%ppool_to_frootmp                     (:) = spval
@@ -11293,6 +11408,7 @@ module VegetationDataType
     allocate(this%m_frootp_to_litter_fire             (begp:endp)) ; this%m_frootp_to_litter_fire             (:) = spval
     allocate(this%frootp_xfer_to_frootp               (begp:endp)) ; this%frootp_xfer_to_frootp               (:) = spval
     allocate(this%frootp_to_retransp                  (begp:endp)) ; this%frootp_to_retransp                  (:) = spval
+    allocate(this%frootp_to_litter                    (begp:endp)) ; this%frootp_to_litter                    (:) = spval
     allocate(this%ppool_to_frootp                     (begp:endp)) ; this%ppool_to_frootp                     (:) = spval
     allocate(this%prev_frootp_to_litter               (begp:endp)) ; this%prev_frootp_to_litter               (:) = spval
 #endif
@@ -12142,7 +12258,11 @@ module VegetationDataType
           this%ppool_to_grainp(i)                  = value_patch
           this%ppool_to_grainp_storage(i)          = value_patch
           this%grainp_storage_to_xfer(i)           = value_patch
+#if defined(TAM)
+
+#else
           this%frootp_to_retransp(i)               = value_patch
+#endif
           this%crop_seedp_to_leaf(i)               = value_patch
        end do
     end if
@@ -12321,10 +12441,14 @@ module VegetationDataType
 #endif
 
       if (crop_prog) then
+#if defined(TAM)
+
+#else
          this%sen_ploss_litter(p) = &
              this%livestemp_to_litter(p)            + &
              this%leafp_to_litter(p)                + &
              this%frootp_to_litter(p)
+#endif
       else
          this%sen_ploss_litter(p) = &
              this%leafp_to_litter(p)                + &

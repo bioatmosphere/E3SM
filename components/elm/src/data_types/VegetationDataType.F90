@@ -12333,8 +12333,8 @@ module VegetationDataType
 #if defined(TAM)
        this%fire_ploss(p) = &
           this%fire_ploss(p) + &
-          this%m_froottp_to_fire(p) = &
-          this%m_frootap_to_fire(p) = &
+          this%m_froottp_to_fire(p) + &
+          this%m_frootap_to_fire(p) + &
           this%m_frootmp_to_fire(p)
 #else
        this%fire_ploss(p) = &

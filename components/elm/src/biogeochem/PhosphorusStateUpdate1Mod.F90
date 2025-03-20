@@ -85,7 +85,7 @@ contains
                     col_pf%dwt_frootap_to_litr_met_p(c,j) * dt + &
                     col_pf%dwt_frootmp_to_litr_met_p(c,j) * dt
                col_ps%decomp_ppools_vr(c,j,i_cel_lit) = col_ps%decomp_ppools_vr(c,j,i_cel_lit) + &
-                    col_pf%dwt_frootap_to_litr_cel_p(c,j) * dt + &
+                    col_pf%dwt_froottp_to_litr_cel_p(c,j) * dt + &
                     col_pf%dwt_frootap_to_litr_cel_p(c,j) * dt + &
                     col_pf%dwt_frootmp_to_litr_cel_p(c,j) * dt
                col_ps%decomp_ppools_vr(c,j,i_lig_lit) = col_ps%decomp_ppools_vr(c,j,i_lig_lit) + &

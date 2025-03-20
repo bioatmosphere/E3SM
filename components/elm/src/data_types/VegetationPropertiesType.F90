@@ -592,7 +592,7 @@ contains
            this%livewdcn(m)   = livewdcn_obs(m)
            this%deadwdcn(m)   = deadwdcn_obs(m)
            this%leafcp(m)     = leafcp_obs(m)
-           this%frootcp(m)    = frootcp_obs(m)
+         !  this%frootcp(m)    = frootcp_obs(m)
            this%livewdcp(m)   = livewdcp_obs(m)
            this%deadwdcp(m)   = deadwdcp_obs(m)
 #if defined(TAM)

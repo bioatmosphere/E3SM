@@ -366,20 +366,20 @@ contains
             filter(nc)%num_hydrologyc, filter(nc)%hydrologyc, &
             soilhydrology_vars )
        call t_stopf('beggridwbal')
-#ifndef TAM
+
        if (use_betr) then
          dtime=get_step_size(); nstep=get_nstep()
          call ep_betr%SetClock(dtime= dtime, nelapstep=nstep)
          call ep_betr%BeginMassBalanceCheck(bounds_clump)
        endif
-#endif
+
        call t_startf('cnpinit')
 
        if (use_cn) then
           call t_startf('cnpvegzero')
 
           call veg_cs%ZeroDwt(bounds_clump)
-#ifndef TAM
+
           if (use_c13) then
              call c13_grc_cf%ZeroDWT(bounds_clump)
              call c13_col_cf%ZeroDWT(bounds_clump)
@@ -388,7 +388,7 @@ contains
              call c14_grc_cf%ZeroDWT(bounds_clump)
              call c14_col_cf%ZeroDWT(bounds_clump)
           end if
-#endif
+
           call veg_ns%ZeroDWT(bounds_clump)
           call veg_ps%ZeroDWT(bounds_clump)
           call t_stopf('cnpvegzero')
@@ -1002,7 +1002,7 @@ contains
        if (use_cn)then
           call crop_vars%CropIncrementYear(filter(nc)%num_pcropp, filter(nc)%pcropp)
        endif
-#ifndef TAM
+
        if(use_betr)then
          !right now betr bgc is intended only for non-ed mode
 
@@ -1028,7 +1028,7 @@ contains
                   cnstate_vars)
          endif
        endif
-#endif
+
        ! FIX(SPM,032414)  push these checks into the routines below and/or make this consistent.
 
        if( .not. is_active_betr_bgc) then
@@ -1240,7 +1240,7 @@ contains
        end if
 
        call t_stopf('hydro2 drainage')
-#ifndef TAM
+
        if (use_betr) then
           call t_startf('betr drainage')
           call ep_betr%StepWithDrainage(bounds_clump, col_pp)
@@ -1269,7 +1269,7 @@ contains
                  phosphorusflux_vars, phosphorusstate_vars)
           endif
        endif  !end use_betr
-#endif
+
 
        if (use_cn .or. use_fates) then
           if (.not. is_active_betr_bgc)then

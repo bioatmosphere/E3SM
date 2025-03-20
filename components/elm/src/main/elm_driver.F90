@@ -379,6 +379,7 @@ contains
           call t_startf('cnpvegzero')
 
           call veg_cs%ZeroDwt(bounds_clump)
+#ifndef TAM
           if (use_c13) then
              call c13_grc_cf%ZeroDWT(bounds_clump)
              call c13_col_cf%ZeroDWT(bounds_clump)
@@ -387,6 +388,7 @@ contains
              call c14_grc_cf%ZeroDWT(bounds_clump)
              call c14_col_cf%ZeroDWT(bounds_clump)
           end if
+#endif
           call veg_ns%ZeroDWT(bounds_clump)
           call veg_ps%ZeroDWT(bounds_clump)
           call t_stopf('cnpvegzero')

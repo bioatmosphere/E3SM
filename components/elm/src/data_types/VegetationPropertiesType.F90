@@ -211,12 +211,13 @@ contains
     use pftvarcon , only : ntree, smpso, smpsc, fnitr
     use pftvarcon , only : z0mr, displar, dleaf, rhol, rhos, taul, taus, xl
     use pftvarcon , only : c3psn, slatop, dsladlai, leafcn, flnr, woody
-    use pftvarcon , only : lflitcn, frootcn, livewdcn, deadwdcn, froot_leaf, stem_leaf, croot_stem
-    use pftvarcon , only : flivewd, fcur, lf_flab, lf_fcel, lf_flig, fr_flab, fr_fcel, fr_flig
-    use pftvarcon , only : leaf_long, froot_long, rhizome_long, evergreen, stress_decid, season_decid
+    !NOTE: TAM keeps froot_leaf
+    use pftvarcon , only : lflitcn, livewdcn, deadwdcn, froot_leaf, stem_leaf, croot_stem
+    use pftvarcon , only : flivewd, fcur, lf_flab, lf_fcel, lf_flig
+    use pftvarcon , only : leaf_long,  rhizome_long, evergreen, stress_decid, season_decid
     use pftvarcon , only : manunitro, graincn, fleafcn, ffrootcn, fstemcn, dwood
     use pftvarcon , only : presharv, convfact, fyield
-    use pftvarcon , only : leafcp,lflitcp, frootcp, livewdcp, deadwdcp,graincp
+    use pftvarcon , only : leafcp,lflitcp, livewdcp, deadwdcp,graincp
     use pftvarcon , only : Nfix_NPP_c1, Nfix_NPP_c2 
     use pftvarcon , only : vmax_plant_nh4, vmax_plant_no3, vmax_plant_p, vmax_minsurf_p_vr
     use pftvarcon , only : km_plant_nh4, km_plant_no3, km_plant_p, km_minsurf_p_vr
@@ -238,6 +239,9 @@ contains
     use pftvarcon,  only : froottcn, frootacn, frootmcn, froottcp, frootacp, frootmcp
     use pftvarcon , only : frt_flab, frt_fcel, frt_flig, fra_flab, fra_fcel, fra_flig, frm_flab, frm_fcel, frm_flig
     use pftvarcon , only : froott_long, froota_long, frootm_long
+#else
+    use pftvarcon , only : froot_long, fr_flab, fr_fcel, fr_flig
+    use pftvarcon , only : frootcn, frootcp
 #endif
     !
     !----------------------F.-M. Yuan (2018-03-23): user-defined parameter file ---------------------------------------------------------------------
@@ -584,13 +588,22 @@ contains
 
         if (nu_com .ne. 'RD') then ! use new stoichiometry for eca and mic competition
            this%leafcn(m)     = leafcn_obs(m)
-           this%frootcn(m)    = frootcn_obs(m)
+         !   this%frootcn(m)    = frootcn_obs(m)
            this%livewdcn(m)   = livewdcn_obs(m)
            this%deadwdcn(m)   = deadwdcn_obs(m)
            this%leafcp(m)     = leafcp_obs(m)
            this%frootcp(m)    = frootcp_obs(m)
            this%livewdcp(m)   = livewdcp_obs(m)
            this%deadwdcp(m)   = deadwdcp_obs(m)
+#if defined(TAM)
+            !Left off for later development
+
+            !this%frootcn(m)    = frootcn_obs(m)
+            !this%frootcp(m)    = frootcp_obs(m)
+#else
+            this%frootcn(m)    = frootcn_obs(m)
+            this%frootcp(m)    = frootcp_obs(m)
+#endif
         end if
     end do
 

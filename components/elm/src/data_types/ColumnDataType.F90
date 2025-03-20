@@ -7094,7 +7094,9 @@ contains
         call hist_addfld1d (fname='C13_PROD1C_LOSS', units='gC13/m^2/s', &
              avgflag='A', long_name='C13 loss from 1-yr crop product pool', &
               ptr_col=this%prod1c_loss)
+#if defined(TAM)
 
+#else
        this%dwt_frootc_to_litr_met_c(begc:endc,:) = spval
         call hist_addfld_decomp (fname='C13_DWT_FROOTC_TO_LITR_MET_C', units='gC13/m^2/s',  type2d='levdcmp', &
              avgflag='A', long_name='C13 fine root to litter due to landcover change', &
@@ -7109,7 +7111,7 @@ contains
         call hist_addfld_decomp (fname='C13_DWT_FROOTC_TO_LITR_LIG_C', units='gC13/m^2/s',  type2d='levdcmp', &
              avgflag='A', long_name='C13 fine root to litter due to landcover change', &
               ptr_col=this%dwt_frootc_to_litr_lig_c, default='inactive')
-
+#endif
        this%dwt_livecrootc_to_cwdc(begc:endc,:) = spval
         call hist_addfld_decomp (fname='C13_DWT_LIVECROOTC_TO_CWDC', units='gC13/m^2/s',  type2d='levdcmp', &
              avgflag='A', long_name='C13 live coarse root to CWD due to landcover change', &
@@ -7290,7 +7292,9 @@ contains
         call hist_addfld1d (fname='C14_PROD1C_LOSS', units='gC14/m^2/s', &
              avgflag='A', long_name='C14 loss from 1-yr crop product pool', &
               ptr_col=this%prod1c_loss)
+#if defined(TAM)
 
+#else
        this%dwt_frootc_to_litr_met_c(begc:endc,:) = spval
         call hist_addfld_decomp (fname='C14_DWT_FROOTC_TO_LITR_MET_C', units='gC14/m^2/s',  type2d='levdcmp', &
              avgflag='A', long_name='C14 fine root to litter due to landcover change', &
@@ -7305,7 +7309,7 @@ contains
         call hist_addfld_decomp (fname='C14_DWT_FROOTC_TO_LITR_LIG_C', units='gC14/m^2/s',  type2d='levdcmp', &
              avgflag='A', long_name='C14 fine root to litter due to landcover change', &
               ptr_col=this%dwt_frootc_to_litr_lig_c, default='inactive')
-
+#endif
        this%dwt_livecrootc_to_cwdc(begc:endc,:) = spval
         call hist_addfld_decomp (fname='C14_DWT_LIVECROOTC_TO_CWDC', units='gC14/m^2/s',  type2d='levdcmp', &
              avgflag='A', long_name='C14 live coarse root to CWD due to landcover change', &

@@ -887,8 +887,8 @@ contains
     !TAM
    !  call ncd_io('froot_long',froot_long(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
    !  if (.not. readv) froot_long = leaf_long
-    call ncd_io('rhizome_long',rhizome_long(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
-    if (.not. readv) rhizome_long = froot_long
+   !  call ncd_io('rhizome_long',rhizome_long(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+   !  if (.not. readv) rhizome_long = froot_long
     call ncd_io('evergreen',evergreen(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
     if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
     call ncd_io('stress_decid',stress_decid(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
@@ -978,6 +978,9 @@ contains
     if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
     call ncd_io('frm_flig',frm_flig(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
     if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
+
+    call ncd_io('rhizome_long',rhizome_long(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if (.not. readv) rhizome_long = froott_long
 #else
     call ncd_io('frootcn',frootcn(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
     if ( .not. readv ) call endrun(msg=' ERROR: error in reading in pft data'//errMsg(__FILE__, __LINE__))
@@ -994,6 +997,9 @@ contains
 
     call ncd_io('froot_long',froot_long(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
     if (.not. readv) froot_long = leaf_long
+
+    call ncd_io('rhizome_long',rhizome_long(0:npft-1), 'read', ncid, readvar=readv, posNOTonfile=.true.)
+    if (.not. readv) rhizome_long = froot_long
 #endif
 
     call ncd_io('pconv',pconv(0:npft-1), 'read', ncid, readvar=readv)

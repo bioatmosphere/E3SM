@@ -157,8 +157,8 @@ contains
          veg_cf%m_frootmc_to_litter(p)              = veg_cs%frootmc(p)              * m
          !Nitrogen
          veg_nf%m_froottn_to_litter(p)              = veg_ns%froottn(p)              * m
-         veg_nf%m_frooatn_to_litter(p)              = veg_ns%frootan(p)              * m
-         veg_nf%m_froomtn_to_litter(p)              = veg_ns%frootmn(p)              * m
+         veg_nf%m_frootan_to_litter(p)              = veg_ns%frootan(p)              * m
+         veg_nf%m_frootmn_to_litter(p)              = veg_ns%frootmn(p)              * m
          !Phosphorus
          veg_pf%m_froottp_to_litter(p)              = veg_ps%froottp(p)              * m
          veg_pf%m_frootap_to_litter(p)              = veg_ps%frootap(p)              * m

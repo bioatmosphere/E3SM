@@ -124,6 +124,9 @@ contains
                   ( col_cf%dwt_livecrootc_to_cwdc(c,j) + col_cf%dwt_deadcrootc_to_cwdc(c,j) ) * dt
 
              if (use_c13) then
+#if defined(TAM)
+
+#else
                 c13_col_cs%decomp_cpools_vr(c,j,i_met_lit) = c13_col_cs%decomp_cpools_vr(c,j,i_met_lit) + &
                      c13_col_cf%dwt_frootc_to_litr_met_c(c,j) * dt
                 c13_col_cs%decomp_cpools_vr(c,j,i_cel_lit) = c13_col_cs%decomp_cpools_vr(c,j,i_cel_lit) + &
@@ -132,9 +135,13 @@ contains
                      c13_col_cf%dwt_frootc_to_litr_lig_c(c,j) * dt
                 c13_col_cs%decomp_cpools_vr(c,j,i_cwd) = c13_col_cs%decomp_cpools_vr(c,j,i_cwd) + &
                      ( c13_col_cf%dwt_livecrootc_to_cwdc(c,j) + c13_col_cf%dwt_deadcrootc_to_cwdc(c,j) ) * dt
+#endif
              end if
 
              if (use_c14) then
+#if defined(TAM)
+
+#else
                 c14_col_cs%decomp_cpools_vr(c,j,i_met_lit) = c14_col_cs%decomp_cpools_vr(c,j,i_met_lit) + &
                      c14_col_cf%dwt_frootc_to_litr_met_c(c,j) * dt
                 c14_col_cs%decomp_cpools_vr(c,j,i_cel_lit) = c14_col_cs%decomp_cpools_vr(c,j,i_cel_lit) + &
@@ -143,6 +150,7 @@ contains
                      c14_col_cf%dwt_frootc_to_litr_lig_c(c,j) * dt
                 c14_col_cs%decomp_cpools_vr(c,j,i_cwd) = c14_col_cs%decomp_cpools_vr(c,j,i_cwd) + &
                      ( c14_col_cf%dwt_livecrootc_to_cwdc(c,j) + c14_col_cf%dwt_deadcrootc_to_cwdc(c,j) ) * dt
+#endif
              end if
 
           end do
@@ -449,7 +457,13 @@ contains
 
          ! growth respiration fluxes for current growth
          veg_cs%cpool(p) = veg_cs%cpool(p) - veg_cf%cpool_leaf_gr(p)*dt
+#if defined(TAM)
+         veg_cs%cpool(p) = veg_cs%cpool(p) - veg_cf%cpool_froott_gr(p)*dt - &
+                                             veg_cf%cpool_froota_gr(p)*dt - &
+                                             veg_cf%cpool_frootm_gr(p)*dt
+#else
          veg_cs%cpool(p) = veg_cs%cpool(p) - veg_cf%cpool_froot_gr(p)*dt
+#endif
             veg_cs%cpool(p) = veg_cs%cpool(p) - veg_cf%cpool_livecroot_gr(p)*dt
          if (woody(ivt(p)) >= 1._r8) then
             veg_cs%cpool(p) = veg_cs%cpool(p) - veg_cf%cpool_livestem_gr(p)*dt

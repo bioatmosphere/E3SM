@@ -518,7 +518,7 @@ contains
     real(r8):: crit_onset_gdd !critical onset growing degree-day sum
     real(r8):: soilt
     !-----------------------------------------------------------------------
-
+#ifndef TAM
     associate(                                                                                             &
          ivt                                 =>    veg_pp%itype                                             , & ! Input:  [integer   (:)   ]  pft vegetation type
          dayl                                =>    grc_pp%dayl                                              , & ! Input:  [real(r8)  (:)   ]  daylength (s)
@@ -822,7 +822,7 @@ contains
       end do ! end of pft loop
 
     end associate
-
+#endif
   end subroutine CNSeasonDecidPhenology
 
   !-----------------------------------------------------------------------
@@ -869,7 +869,7 @@ contains
     real(r8):: soilt           ! temperature of top soil layer
     real(r8):: psi             ! water stress of top soil layer
     !-----------------------------------------------------------------------
-
+#ifndef TAM
     associate(                                                                                             &
          ivt                                 =>    veg_pp%itype                                             , & ! Input:  [integer   (:)   ]  pft vegetation type
          dayl                                =>    grc_pp%dayl                                              , & ! Input:  [real(r8)  (:)   ]  daylength (s)
@@ -1303,7 +1303,7 @@ contains
       end do ! end of pft loop
 
     end associate
-
+#endif
   end subroutine CNStressDecidPhenology
 
   !-----------------------------------------------------------------------
@@ -2286,7 +2286,7 @@ contains
     integer :: fp           ! lake filter pft index
     real(r8):: t1           ! temporary variable
     !-----------------------------------------------------------------------
-
+#ifndef TAM
     associate(                                                                                             &
          ivt                                 =>    veg_pp%itype                                             , & ! Input:  [integer   (:) ]  pft vegetation type
 
@@ -2410,7 +2410,7 @@ contains
       end do ! end pft loop
 
     end associate
-
+#endif
   end subroutine CNOnsetGrowth
 
  !----------------------------------------------------------------------
@@ -2556,7 +2556,7 @@ contains
     integer :: fp           ! lake filter pft index
     real(r8):: t1           ! temporary variable
     !-----------------------------------------------------------------------
-
+#ifndef TAM
     associate(                                                                     &
          ivt                   =>    veg_pp%itype                                   , & ! Input:  [integer  (:) ]  pft vegetation type
 
@@ -2734,7 +2734,7 @@ contains
       end do ! end pft loop
 
     end associate
-
+#endif
   end subroutine CNOffsetLitterfall
 
   !-----------------------------------------------------------------------
@@ -2761,7 +2761,7 @@ contains
     integer :: p            ! indices
     integer :: fp           ! lake filter pft index
     !-----------------------------------------------------------------------
-
+#ifndef TAM
     associate(                                                               &
          ivt               =>    veg_pp%itype                                 , & ! Input:  [integer  (:) ]  pft vegetation type
 
@@ -2841,7 +2841,7 @@ contains
       end do
 
     end associate
-
+#endif
   end subroutine CNBackgroundLitterfall
 
   !-----------------------------------------------------------------------
@@ -2993,7 +2993,7 @@ contains
     ! !LOCAL VARIABLES:
     integer :: fc,c,pi,p,j       ! indices
     !-----------------------------------------------------------------------
-
+#ifndef TAM
     associate(                                                                                       &
          ivt                                 =>    veg_pp%itype                                       , & ! Input:  [integer  (:)   ]  pft vegetation type
          wtcol                               =>    veg_pp%wtcol                                       , & ! Input:  [real(r8) (:)   ]  weight (relative to column) for this pft (0-1)
@@ -3148,7 +3148,7 @@ contains
       end do
 
     end associate
-
+#endif
   end subroutine CNLitterToColumn
 
  !-----------------------------------------------------------------------

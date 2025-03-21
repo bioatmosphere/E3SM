@@ -1176,6 +1176,15 @@ contains
                           + froottc_to_litter(p) * frt_flig(ivt(p)) * wtcol(p) * froott_prof(p,j) &
                           + frootac_to_litter(p) * fra_flig(ivt(p)) * wtcol(p) * froota_prof(p,j) &
                           + frootmc_to_litter(p) * frm_flig(ivt(p)) * wtcol(p) * frootm_prof(p,j)
+
+                    ! nonwoody rhizome litter carbon fluxes
+                    ! assumed to have transport root chemistry.
+                     phenology_c_to_litr_met_c(c,j) = phenology_c_to_litr_met_c(c,j) &
+                          + livecrootc_to_litter(p) * frt_flab(ivt(p)) * wtcol(p) * croot_prof(p,j)
+                     phenology_c_to_litr_cel_c(c,j) = phenology_c_to_litr_cel_c(c,j) &
+                          + livecrootc_to_litter(p) * frt_fcel(ivt(p)) * wtcol(p) * croot_prof(p,j)
+                     phenology_c_to_litr_lig_c(c,j) = phenology_c_to_litr_lig_c(c,j) &
+                          + livecrootc_to_litter(p) * frt_flig(ivt(p)) * wtcol(p) * croot_prof(p,j)
 #else
                      phenology_c_to_litr_met_c(c,j) = phenology_c_to_litr_met_c(c,j) &
                           + frootc_to_litter(p) * fr_flab(ivt(p)) * wtcol(p) * froot_prof(p,j)
@@ -1183,7 +1192,7 @@ contains
                               + frootc_to_litter(p) * fr_fcel(ivt(p)) * wtcol(p) * froot_prof(p,j)
                      phenology_c_to_litr_lig_c(c,j) = phenology_c_to_litr_lig_c(c,j) &
                           + frootc_to_litter(p) * fr_flig(ivt(p)) * wtcol(p) * froot_prof(p,j)    
-#endif
+
                      ! nonwoody rhizome litter carbon fluxes
                      phenology_c_to_litr_met_c(c,j) = phenology_c_to_litr_met_c(c,j) &
                           + livecrootc_to_litter(p) * fr_flab(ivt(p)) * wtcol(p) * croot_prof(p,j)
@@ -1191,6 +1200,7 @@ contains
                           + livecrootc_to_litter(p) * fr_fcel(ivt(p)) * wtcol(p) * croot_prof(p,j)
                      phenology_c_to_litr_lig_c(c,j) = phenology_c_to_litr_lig_c(c,j) &
                           + livecrootc_to_litter(p) * fr_flig(ivt(p)) * wtcol(p) * croot_prof(p,j)
+#endif
                   end if
                end if
 
@@ -1354,8 +1364,8 @@ contains
                       ! storage gap mortality carbon fluxes
                       gap_mortality_c_to_litr_met_c(c,j)      = gap_mortality_c_to_litr_met_c(c,j)      + &
                            m_leafc_storage_to_litter(p)      * wtcol(p) * leaf_prof(p,j)
-                      gap_mortality_c_to_litr_met_c(c,j)     = gap_mortality_c_to_litr_met_c(c,j)     + &
-                           m_frootc_storage_to_litter(p)     * wtcol(p) * froot_prof(p,j)
+                    !   gap_mortality_c_to_litr_met_c(c,j)     = gap_mortality_c_to_litr_met_c(c,j)     + &
+                    !        m_frootc_storage_to_litter(p)     * wtcol(p) * froot_prof(p,j)
                       gap_mortality_c_to_litr_met_c(c,j)  = gap_mortality_c_to_litr_met_c(c,j)  + &
                            m_livestemc_storage_to_litter(p)  * wtcol(p) * stem_prof(p,j)
                       gap_mortality_c_to_litr_met_c(c,j)  = gap_mortality_c_to_litr_met_c(c,j)  + &
@@ -1373,8 +1383,8 @@ contains
                       ! transfer gap mortality carbon fluxes
                       gap_mortality_c_to_litr_met_c(c,j)      = gap_mortality_c_to_litr_met_c(c,j)      + &
                            m_leafc_xfer_to_litter(p)      * wtcol(p) * leaf_prof(p,j)
-                      gap_mortality_c_to_litr_met_c(c,j)     = gap_mortality_c_to_litr_met_c(c,j)     + &
-                           m_frootc_xfer_to_litter(p)     * wtcol(p) * froot_prof(p,j)
+                    !   gap_mortality_c_to_litr_met_c(c,j)     = gap_mortality_c_to_litr_met_c(c,j)     + &
+                    !        m_frootc_xfer_to_litter(p)     * wtcol(p) * froot_prof(p,j)
                       gap_mortality_c_to_litr_met_c(c,j)  = gap_mortality_c_to_litr_met_c(c,j)  + &
                            m_livestemc_xfer_to_litter(p)  * wtcol(p) * stem_prof(p,j)
                       gap_mortality_c_to_litr_met_c(c,j)  = gap_mortality_c_to_litr_met_c(c,j)  + &

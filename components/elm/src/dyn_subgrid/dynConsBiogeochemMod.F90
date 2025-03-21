@@ -425,6 +425,9 @@ contains
          p = filter_soilp_with_inactive(fp)
          c = veg_pp%column(p)
          l = veg_pp%landunit(p)
+#if defined(TAM)
+
+#else
          call dyn_veg_cs_Adjustments( &
               l, c, p,        &
               prior_weights,                 &
@@ -440,6 +443,7 @@ contains
               crop_product_c13flux(fp),          &
               c13_veg_cs                     &
               )
+#endif
       enddo
     endif
 
@@ -448,6 +452,9 @@ contains
          p = filter_soilp_with_inactive(fp)
          c = veg_pp%column(p)
          l = veg_pp%landunit(p)
+#if defined(TAM)
+
+#else
          call dyn_veg_cs_Adjustments( &
               l, c, p,        &
               prior_weights,                 &
@@ -463,6 +470,7 @@ contains
               crop_product_c14flux(fp),          &
               c14_veg_cs                     &
             )
+#endif
       enddo
     endif
 
@@ -651,19 +659,27 @@ contains
             dwt_deadcrootc_to_litter(fp) /dt
 #endif
        if ( use_c13 ) then
+#if defined(TAM)
+
+#else
           c13_col_cf%dwt_slash_cflux(c) =          &
                c13_col_cf%dwt_slash_cflux(c)     + &
                dwt_frootc13_to_litter(fp)     /dt + &
                dwt_livecrootc13_to_litter(fp) /dt + &
                dwt_deadcrootc13_to_litter(fp) /dt
+#endif
        endif
 
        if ( use_c14 ) then
+#if defined(TAM)
+
+#else
           c14_col_cf%dwt_slash_cflux(c) =          &
                c14_col_cf%dwt_slash_cflux(c)     + &
                dwt_frootc14_to_litter(fp)     /dt + &
                dwt_livecrootc14_to_litter(fp) /dt + &
                dwt_deadcrootc14_to_litter(fp) /dt
+#endif
        endif
 #if defined(TAM)
        col_nf%dwt_slash_nflux(c) =            &

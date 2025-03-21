@@ -659,12 +659,14 @@ contains
     call elm_inst_biogeophys(bounds_proc)
 
     if(use_betr)then
+#ifndef TAM
       !allocate memory for betr simulator
       allocate(ep_betr, source=create_betr_simulation_elm())
       !set internal filters for betr
       call ep_betr%BeTRSetFilter(maxpft_per_col=max_patch_per_col, boffline=.false.)
       call ep_betr%InitOnline(bounds_proc, lun_pp, col_pp, veg_pp, col_ws, betr_namelist_buffer, masterproc)
       is_active_betr_bgc = ep_betr%do_soibgc()
+#endif
     else
       allocate(ep_betr, source=create_betr_simulation_elm())
     endif
@@ -855,9 +857,11 @@ contains
                glc2lnd_vars%icemask_grc(bounds_clump%begg:bounds_clump%endg))
        end do
        !$OMP END PARALLEL DO
+#ifndef TAM
        if(use_betr)then
          call ep_betr%set_active(bounds_proc, col_pp)
        endif
+#endif
        ! Create new template file using cold start
        call restFile_write(bounds_proc, finidat_interp_dest,             &
             atm2lnd_vars, aerosol_vars, canopystate_vars, cnstate_vars,  &
@@ -891,10 +895,11 @@ contains
             glc2lnd_vars%icemask_grc(bounds_clump%begg:bounds_clump%endg))
     end do
     !$OMP END PARALLEL DO
-
+#ifndef TAM
     if(use_betr)then
       call ep_betr%set_active(bounds_proc, col_pp)
     endif
+#endif
     ! ------------------------------------------------------------------------
     ! Initialize nitrogen deposition
     ! ------------------------------------------------------------------------

@@ -603,7 +603,7 @@ contains
                                                        
     call CarbonIsoFluxCalc(&
          isoveg_cf%m_frootmc_to_litter                   , veg_cf%m_frootmc_to_litter, &
-         isoveg_cs%frootmc                              , veg_cs%frootc, &
+         isoveg_cs%frootmc                              , veg_cs%frootmc, &
          num_soilp                                                   , filter_soilp, 1._r8, 0, isotope)
 #else
     call CarbonIsoFluxCalc(&
@@ -1110,20 +1110,27 @@ contains
          lf_flab                   =>    veg_vp%lf_flab                            , & ! Input:  [real(r8) (:)   ]  leaf litter labile fraction
          lf_fcel                   =>    veg_vp%lf_fcel                            , & ! Input:  [real(r8) (:)   ]  leaf litter cellulose fraction
          lf_flig                   =>    veg_vp%lf_flig                            , & ! Input:  [real(r8) (:)   ]  leaf litter lignin fraction
-         fr_flab                   =>    veg_vp%fr_flab                            , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
-         fr_fcel                   =>    veg_vp%fr_fcel                            , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
-         fr_flig                   =>    veg_vp%fr_flig                            , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
-
          leaf_prof                 =>    cnstate_vars%leaf_prof_patch                  , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of leaves
 #if defined(TAM)
+         frt_flab                   =>    veg_vp%frt_flab                            , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
+         frt_fcel                   =>    veg_vp%frt_fcel                            , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
+         frt_flig                   =>    veg_vp%frt_flig                            , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
+         fra_flab                   =>    veg_vp%fra_flab                            , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
+         fra_fcel                   =>    veg_vp%fra_fcel                            , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
+         fra_flig                   =>    veg_vp%fra_flig                            , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
+         frm_flab                   =>    veg_vp%frm_flab                            , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
+         frm_fcel                   =>    veg_vp%frm_fcel                            , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
+         frm_flig                   =>    veg_vp%frm_flig                            , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
          froott_prof               =>    cnstate_vars%froott_prof_patch                 , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
          froota_prof               =>    cnstate_vars%froota_prof_patch                 , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
          frootm_prof               =>    cnstate_vars%frootm_prof_patch                 , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
-
          froottc_to_litter         =>    veg_cf%froottc_to_litter        , & ! Input:  [real(r8) (:)   ]
          frootac_to_litter         =>    veg_cf%frootac_to_litter        , & ! Input:  [real(r8) (:)   ]
          frootmc_to_litter         =>    veg_cf%frootmc_to_litter        , & ! Input:  [real(r8) (:)   ]
 #else
+         fr_flab                   =>    veg_vp%fr_flab                            , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
+         fr_fcel                   =>    veg_vp%fr_fcel                            , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
+         fr_flig                   =>    veg_vp%fr_flig                            , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
          froot_prof                =>    cnstate_vars%froot_prof_patch                 , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
          frootc_to_litter          =>    veg_cf%frootc_to_litter        , & ! Input:  [real(r8) (:)   ]
 #endif
@@ -1223,12 +1230,21 @@ contains
           lf_flab                        =>    veg_vp%lf_flab                                   , & ! Input:  [real(r8) (:)   ]  leaf litter labile fraction
           lf_fcel                        =>    veg_vp%lf_fcel                                   , & ! Input:  [real(r8) (:)   ]  leaf litter cellulose fraction
           lf_flig                        =>    veg_vp%lf_flig                                   , & ! Input:  [real(r8) (:)   ]  leaf litter lignin fraction
-          fr_flab                        =>    veg_vp%fr_flab                                   , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
-          fr_fcel                        =>    veg_vp%fr_fcel                                   , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
-          fr_flig                        =>    veg_vp%fr_flig                                   , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
-
+          
           leaf_prof                      =>    cnstate_vars%leaf_prof_patch                         , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of leaves
 #if defined(TAM)
+          frt_flab                        =>    veg_vp%frt_flab                                   , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
+          frt_fcel                        =>    veg_vp%frt_fcel                                   , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
+          frt_flig                        =>    veg_vp%frt_flig                                   , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
+
+          fra_flab                        =>    veg_vp%fra_flab                                   , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
+          fra_fcel                        =>    veg_vp%fra_fcel                                   , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
+          fra_flig                        =>    veg_vp%fra_flig                                   , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
+
+          frm_flab                        =>    veg_vp%frm_flab                                   , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
+          frm_fcel                        =>    veg_vp%frm_fcel                                   , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
+          frm_flig                        =>    veg_vp%frm_flig                                   , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
+
           froott_prof                     =>    cnstate_vars%froott_prof_patch                        , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
           froota_prof                     =>    cnstate_vars%froota_prof_patch                        , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
           frootm_prof                     =>    cnstate_vars%frootm_prof_patch                        , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
@@ -1237,6 +1253,9 @@ contains
           m_frootac_to_litter             =>    veg_cf%m_frootac_to_litter             , & ! Input:  [real(r8) (:)   ]
           m_frootmc_to_litter             =>    veg_cf%m_frootmc_to_litter             , & ! Input:  [real(r8) (:)   ]
 #else
+          fr_flab                        =>    veg_vp%fr_flab                                   , & ! Input:  [real(r8) (:)   ]  fine root litter labile fraction
+          fr_fcel                        =>    veg_vp%fr_fcel                                   , & ! Input:  [real(r8) (:)   ]  fine root litter cellulose fraction
+          fr_flig                        =>    veg_vp%fr_flig                                   , & ! Input:  [real(r8) (:)   ]  fine root litter lignin fraction
           froot_prof                     =>    cnstate_vars%froot_prof_patch                        , & ! Input:  [real(r8) (:,:) ]  (1/m) profile of fine roots
           m_frootc_to_litter             =>    veg_cf%m_frootc_to_litter             , & ! Input:  [real(r8) (:)   ]
 #endif

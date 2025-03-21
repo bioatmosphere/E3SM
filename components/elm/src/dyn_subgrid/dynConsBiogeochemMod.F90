@@ -911,6 +911,10 @@ contains
 
           if ( use_c13 ) then
              ! C13 fine root litter fluxes
+
+#if defined(TAM)
+
+#else
              c13_col_cf%dwt_frootc_to_litr_met_c(c,j) = &
                   c13_col_cf%dwt_frootc_to_litr_met_c(c,j) + &
                   (dwt_frootc13_to_litter(fp)* fr_flab)/dt * froot
@@ -922,7 +926,7 @@ contains
              c13_col_cf%dwt_frootc_to_litr_lig_c(c,j) = &
                   c13_col_cf%dwt_frootc_to_litr_lig_c(c,j) + &
                   (dwt_frootc13_to_litter(fp)* fr_flig)/dt * froot
-
+#endif
              ! livecroot fluxes to cwd
              c13_col_cf%dwt_livecrootc_to_cwdc(c,j) = &
                   c13_col_cf%dwt_livecrootc_to_cwdc(c,j) + &
@@ -937,6 +941,9 @@ contains
 
           if ( use_c14 ) then
              ! C14 fine root litter fluxes
+#if defined(TAM)
+
+#else
              c14_col_cf%dwt_frootc_to_litr_met_c(c,j) = &
                   c14_col_cf%dwt_frootc_to_litr_met_c(c,j) + &
                   (dwt_frootc14_to_litter(fp)* fr_flab)/dt * froot
@@ -948,7 +955,7 @@ contains
              c14_col_cf%dwt_frootc_to_litr_lig_c(c,j) = &
                   c14_col_cf%dwt_frootc_to_litr_lig_c(c,j) + &
                   (dwt_frootc14_to_litter(fp)* fr_flig)/dt * froot
-
+#endif
              ! livecroot fluxes to cwd
              c14_col_cf%dwt_livecrootc_to_cwdc(c,j) = &
                   c14_col_cf%dwt_livecrootc_to_cwdc(c,j) + &
@@ -1092,7 +1099,11 @@ contains
     if ( use_c13 ) then
        deallocate(dwt_leafc13_seed)
        deallocate(dwt_deadstemc13_seed)
+#if defined(TAM)
+
+#else
        deallocate(dwt_frootc13_to_litter)
+#endif
        deallocate(dwt_livecrootc13_to_litter)
        deallocate(dwt_deadcrootc13_to_litter)
        deallocate(conv_c13flux)
@@ -1104,7 +1115,11 @@ contains
     if ( use_c14 ) then
        deallocate(dwt_leafc14_seed)
        deallocate(dwt_deadstemc14_seed)
+#if defined(TAM)
+
+#else
        deallocate(dwt_frootc14_to_litter)
+#endif
        deallocate(dwt_livecrootc14_to_litter)
        deallocate(dwt_deadcrootc14_to_litter)
        deallocate(conv_c14flux)

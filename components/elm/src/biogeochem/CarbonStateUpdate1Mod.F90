@@ -413,8 +413,8 @@ contains
 #if defined(TAM)
          veg_cs%cpool(p)           = veg_cs%cpool(p) - &       
                  veg_cf%cpool_to_froottc(p)*dt        - &
-                 veg_cf%cpool_to_froota(p)*dt        - &
-                 veg_cf%cpool_to_frootm(p)*dt
+                 veg_cf%cpool_to_frootac(p)*dt        - &
+                 veg_cf%cpool_to_frootmc(p)*dt
          veg_cs%froottc(p)          = veg_cs%froottc(p) + veg_cf%cpool_to_froottc(p)*dt
          veg_cs%frootac(p)          = veg_cs%frootac(p) + veg_cf%cpool_to_frootac(p)*dt
          veg_cs%frootac(p)          = veg_cs%frootac(p) + veg_cf%cpool_to_frootmc(p)*dt

@@ -412,7 +412,7 @@ contains
          !TAM: keep track of frootc, froota, frootm but keep a single storage pool
 #if defined(TAM)
          veg_cs%cpool(p)           = veg_cs%cpool(p) - &       
-                 veg_cf%cpool_to_frootc(p)*dt        - &
+                 veg_cf%cpool_to_froottc(p)*dt        - &
                  veg_cf%cpool_to_froota(p)*dt        - &
                  veg_cf%cpool_to_frootm(p)*dt
          veg_cs%froottc(p)          = veg_cs%froottc(p) + veg_cf%cpool_to_froottc(p)*dt

@@ -1052,7 +1052,7 @@ contains
 
   ! set time steps
   dt = real( get_step_size(), r8 )
-#if defned(TAM)
+#if defined(TAM)
 
 #else
   do fp = 1,num_soilp

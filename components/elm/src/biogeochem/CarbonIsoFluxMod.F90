@@ -204,8 +204,7 @@ contains
       call CarbonIsoFluxCalc(&
            isoveg_cf%cpool_to_frootc               , veg_cf%cpool_to_frootc, &
            isoveg_cs%cpool                        , veg_cs%cpool, &
-           num_soilp  
-                                                     , filter_soilp, 1._r8, 0, isotope)
+           num_soilp                              , filter_soilp, 1._r8, 0, isotope)
       call CarbonIsoFluxCalc(&
            isoveg_cf%cpool_froot_gr                , veg_cf%cpool_froot_gr, &
            isoveg_cs%cpool                        , veg_cs%cpool, &

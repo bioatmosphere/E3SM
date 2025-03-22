@@ -1441,15 +1441,13 @@ contains
                  (m_leafc_to_litter_fire(p)*lf_fcel(itype)*lprof_pj + &
                   m_froottc_to_litter_fire(p)*frt_fcel(itype)*frt_prof_pj + &
                   m_frootac_to_litter_fire(p)*fra_fcel(itype)*frt_prof_pj + &
-                  m_frootmc_to_litter_fire(p)*frm_fcel(itype)*frt_prof_pj + &
-                 )* wt_col
+                  m_frootmc_to_litter_fire(p)*frm_fcel(itype)*frt_prof_pj)* wt_col
 
             m_c_to_litr_lig_fire(c,j)=m_c_to_litr_lig_fire(c,j) + &
                  (m_leafc_to_litter_fire(p)*lf_flig(itype)*lprof_pj + &
                   m_froottc_to_litter_fire(p)*frt_flig(itype)*frt_prof_pj + &
                   m_frootac_to_litter_fire(p)*fra_flig(itype)*frt_prof_pj + &
-                  m_frootmc_to_litter_fire(p)*frm_flig(itype)*frt_prof_pj + &
-                 )* wt_col   
+                  m_frootmc_to_litter_fire(p)*frm_flig(itype)*frt_prof_pj)* wt_col   
 
 #else
             m_c_to_litr_met_fire(c,j)=m_c_to_litr_met_fire(c,j) + &
@@ -1494,15 +1492,13 @@ contains
                (m_leafn_to_litter_fire(p)*lf_fcel(itype)*lprof_pj + &
                 m_froottn_to_litter_fire(p)*frt_fcel(itype)*frt_prof_pj + &
                 m_frootan_to_litter_fire(p)*fra_fcel(itype)*frt_prof_pj + &
-                m_frootmn_to_litter_fire(p)*frm_fcel(itype)*frt_prof_pj + &
-               )* wt_col
+                m_frootmn_to_litter_fire(p)*frm_fcel(itype)*frt_prof_pj)* wt_col
 
        m_n_to_litr_lig_fire(c,j)=m_n_to_litr_lig_fire(c,j) + &
                (m_leafn_to_litter_fire(p)*lf_flig(itype)*lprof_pj + &
                 m_froottn_to_litter_fire(p)*frt_flig(itype)*frt_prof_pj + &
                 m_frootan_to_litter_fire(p)*fra_flig(itype)*frt_prof_pj + &
-                m_frootmn_to_litter_fire(p)*frm_flig(itype)*frt_prof_pj + &
-               )* wt_col
+                m_frootmn_to_litter_fire(p)*frm_flig(itype)*frt_prof_pj)* wt_col
 #else
        m_n_to_litr_met_fire(c,j)=m_n_to_litr_met_fire(c,j) + &
                (m_frootn_to_litter_fire(p)*fr_flab(itype) + &

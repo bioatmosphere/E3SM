@@ -2487,7 +2487,7 @@ contains
     !-----------------------------------------------------------------------
 
     ! Enforce expected array sizes
-
+#ifndef TAM
     associate(                                                     &
          z             =>    col_pp%z                               , & ! Input:  [real(r8) (:,:)  ]  layer depth (m) (-nlevsno+1:nlevsoi)
          dz            =>    col_pp%dz                              , & ! Input:  [real(r8) (:,:)  ]  layer thickness (m)  (-nlevsno+1:nlevsoi)
@@ -2623,7 +2623,7 @@ contains
       end if ! not lake
 
     end associate
-
+#endif
   end subroutine ch4_aere
   
   !--------------------------------------------------------------------------------------

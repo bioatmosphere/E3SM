@@ -1407,7 +1407,9 @@ contains
               end do
 
            else
-              
+#if defined(TAM)
+
+#else
               f = 0
               decompmicc(:) = 0._r8
               do p = col_pp%pfti(c), col_pp%pftf(c)
@@ -1471,6 +1473,7 @@ contains
               cp_scalar_runmean_ptr => cp_scalar_runmean
               km_p_ptr      => km_plant_p
               vmax_p_ptr    => vmax_plant_p
+#endif
            end if
 
         end if
@@ -1910,6 +1913,9 @@ contains
 
      ! for np imbalance (impacts fixation, NA with FATES)
      if (nu_com .ne. 'RD' .and. .not.use_fates) then
+#if defined(TAM)
+
+#else
         do fc=1,num_soilc
            c = filter_soilc(fc)
            do p = col_pp%pfti(c), col_pp%pftf(c)
@@ -1929,6 +1935,7 @@ contains
               pnup_pfrootc(p) =  pnup_pfrootc(p) / zisoi(nlevdecomp-1)
            end do
         end do
+#endif
      end if
 
 
@@ -2586,6 +2593,9 @@ contains
              ! 'ECA' or 'MIC' mode
              ! dynamic allocation based on light limitation (more woody growth) vs nutrient limitations (more fine root growth)
              ! set allocation coefficients
+#if defined(TAM)
+
+#else
              N_lim_factor(p) = cn_scalar_runmean(p) ! N stress factor
              P_lim_factor(p) = cp_scalar_runmean(p) ! P stress factor
 
@@ -2825,6 +2835,7 @@ contains
                  n_allometry(p) = 1._r8/cnl + f1/cnfr
                  p_allometry(p) = 1._r8/cpl + f1/cpfr
              end if
+#endif
          end if !end of nu_com
 
          ! calculate the amount of new leaf C dictated by these allocation
@@ -3108,7 +3119,9 @@ contains
          ! (3) maintain plant PC/NC stoichiometry at optimal ratios under C mode
 
          if (nu_com .eq. 'ECA' .or. nu_com .eq. 'MIC') then
+#if defined(TAM)
 
+#else
              supplement_to_plantn(p)  = 0.0_r8
              supplement_to_plantp(p)  = 0.0_r8
 
@@ -3254,7 +3267,7 @@ contains
                  end if
 
              end if
-
+#endif
          end if
 
       end do ! end pft loop

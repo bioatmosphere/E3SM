@@ -355,7 +355,7 @@ contains
     real(r8), pointer :: benefit_pgpp_pleafc          (:)
 
     !-----------------------------------------------------------------------
-
+#ifndef TAM
     associate(                                                                                   &
          ivt                          => veg_pp%itype                                             , & ! Input:  [integer  (:) ]  pft vegetation type
 
@@ -926,6 +926,7 @@ contains
       end do ! end pft loop
 
     end associate
+#endif
 
  end subroutine Allocation1_PlantNPDemand
 !------------------------------------------------------------------------------
@@ -962,7 +963,7 @@ contains
 
   real(r8), parameter :: cn_stoich_var=0.2_r8    ! variability of CN ratio
   real(r8), parameter :: cp_stoich_var=0.4_r8    ! variability of CP ratio
-
+#ifndef TAM
   associate(                                                                            &
      ivt                          => veg_pp%itype                                        , & ! Input:  [integer  (:) ]  pft vegetation type
 
@@ -1088,6 +1089,7 @@ contains
     enddo
   end do
   end associate
+#endif
  end subroutine calc_plantN_kineticpar
 
 !!-------------------------------------------------------------------------------------------------
@@ -1167,7 +1169,7 @@ contains
     real(r8), parameter :: taun = 3600._r8 !turnover of the abstract plant n storage
     real(r8):: xsmr_ratio                 ! ratio of mr comes from non-structue carobn hydrate pool
     !-----------------------------------------------------------------------
-
+#ifndef TAM
     associate(                                                                                 &
          ivt                          => veg_pp%itype                                           , & ! Input:  [integer  (:) ]  pft vegetation type
 !
@@ -1933,7 +1935,7 @@ contains
       !----------------------------------------------------------------
 
     end associate
-
+#endif
  end subroutine Allocation3_PlantCNPAlloc
 
 

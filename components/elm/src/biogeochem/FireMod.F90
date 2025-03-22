@@ -1541,15 +1541,13 @@ contains
               (m_leafp_to_litter_fire(p)*lf_fcel(itype)*lprof_pj + &
                m_froottp_to_litter_fire(p)*frt_fcel(itype)*frt_prof_pj + &
                m_frootap_to_litter_fire(p)*fra_fcel(itype)*frt_prof_pj + &
-               m_frootmp_to_litter_fire(p)*frm_fcel(itype)*frt_prof_pj + &
-              )* wt_col
+               m_frootmp_to_litter_fire(p)*frm_fcel(itype)*frt_prof_pj)* wt_col
 
          m_p_to_litr_lig_fire(c,j)=m_p_to_litr_lig_fire(c,j) + &
               (m_leafp_to_litter_fire(p)*lf_flig(itype)*lprof_pj + &
                m_froottp_to_litter_fire(p)*frt_flig(itype)*frt_prof_pj + &
                m_frootap_to_litter_fire(p)*fra_flig(itype)*frt_prof_pj + &
-               m_frootmp_to_litter_fire(p)*frm_flig(itype)*frt_prof_pj + &
-              )* wt_col
+               m_frootmp_to_litter_fire(p)*frm_flig(itype)*frt_prof_pj)* wt_col
 #else
           m_p_to_litr_met_fire(c,j)=m_p_to_litr_met_fire(c,j) + &
                (m_frootp_to_litter_fire(p)*fr_flab(itype) + &

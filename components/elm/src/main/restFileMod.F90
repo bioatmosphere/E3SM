@@ -281,11 +281,11 @@ contains
              frictionvel_inst=frictionvel_vars, &
              soilstate_inst=soilstate_vars)
     end if
-
+#ifndef TAM
     if (use_betr) then
        call ep_betr%BeTRRestart(bounds, ncid, flag='define')
     endif
-
+#endif
     if (use_alquimia) then
       call col_chem%Restart(bounds, ncid, flag='define')
     endif
@@ -421,11 +421,11 @@ contains
              soilstate_inst=soilstate_vars)
 
     end if
-
+#ifndef TAM
     if (use_betr) then
        call ep_betr%BeTRRestart(bounds, ncid, flag='write')
     endif
-
+#endif
     if (use_alquimia) then
       call col_chem%Restart(bounds, ncid, flag='write')
     endif
@@ -646,11 +646,11 @@ contains
              soilstate_inst=soilstate_vars)
     end if
 
-
+#ifndef TAM
     if (use_betr) then
        call ep_betr%BeTRRestart(bounds, ncid, flag='read')
     endif
-
+#endif
     if (use_alquimia) then
       call col_chem%Restart(bounds, ncid, flag='read')
     endif

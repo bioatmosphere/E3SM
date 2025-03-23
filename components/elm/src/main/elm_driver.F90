@@ -367,13 +367,13 @@ contains
             soilhydrology_vars )
        call t_stopf('beggridwbal')
 
-#ifndef TAM
+
        if (use_betr) then
          dtime=get_step_size(); nstep=get_nstep()
          call ep_betr%SetClock(dtime= dtime, nelapstep=nstep)
          call ep_betr%BeginMassBalanceCheck(bounds_clump)
        endif
-#endif
+
        call t_startf('cnpinit')
 
        if (use_cn) then
@@ -841,12 +841,12 @@ contains
        ! ============================================================================
        ! Determine temperatures
        ! ============================================================================
-#ifndef TAM
+
        if(use_betr)then
          call ep_betr%BeTRSetBiophysForcing(bounds_clump, col_pp, veg_pp, 1, nlevsoi, waterstate_vars=col_ws)
          call ep_betr%PreDiagSoilColWaterFlux(filter(nc)%num_nolakec , filter(nc)%nolakec)
        endif
-#endif
+
        ! Set lake temperature
 
        call LakeTemperature(bounds_clump,             &
@@ -866,12 +866,12 @@ contains
             solarabs_vars, soilstate_vars, energyflux_vars )
        call t_stopf('soiltemperature')
 
-#ifndef TAM
+
        if(use_betr)then
          call ep_betr%BeTRSetBiophysForcing(bounds_clump, col_pp, veg_pp, 1, nlevsoi, waterstate_vars=col_ws)
          call ep_betr%DiagnoseDtracerFreezeThaw(bounds_clump, filter(nc)%num_nolakec , filter(nc)%nolakec, col_pp, lun_pp)
        endif
-#endif
+
        ! ============================================================================
        ! update surface fluxes for new ground temperature.
        ! ============================================================================
@@ -1006,7 +1006,7 @@ contains
        if (use_cn)then
           call crop_vars%CropIncrementYear(filter(nc)%num_pcropp, filter(nc)%pcropp)
        endif
-#ifndef TAM
+
        if(use_betr)then
          !right now betr bgc is intended only for non-ed mode
 
@@ -1032,7 +1032,7 @@ contains
                   cnstate_vars)
          endif
        endif
-#endif
+
        ! FIX(SPM,032414)  push these checks into the routines below and/or make this consistent.
 
        if( .not. is_active_betr_bgc) then
@@ -1170,7 +1170,7 @@ contains
               photosyns_vars, drydepvel_vars)
        end if
        call t_stopf('depvel')
-#ifndef TAM
+
        if (use_betr)then
           call ep_betr%CalcSmpL(bounds_clump, 1, nlevsoi, filter(nc)%num_soilc, filter(nc)%soilc, &
                col_es%t_soisno(bounds_clump%begc:bounds_clump%endc,1:nlevsoi), &
@@ -1193,7 +1193,7 @@ contains
           endif
           call ep_betr%StepWithoutDrainage(bounds_clump, col_pp, veg_pp)
        endif  !end use_betr
-#endif
+
        if (use_lch4 .and. .not. is_active_betr_bgc) then
           !warning: do not call ch4 before AnnualUpdate, which will fail the ch4 model
           call t_startf('ch4')
@@ -1244,7 +1244,7 @@ contains
        end if
 
        call t_stopf('hydro2 drainage')
-#ifndef TAM
+
        if (use_betr) then
           call t_startf('betr drainage')
           call ep_betr%StepWithDrainage(bounds_clump, col_pp)
@@ -1284,7 +1284,7 @@ contains
                cnstate_vars,  frictionvel_vars, canopystate_vars )
          end if
        end if
-#endif
+
        ! ============================================================================
        ! Update Vegetation
        ! ============================================================================
@@ -1411,11 +1411,11 @@ contains
     ! ============================================================================
     ! Determine gridcell averaged properties to send to atm
     ! ============================================================================
-#ifndef TAM
+
     if(use_betr)then
       call ep_betr%DiagnoseLnd2atm(bounds_proc, col_pp, lnd2atm_vars)
     endif
-#endif
+
     call t_startf('lnd2atm')
     call lnd2atm(bounds_proc,                                   &
          atm2lnd_vars, surfalb_vars, frictionvel_vars,          &

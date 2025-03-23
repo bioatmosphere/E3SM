@@ -657,7 +657,7 @@ contains
     endif
 
     call elm_inst_biogeophys(bounds_proc)
-#ifndef TAM
+
     if(use_betr)then
 
       !allocate memory for betr simulator
@@ -670,7 +670,7 @@ contains
     else
       allocate(ep_betr, source=create_betr_simulation_elm())
     endif
-#endif
+
     call SnowOptics_init( ) ! SNICAR optical parameters:
 
     call SnowAge_init( )    ! SNICAR aging   parameters:
@@ -857,11 +857,11 @@ contains
                glc2lnd_vars%icemask_grc(bounds_clump%begg:bounds_clump%endg))
        end do
        !$OMP END PARALLEL DO
-#ifndef TAM
+
        if(use_betr)then
          call ep_betr%set_active(bounds_proc, col_pp)
        endif
-#endif
+
        ! Create new template file using cold start
        call restFile_write(bounds_proc, finidat_interp_dest,             &
             atm2lnd_vars, aerosol_vars, canopystate_vars, cnstate_vars,  &
@@ -895,11 +895,11 @@ contains
             glc2lnd_vars%icemask_grc(bounds_clump%begg:bounds_clump%endg))
     end do
     !$OMP END PARALLEL DO
-#ifndef TAM
+
     if(use_betr)then
       call ep_betr%set_active(bounds_proc, col_pp)
     endif
-#endif
+
     ! ------------------------------------------------------------------------
     ! Initialize nitrogen deposition
     ! ------------------------------------------------------------------------

@@ -750,31 +750,31 @@ contains
                col_cf%dwt_froottc_to_litr_lig_c(c,j) + &
                (dwt_froottc_to_litter(fp)* frt_flig)/dt * froott
 
-          ! fine root A litter nitrogen fluxes
-          col_nf%dwt_frootan_to_litr_met_n(c,j) = &
-               col_nf%dwt_frootan_to_litr_met_n(c,j) + &
-               (dwt_frootan_to_litter(fp)* fra_flab)/dt * froota
+          ! fine root A litter carbon fluxes
+          col_cf%dwt_frootac_to_litr_met_c(c,j) = &
+               col_cf%dwt_frootac_to_litr_met_c(c,j) + &
+               (dwt_frootac_to_litter(fp)* fra_flab)/dt * froota
 
-          col_nf%dwt_frootan_to_litr_cel_n(c,j) = &
-               col_nf%dwt_frootan_to_litr_cel_n(c,j) + &
-               (dwt_frootan_to_litter(fp)* fra_fcel)/dt * froota
+          col_cf%dwt_frootac_to_litr_cel_c(c,j) = &
+               col_cf%dwt_frootac_to_litr_cel_c(c,j) + &
+               (dwt_frootac_to_litter(fp)* fra_fcel)/dt * froota
 
-          col_nf%dwt_frootan_to_litr_lig_n(c,j) = &
-               col_nf%dwt_frootan_to_litr_lig_n(c,j) + &
-               (dwt_frootan_to_litter(fp)* fra_flig)/dt * froota
+          col_cf%dwt_frootac_to_litr_lig_c(c,j) = &
+               col_cf%dwt_frootac_to_litr_lig_c(c,j) + &
+               (dwt_frootac_to_litter(fp)* fra_flig)/dt * froota
 
-          ! fine root M litter nitrogen fluxes
-          col_nf%dwt_frootmn_to_litr_met_n(c,j) = &
-               col_nf%dwt_frootmn_to_litr_met_n(c,j) + &
-               (dwt_frootmn_to_litter(fp)* frm_flab)/dt * frootm
-          
-          col_nf%dwt_frootmn_to_litr_cel_n(c,j) = &
-               col_nf%dwt_frootmn_to_litr_cel_n(c,j) + &
-               (dwt_frootmn_to_litter(fp)* frm_fcel)/dt * frootm
+          ! fine root M litter carbon fluxes
+          col_cf%dwt_frootmc_to_litr_met_c(c,j) = &
+               col_cf%dwt_frootmc_to_litr_met_c(c,j) + &
+               (dwt_frootmc_to_litter(fp)* frm_flab)/dt * frootm
 
-          col_nf%dwt_frootmn_to_litr_lig_n(c,j) = &
-               col_nf%dwt_frootmn_to_litr_lig_n(c,j) + &
-               (dwt_frootmn_to_litter(fp)* frm_flig)/dt * frootm
+          col_cf%dwt_frootmc_to_litr_cel_c(c,j) = &
+               col_cf%dwt_frootmc_to_litr_cel_c(c,j) + &
+               (dwt_frootmc_to_litter(fp)* frm_fcel)/dt * frootm
+
+          col_cf%dwt_frootmc_to_litr_lig_c(c,j) = &
+               col_cf%dwt_frootmc_to_litr_lig_c(c,j) + &
+               (dwt_frootmc_to_litter(fp)* frm_flig)/dt * frootm
 
           ! fine root litter nitrogen fluxes
           col_nf%dwt_froottn_to_litr_met_n(c,j) = &
@@ -877,8 +877,8 @@ contains
           col_nf%dwt_frootn_to_litr_met_n(c,j) = &
                col_nf%dwt_frootn_to_litr_met_n(c,j) + &
                (dwt_frootn_to_litter(fp)* fr_flab)/dt * froot
-          col_nf%dwt_frootn_to_litr_cel_n(c,j) = &
 
+          col_nf%dwt_frootn_to_litr_cel_n(c,j) = &
                col_nf%dwt_frootn_to_litr_cel_n(c,j) + &
                (dwt_frootn_to_litter(fp)* fr_fcel)/dt * froot
 
@@ -890,8 +890,8 @@ contains
           col_pf%dwt_frootp_to_litr_met_p(c,j) = &
                col_pf%dwt_frootp_to_litr_met_p(c,j) + &
                (dwt_frootp_to_litter(fp)* fr_flab)/dt * froot
-          col_pf%dwt_frootp_to_litr_cel_p(c,j) = &
 
+          col_pf%dwt_frootp_to_litr_cel_p(c,j) = &
                col_pf%dwt_frootp_to_litr_cel_p(c,j) + &
                (dwt_frootp_to_litter(fp)* fr_fcel)/dt * froot
 

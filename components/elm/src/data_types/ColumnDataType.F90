@@ -11628,15 +11628,15 @@ contains
        do c = bounds%begc,bounds%endc
 #if defined(TAM)
           this%dwt_froottp_to_litr_met_p(c,j) = 0._r8
-          this%dwt_froottp_to_litr_met_p(c,j) = 0._r8
-          this%dwt_froottp_to_litr_met_p(c,j) = 0._r8
+          this%dwt_frootap_to_litr_met_p(c,j) = 0._r8
+          this%dwt_frootmp_to_litr_met_p(c,j) = 0._r8
 
+          this%dwt_froottp_to_litr_cel_p(c,j) = 0._r8
           this%dwt_frootap_to_litr_cel_p(c,j) = 0._r8
-          this%dwt_frootap_to_litr_cel_p(c,j) = 0._r8
-          this%dwt_frootap_to_litr_cel_p(c,j) = 0._r8
+          this%dwt_frootmp_to_litr_cel_p(c,j) = 0._r8
 
-          this%dwt_frootmp_to_litr_lig_p(c,j) = 0._r8
-          this%dwt_frootmp_to_litr_lig_p(c,j) = 0._r8
+          this%dwt_froottp_to_litr_lig_p(c,j) = 0._r8
+          this%dwt_frootap_to_litr_lig_p(c,j) = 0._r8
           this%dwt_frootmp_to_litr_lig_p(c,j) = 0._r8
 
 #else

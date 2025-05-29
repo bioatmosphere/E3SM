@@ -6601,7 +6601,7 @@ module VegetationDataType
             ptr_patch=this%frootc_xfer_to_froottc, default='inactive')
 
        this%frootc_xfer_to_frootac(begp:endp) = spval
-       call hist_addfld1d (fname='FROOTAC_XFER_TO_FROOTC', units='gC/m^2/s', &
+       call hist_addfld1d (fname='FROOTC_XFER_TO_FROOTAC', units='gC/m^2/s', &
             avgflag='A', long_name='fine root a C growth from storage', &
             ptr_patch=this%frootc_xfer_to_frootac, default='inactive')
 

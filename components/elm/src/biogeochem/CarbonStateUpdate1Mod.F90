@@ -417,7 +417,7 @@ contains
                  veg_cf%cpool_to_frootmc(p)*dt
          veg_cs%froottc(p)          = veg_cs%froottc(p) + veg_cf%cpool_to_froottc(p)*dt
          veg_cs%frootac(p)          = veg_cs%frootac(p) + veg_cf%cpool_to_frootac(p)*dt
-         veg_cs%frootac(p)          = veg_cs%frootac(p) + veg_cf%cpool_to_frootmc(p)*dt
+         veg_cs%frootmc(p)          = veg_cs%frootmc(p) + veg_cf%cpool_to_frootmc(p)*dt
 
 #else
          veg_cs%cpool(p)           = veg_cs%cpool(p)          - veg_cf%cpool_to_frootc(p)*dt
